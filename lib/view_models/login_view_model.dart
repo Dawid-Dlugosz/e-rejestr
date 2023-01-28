@@ -6,11 +6,13 @@ import 'package:e_rejestr/screens/home/home.dart';
 import 'package:e_rejestr/screens/login.dart';
 import 'package:e_rejestr/utils/firestore.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';
+import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:firedart/auth/exceptions.dart';
 import 'package:firedart/auth/firebase_auth.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
+import 'package:provider/provider.dart';
 
 class LoginViewModel extends ChangeNotifier {
   LoginViewModel(this.context) {
@@ -53,7 +55,17 @@ class LoginViewModel extends ChangeNotifier {
         notifyListeners();
 
         saveSession(timestamp);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChangeNotifierProvider(
+              create: (context) => HomeViewModel(),
+              child: const Home(),
+            ),
+          ),
+        );
+
         return;
       }
     });
