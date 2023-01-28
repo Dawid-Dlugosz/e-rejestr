@@ -38,6 +38,8 @@ dependencies:
   provider: ^6.0.5
   fluent_ui: ^4.2.0
   firedart: ^0.9.0+1
+  crypto: ^3.0.2
+  shared_preferences: ^2.0.17
   
 dev_dependencies:
   flutter_test:

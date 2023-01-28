@@ -11,6 +11,15 @@ var themeData = ThemeData(
       color: white,
     ),
   ),
+  iconButtonTheme: const IconButtonThemeData(
+    style: ButtonStyle(
+      iconColor: MaterialStatePropertyAll(orange),
+      iconSize: MaterialStatePropertyAll(30),
+    ),
+  ),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: lightPurple,
+  ),
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: const TextStyle(color: orange),
     errorStyle: const TextStyle(color: red),
