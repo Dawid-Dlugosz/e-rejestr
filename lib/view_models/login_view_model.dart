@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/models/user.dart';
-import 'package:e_rejestr/screens/home.dart';
+import 'package:e_rejestr/screens/home/home.dart';
 import 'package:e_rejestr/screens/login.dart';
 import 'package:e_rejestr/utils/firestore.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';
