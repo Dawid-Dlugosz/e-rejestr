@@ -1,9 +1,8 @@
 import 'package:e_rejestr/utils/colors.dart';
+import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:e_rejestr/widgets/home_nav_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 class HomeNav extends StatelessWidget {
@@ -26,11 +25,11 @@ class HomeNav extends StatelessWidget {
         children: [
           HomeNavButton(
             text: 'Rejestr lekarski'.toUpperCase(),
-            onTap: () => homeViewModel.changeScreenRecord(HomeViewModel.medicalRegister),
+            onTap: () => homeViewModel.changeScreenRecord(medicalRegister),
           ),
           HomeNavButton(
             text: 'Rejestr psychologiczny'.toUpperCase(),
-            onTap: () => homeViewModel.changeScreenRecord(HomeViewModel.psychologicalRegister),
+            onTap: () => homeViewModel.changeScreenRecord(psychologicalRegister),
           ),
         ],
       ),

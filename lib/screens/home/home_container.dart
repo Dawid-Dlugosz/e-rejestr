@@ -1,4 +1,5 @@
 import 'package:e_rejestr/screens/home/home_nav.dart';
+import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:e_rejestr/widgets/medical_register.dart';
 import 'package:e_rejestr/widgets/psychological_register.dart';
@@ -23,7 +24,7 @@ class HomeContainer extends StatelessWidget {
             flex: 4,
             child: Padding(
               padding: const EdgeInsets.all(10),
-              child: homeViewModel.initialRegisterPage == HomeViewModel.medicalRegister ? const MedicalRegister() : const PsychologicalRegister(),
+              child: homeViewModel.initialRegisterPage == medicalRegister ? const MedicalRegister() : const PsychologicalRegister(),
             ),
           ),
         ],

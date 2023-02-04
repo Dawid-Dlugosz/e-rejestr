@@ -1,11 +1,10 @@
+import 'package:e_rejestr/utils/pages.dart';
 import 'package:flutter/material.dart';
 
 class HomeViewModel extends ChangeNotifier {
   HomeViewModel() {
     _init();
   }
-  static const medicalRegister = 0;
-  static const psychologicalRegister = 1;
 
   static bool loaded = false;
 
