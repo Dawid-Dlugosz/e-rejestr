@@ -1,15 +1,22 @@
 import 'package:e_rejestr/dialogs/select_patient/patient_header_item.dart';
 import 'package:e_rejestr/enums/collections.dart';
+import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/widgets/empty_widget.dart';
 import 'package:e_rejestr/widgets/patient_list/patient_list.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 
-class SelectPatientList extends StatelessWidget {
+class SelectPatientList extends StatefulWidget {
   const SelectPatientList(this.changePage, {super.key});
 
   final Function(bool value) changePage;
 
+  @override
+  State<SelectPatientList> createState() => _SelectPatientListState();
+}
+
+class _SelectPatientListState extends State<SelectPatientList> {
+  var lastNameSearch = '';
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,8 +26,13 @@ class SelectPatientList extends StatelessWidget {
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.2,
-              child: const TextField(
-                decoration: InputDecoration(
+              child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    lastNameSearch = value;
+                  });
+                },
+                decoration: const InputDecoration(
                   label: Text('Wyszukaj po nazwisku'),
                 ),
               ),
@@ -30,7 +42,7 @@ class SelectPatientList extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                changePage(true);
+                widget.changePage(true);
               },
               child: const Text(
                 'Dodaj nowego pacjenta',
@@ -41,20 +53,37 @@ class SelectPatientList extends StatelessWidget {
         const SizedBox(
           height: 30,
         ),
-        Row(
-          children: const [
-            PatientHeaderItem('Imię'),
-            PatientHeaderItem('Nazwisko'),
-            PatientHeaderItem('Pesel / Inny dokument'),
-            PatientHeaderItem('Adres'),
-          ],
+        SizedBox(
+          width: double.infinity,
+          child: Table(
+            border: TableBorder.all(color: white, style: BorderStyle.solid, width: 2),
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            columnWidths: const {
+              0: FractionColumnWidth(0.02),
+              1: FractionColumnWidth(0.07),
+              2: FractionColumnWidth(0.18),
+              3: FractionColumnWidth(0.1),
+              4: FractionColumnWidth(0.07),
+            },
+            children: [
+              TableRow(
+                children: [
+                  PatientHeaderItem('Imię'),
+                  PatientHeaderItem('Nazwisko'),
+                  PatientHeaderItem('Pesel / Inny dokument'),
+                  PatientHeaderItem('Adres'),
+                  PatientHeaderItem('Akcja'),
+                ],
+              ),
+            ],
+          ),
         ),
         const SizedBox(
           height: 10,
         ),
         Expanded(
           child: StreamBuilder<List<Document>>(
-            stream: Firestore.instance.collection(Collection.patients.name).stream,
+            stream: Firestore.instance.collection(Collection.patients.name).where('lastName', isGreaterThanOrEqualTo: lastNameSearch).get().asStream(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null && snapshot.data!.isNotEmpty) {
                 return PatientList(snapshot.data!);

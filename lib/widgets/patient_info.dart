@@ -17,45 +17,47 @@ class PatientInfo extends StatelessWidget {
     var formatter = DateFormat('dd-MM-yyyy');
     String formattedDate = formatter.format(now);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        FutureBuilder<String>(
-          future: Provider.of<MedicalRegisterViewModel>(context, listen: false).getRegisterNumbre(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data != null) {
-              return SelectableText(
-                'Nr. rej. : ${snapshot.data!}',
-                style: const TextStyle(color: white, fontSize: 30),
+    return SelectionArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FutureBuilder<String>(
+            future: Provider.of<MedicalRegisterViewModel>(context, listen: false).getRegisterNumbre(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                return Text(
+                  'Nr. rej. : ${snapshot.data!}',
+                  style: const TextStyle(color: white, fontSize: 30),
+                );
+              }
+              return const Text(
+                'Nr. rej. :',
+                style: TextStyle(color: white, fontSize: 30),
               );
-            }
-            return const SelectableText(
-              'Nr. rej. :',
-              style: TextStyle(color: white, fontSize: 30),
-            );
-          },
-        ),
-        SelectableText(
-          'Imię i Nazwisko: ${patient != null ? patient!.getFullName() : ''}',
-          style: const TextStyle(color: white, fontSize: 30),
-        ),
-        SelectableText(
-          'Data urodzenia: ${patient != null ? patient!.birthday : ''}',
-          style: const TextStyle(color: white, fontSize: 30),
-        ),
-        SelectableText(
-          'PESEL / nr. dokumentu: ${patient != null ? patient!.getDocument() : ''}',
-          style: const TextStyle(color: white, fontSize: 30),
-        ),
-        SelectableText(
-          'Ades: ${patient != null ? patient!.residentialAddress.toString() : ''}',
-          style: const TextStyle(color: white, fontSize: 30),
-        ),
-        SelectableText(
-          'Data badania: $formattedDate',
-          style: const TextStyle(color: white, fontSize: 30),
-        ),
-      ],
+            },
+          ),
+          Text(
+            'Imię i Nazwisko: ${patient != null ? patient!.getFullName() : ''}',
+            style: const TextStyle(color: white, fontSize: 30),
+          ),
+          Text(
+            'Data urodzenia: ${patient != null ? patient!.birthday : ''}',
+            style: const TextStyle(color: white, fontSize: 30),
+          ),
+          Text(
+            'PESEL / nr. dokumentu: ${patient != null ? patient!.getDocument() : ''}',
+            style: const TextStyle(color: white, fontSize: 30),
+          ),
+          Text(
+            'Ades: ${patient != null ? patient!.residentialAddress.toString() : ''}',
+            style: const TextStyle(color: white, fontSize: 30),
+          ),
+          Text(
+            'Data badania: $formattedDate',
+            style: const TextStyle(color: white, fontSize: 30),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:e_rejestr/models/residental_address.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:uuid/uuid.dart';
 
 class PatientCreateViewModel extends ChangeNotifier {
   PatientCreateViewModel(this.context) {
@@ -89,6 +90,7 @@ class PatientCreateViewModel extends ChangeNotifier {
       birthday: birthayController.text,
       pesel: peselController.text,
       documentNumer: documentNumberController.text,
+      uid: const Uuid().v4(),
     );
     await Firestore.instance.collection(Collection.patients.name).add(patient.toJson());
     if (clear) {

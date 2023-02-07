@@ -1,12 +1,13 @@
 import 'package:e_rejestr/models/residental_address.dart';
 
 class Patient {
-  Patient({required this.firstName, required this.lastName, required this.residentialAddress, required this.birthday, this.pesel, this.documentNumer});
+  Patient({required this.firstName, required this.lastName, required this.residentialAddress, required this.birthday, required this.uid, this.pesel, this.documentNumer});
 
   final String firstName;
   final String lastName;
   final ResidentialAddress residentialAddress;
   final String birthday;
+  final String uid;
   String? pesel;
   String? documentNumer;
 
@@ -17,6 +18,7 @@ class Patient {
       birthday: json['birthday'],
       residentialAddress: ResidentialAddress.fromJson(json['residentialAddress']),
       pesel: json['pesel'],
+      uid: json['uid'],
       documentNumer: json['documentNumber'],
     );
   }
@@ -30,7 +32,7 @@ class Patient {
     json['pesel'] = pesel;
     json['birthday'] = birthday;
     json['documentNumber'] = documentNumer;
-
+    json['uid'] = uid;
     return json;
   }
 
