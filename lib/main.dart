@@ -1,3 +1,4 @@
+import 'package:e_rejestr/pdf/psychologist/art_39k_ust_1_art_39m.dart';
 import 'package:e_rejestr/screens/home/home.dart';
 import 'package:e_rejestr/screens/login.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';
@@ -19,6 +20,23 @@ void main() async {
 
   runApp(const MyApp());
 }
+
+// class MyWidget extends StatelessWidget {
+//   const MyWidget({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         body: Container(
+//           color: Colors.amber,
+//           width: double.infinity,
+//           child: Art_39k_ust_1_art_39m(data: "22-04-1998"),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

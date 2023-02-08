@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:e_rejestr/pdf/psychologist/art_39k_ust_1_art_39m.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:e_rejestr/widgets/home_nav_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:provider/provider.dart';
@@ -44,10 +46,12 @@ class HomeNav extends StatelessWidget {
                 pw.Page(
                   pageFormat: PdfPageFormat.a4,
                   build: (pw.Context context) {
-                    return pw.Center(child: pw.Text('easesa'));
+                    // TODO DODAĆ CZCIONKĘ KTÓRA OBSŁUGUJE POLSKIE ZNAKI
+                    return Art_39k_ust_1_art_39m(data: "23-23-2323");
                   },
                 ),
               );
+
               final file = File("example.pdf");
               await file.writeAsBytes(await pdf.save());
             },
