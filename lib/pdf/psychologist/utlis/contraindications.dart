@@ -20,7 +20,10 @@ pw.Widget contraindications() {
               decoration: pw.TextDecoration.lineThrough,
             ),
           ),
-          pw.TextSpan(text: '**) przeciwwskazań psychologicznych do wykonywania pracy na stanowisku kierowcy', style: pw.TextStyle(fontSize: 11)),
+          pw.TextSpan(
+            text: '**) przeciwwskazań psychologicznych do wykonywania pracy na stanowisku kierowcy',
+            style: pw.TextStyle(fontSize: 11),
+          ),
         ],
       ),
     ),

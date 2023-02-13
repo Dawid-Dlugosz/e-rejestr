@@ -1,6 +1,14 @@
 import 'dart:io';
 
-import 'package:e_rejestr/pdf/psychologist/art_39k_ust_1_art_39m.dart';
+import 'package:e_rejestr/pdf/karta_kz/karta_kz.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_39.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_alkohol.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_ogolny.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_przedluzenie.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_przywrocenie.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_punkty_karne.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_uprzywilej.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_wypadek.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
@@ -41,18 +49,34 @@ class HomeNav extends StatelessWidget {
           HomeNavButton(
             text: 'Generuj pdf'.toUpperCase(),
             onTap: () async {
-              final pdf = pw.Document();
+              var font = await rootBundle.load("fonts/Lato-Regular.ttf");
+              var myTheme = pw.ThemeData.withFont(
+                base: pw.Font.ttf(await rootBundle.load("fonts/Lato-Regular.ttf")),
+                bold: pw.Font.ttf(await rootBundle.load("fonts/Lato-Bold.ttf")),
+                // italic: pw.Font.ttf(await rootBundle.load("assets/OpenSans-Italic.ttf")),
+                // boldItalic: pw.Font.ttf(await rootBundle.load("assets/OpenSans-BoldItalic.ttf")),
+              );
+              final pdf = pw.Document(theme: myTheme);
+              pw.Font.ttf(font);
               pdf.addPage(
                 pw.Page(
                   pageFormat: PdfPageFormat.a4,
+                  margin: const pw.EdgeInsets.all(10),
+                  orientation: pw.PageOrientation.landscape,
                   build: (pw.Context context) {
-                    // TODO DODAĆ CZCIONKĘ KTÓRA OBSŁUGUJE POLSKIE ZNAKI
-                    return Art_39k_ust_1_art_39m(data: "23-23-2323");
+                    return karta_kz();
+                    // return psychologist_wypadek(date: "23-23-2323");
+                    // return psychologist_przywrocenie(date: "23-23-232");
+                    // return psychologist_punkty_karne(date: "23-23-232");
+                    // return psychologist_alkohol(date: "23-23-232");
+                    // return psychologist_uprzywilej(date: "23-23-232");
+                    // return psychologist_ogolny(date: "23-23-2323");
+                    // return psychologist_39(data: "23-23-2323"); //example 2
                   },
                 ),
               );
 
-              final file = File("example.pdf");
+              final file = File("karta_kz.pdf");
               await file.writeAsBytes(await pdf.save());
             },
           ),

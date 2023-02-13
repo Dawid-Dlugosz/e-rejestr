@@ -1,4 +1,4 @@
-import 'package:e_rejestr/pdf/psychologist/art_39k_ust_1_art_39m.dart';
+import 'package:e_rejestr/pdf/psychologist/psychologist_39.dart';
 import 'package:e_rejestr/screens/home/home.dart';
 import 'package:e_rejestr/screens/login.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';

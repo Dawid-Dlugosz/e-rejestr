@@ -7,7 +7,7 @@ pw.Widget deleteInstruction(String stars) {
     children: [
       pw.Container(
         width: 20,
-        child: pw.Text(stars, style: pw.TextStyle(fontSize: 8)),
+        child: pw.Text('$stars)', style: pw.TextStyle(fontSize: 8)),
       ),
       pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
