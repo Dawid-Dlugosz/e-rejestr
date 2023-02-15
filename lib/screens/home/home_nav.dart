@@ -1,6 +1,8 @@
 import 'dart:io';
 
-import 'package:e_rejestr/pdf/karta_kz/karta_kz.dart';
+import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_1.dart';
+import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_2.dart';
+import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_39.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_alkohol.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_ogolny.dart';
@@ -61,10 +63,11 @@ class HomeNav extends StatelessWidget {
               pdf.addPage(
                 pw.Page(
                   pageFormat: PdfPageFormat.a4,
-                  margin: const pw.EdgeInsets.all(10),
-                  orientation: pw.PageOrientation.landscape,
+                  // margin: const pw.EdgeInsets.all(10),
+                  // orientation: pw.PageOrientation.landscape,
                   build: (pw.Context context) {
-                    return karta_kz();
+                    return kierowca_starajacy_sie(date: "23-23-2323");
+                    // return karta_kz_page_1();
                     // return psychologist_wypadek(date: "23-23-2323");
                     // return psychologist_przywrocenie(date: "23-23-232");
                     // return psychologist_punkty_karne(date: "23-23-232");
@@ -75,8 +78,18 @@ class HomeNav extends StatelessWidget {
                   },
                 ),
               );
+              // pdf.addPage(
+              //   pw.Page(
+              //     pageFormat: PdfPageFormat.a4,
+              //     margin: const pw.EdgeInsets.all(10),
+              //     orientation: pw.PageOrientation.landscape,
+              //     build: (pw.Context context) {
+              //       return karta_kz_page_2();
+              //     },
+              //   ),
+              // );
 
-              final file = File("karta_kz.pdf");
+              final file = File("kierowca_starajacy_sie.pdf");
               await file.writeAsBytes(await pdf.save());
             },
           ),
