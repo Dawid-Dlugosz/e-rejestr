@@ -63,11 +63,11 @@ class HomeNav extends StatelessWidget {
               pdf.addPage(
                 pw.Page(
                   pageFormat: PdfPageFormat.a4,
-                  // margin: const pw.EdgeInsets.all(10),
-                  // orientation: pw.PageOrientation.landscape,
+                  margin: const pw.EdgeInsets.all(10),
+                  orientation: pw.PageOrientation.landscape,
                   build: (pw.Context context) {
-                    return kierowca_starajacy_sie(date: "23-23-2323");
-                    // return karta_kz_page_1();
+                    // return kierowca_starajacy_sie(date: "23-23-2323");
+                    return karta_kz_page_1();
                     // return psychologist_wypadek(date: "23-23-2323");
                     // return psychologist_przywrocenie(date: "23-23-232");
                     // return psychologist_punkty_karne(date: "23-23-232");
@@ -78,18 +78,18 @@ class HomeNav extends StatelessWidget {
                   },
                 ),
               );
-              // pdf.addPage(
-              //   pw.Page(
-              //     pageFormat: PdfPageFormat.a4,
-              //     margin: const pw.EdgeInsets.all(10),
-              //     orientation: pw.PageOrientation.landscape,
-              //     build: (pw.Context context) {
-              //       return karta_kz_page_2();
-              //     },
-              //   ),
-              // );
+              pdf.addPage(
+                pw.Page(
+                  pageFormat: PdfPageFormat.a4,
+                  margin: const pw.EdgeInsets.all(10),
+                  orientation: pw.PageOrientation.landscape,
+                  build: (pw.Context context) {
+                    return karta_kz_page_2();
+                  },
+                ),
+              );
 
-              final file = File("kierowca_starajacy_sie.pdf");
+              final file = File("karta_kz.pdf");
               await file.writeAsBytes(await pdf.save());
             },
           ),
