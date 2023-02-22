@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import '../../dialogs/select_patient/patient_header_item.dart';
 
 class PatientList extends StatelessWidget {
-  const PatientList(this.list, {super.key});
+  const PatientList(this.list, {required this.refresh, super.key});
   final List<Document> list;
+  final VoidCallback refresh;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,12 @@ class PatientList extends StatelessWidget {
             ...list
                 .map(
                   (e) => TableRow(
-                    children: [PatientListItem(Patient.fromJson(e.map))],
+                    children: [
+                      PatientListItem(
+                        Patient.fromJson(e.map),
+                        refresh: refresh,
+                      ),
+                    ],
                   ),
                 )
                 .toList(),

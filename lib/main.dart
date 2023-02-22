@@ -6,9 +6,10 @@ import 'package:e_rejestr/utils/theme_data.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:e_rejestr/view_models/login_view_model.dart';
 import 'package:e_rejestr/view_models/medical_register_view_model.dart';
-import 'package:e_rejestr/widgets/psychological_register.dart';
+import 'package:e_rejestr/screens/psychological_register.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 const apiKey = 'AIzaSyBZgKgGev3O_oLm_sKLyM1lfL62D_Mjs5k';
@@ -20,23 +21,6 @@ void main() async {
 
   runApp(const MyApp());
 }
-
-// class MyWidget extends StatelessWidget {
-//   const MyWidget({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         body: Container(
-//           color: Colors.amber,
-//           width: double.infinity,
-//           child: Art_39k_ust_1_art_39m(data: "22-04-1998"),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -57,6 +41,10 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: themeData,
+        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+        supportedLocales: const [
+          Locale('pl'),
+        ],
         // Get timestamp session session duration is one day
         home: FutureBuilder<int?>(
           future: getSession(),

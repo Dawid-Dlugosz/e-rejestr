@@ -1,9 +1,5 @@
-import 'package:e_rejestr/screens/psychologist_card.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
-import 'package:e_rejestr/view_models/psychologist_card_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 class RegisterMenu extends StatelessWidget {
@@ -34,20 +30,6 @@ class RegisterMenu extends StatelessWidget {
                   const SizedBox(
                     width: 20,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChangeNotifierProvider(
-                            create: (_) => PsychologistCardViewModel(),
-                            child: const PsychologistCard(),
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Text('Dodaj nowe orzeczenie'),
-                  )
                 ],
               ),
               ElevatedButton(

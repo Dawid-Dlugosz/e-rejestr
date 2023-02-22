@@ -12,48 +12,51 @@ class PsychologistMenu extends StatelessWidget {
   final Function(Patient patient) setPatient;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            showDialog<Patient?>(
-              context: context,
-              builder: (BuildContext context) {
-                return SelectPatient();
-              },
-            ).then((value) {
-              if (value != null) {
-                setPatient(value);
-              }
-            });
-          },
-          child: const Text('Wybierz z bazy'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            showDialog<Patient>(
-              context: context,
-              builder: (context) => ChangeNotifierProvider(
-                create: (_) => PatientCreateViewModel(context),
-                child: Dialog(
-                  child: Container(
-                    color: lightPurple,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: const PatientCreate(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              showDialog<Patient?>(
+                context: context,
+                builder: (BuildContext context) {
+                  return SelectPatient();
+                },
+              ).then((value) {
+                if (value != null) {
+                  setPatient(value);
+                }
+              });
+            },
+            child: const Text('Wybierz z bazy'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              showDialog<Patient>(
+                context: context,
+                builder: (context) => ChangeNotifierProvider(
+                  create: (_) => PatientCreateViewModel(context),
+                  child: Dialog(
+                    child: Container(
+                      color: lightPurple,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: const PatientCreate(),
+                    ),
                   ),
                 ),
-              ),
-            ).then((value) {
-              if (value != null) {
-                setPatient(value);
-              }
-            });
-          },
-          child: const Text('Dodaj nowego pacjenta'),
-        ),
-      ],
+              ).then((value) {
+                if (value != null) {
+                  setPatient(value);
+                }
+              });
+            },
+            child: const Text('Dodaj nowego pacjenta'),
+          ),
+        ],
+      ),
     );
   }
 }

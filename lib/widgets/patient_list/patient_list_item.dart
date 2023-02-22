@@ -1,13 +1,21 @@
 import 'package:e_rejestr/dialogs/select_patient/patient_header_item.dart';
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/utils/colors.dart';
+import 'package:e_rejestr/view_models/patient_create_view_model.dart';
+import 'package:e_rejestr/widgets/patient_creat.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class PatientListItem extends StatelessWidget {
-  const PatientListItem(this._patient, {super.key});
+class PatientListItem extends StatefulWidget {
+  const PatientListItem(this._patient, {required this.refresh, super.key});
 
   final Patient _patient;
+  final VoidCallback refresh;
+  @override
+  State<PatientListItem> createState() => _PatientListItemState();
+}
 
+class _PatientListItemState extends State<PatientListItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,10 +34,10 @@ class PatientListItem extends StatelessWidget {
         children: [
           TableRow(
             children: [
-              PatientHeaderItem(_patient.firstName),
-              PatientHeaderItem(_patient.lastName),
-              PatientHeaderItem(_patient.getDocument()),
-              PatientHeaderItem(_patient.residentialAddress.toString()),
+              PatientHeaderItem(widget._patient.firstName),
+              PatientHeaderItem(widget._patient.lastName),
+              PatientHeaderItem(widget._patient.getDocument()),
+              PatientHeaderItem(widget._patient.residentialAddress.toString()),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Wrap(
@@ -38,13 +46,26 @@ class PatientListItem extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context, _patient);
+                        Navigator.pop(context, widget._patient);
                       },
                       child: const Text('Wybierz'),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // TODO MAKE EDIT PATIENT
+                        showDialog<Patient>(
+                          context: context,
+                          builder: (context) => ChangeNotifierProvider(
+                            create: (_) => PatientCreateViewModel(context, uid: widget._patient.uid),
+                            child: Dialog(
+                              child: Container(
+                                color: lightPurple,
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child: const PatientCreate(),
+                              ),
+                            ),
+                          ),
+                        ).then((value) => widget.refresh());
                       },
                       child: const Text('Edytuj'),
                     ),

@@ -7,13 +7,15 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:uuid/uuid.dart';
 
 class PatientCreateViewModel extends ChangeNotifier {
-  PatientCreateViewModel(this.context) {
+  PatientCreateViewModel(this.context, {this.uid}) {
     _init();
   }
 
   final BuildContext context;
+  final String? uid;
 
   bool loaded = false;
+  Patient? editPatient;
 
   var nameController = TextEditingController();
   var lastNameController = TextEditingController();
@@ -36,6 +38,9 @@ class PatientCreateViewModel extends ChangeNotifier {
   );
 
   Future<void> _init() async {
+    if (uid != null) {
+      await getPatient(uid!);
+    }
     loaded = true;
     notifyListeners();
   }
@@ -82,6 +87,25 @@ class PatientCreateViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getPatient(String uid) async {
+    // I have only one user with bcz uid is unique
+    var documents = await Firestore.instance.collection(Collection.patients.name).where('uid', isEqualTo: uid).get();
+    var patientDocument = documents.first;
+    editPatient = Patient.fromJson(patientDocument.map);
+    nameController.text = editPatient!.firstName;
+    lastNameController.text = editPatient!.lastName;
+    birthayController.text = editPatient!.birthday;
+    domicileController.text = editPatient!.residentialAddress.postCodeCity;
+    streetController.text = editPatient!.residentialAddress.street;
+    if (editPatient!.pesel != null && editPatient!.pesel!.isNotEmpty) {
+      peselController.text = editPatient!.pesel!;
+    } else {
+      documentNumberController.text = editPatient!.documentNumer!;
+    }
+
+    notifyListeners();
+  }
+
   Future<void> inserData({bool clear = false}) async {
     var patient = Patient(
       firstName: nameController.text,
@@ -92,9 +116,23 @@ class PatientCreateViewModel extends ChangeNotifier {
       documentNumer: documentNumberController.text,
       uid: const Uuid().v4(),
     );
-    await Firestore.instance.collection(Collection.patients.name).add(patient.toJson());
+    await Firestore.instance.collection(Collection.patients.name).document(patient.uid).set(patient.toJson());
     if (clear) {
       _clearData();
     }
+  }
+
+  Future<void> editData() async {
+    var patient = Patient(
+      firstName: nameController.text,
+      lastName: lastNameController.text,
+      residentialAddress: ResidentialAddress(postCodeCity: domicileController.text, street: streetController.text),
+      birthday: birthayController.text,
+      pesel: peselController.text,
+      documentNumer: documentNumberController.text,
+      uid: editPatient!.uid,
+    );
+
+    await Firestore.instance.collection(Collection.patients.name).document(patient.uid).update(patient.toJson());
   }
 }

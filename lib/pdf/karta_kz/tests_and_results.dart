@@ -6,7 +6,7 @@ pw.Widget testsAndResults() {
   return pw.Column(
     children: [
       pw.Container(
-        width: 405,
+        width: 400,
         padding: const pw.EdgeInsets.all(2),
         child: pw.Text('Nazwa testu i wyniki', style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold)),
         decoration: pw.BoxDecoration(
@@ -19,7 +19,8 @@ pw.Widget testsAndResults() {
           pw.TableRow(
             children: [
               pw.SizedBox(width: 10),
-              pw.Padding(
+              pw.Container(
+                width: 130,
                 padding: const pw.EdgeInsets.all(5),
                 child: pw.Text(
                   'Nazwa testu',
@@ -29,24 +30,30 @@ pw.Widget testsAndResults() {
               ),
               pw.Padding(
                 padding: const pw.EdgeInsets.all(5),
-                child: pw.Text(
-                  'Wyniki surowe',
-                  style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
-                  textAlign: pw.TextAlign.center,
-                ),
-              ),
-              pw.Padding(
-                padding: const pw.EdgeInsets.all(5),
-                child: pw.Text(
-                  'Wyniki przeliczane',
-                  style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
-                  textAlign: pw.TextAlign.center,
+                child: pw.Container(
+                  width: 51,
+                  child: pw.Text(
+                    'Wyniki\nsurowe',
+                    style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
+                    textAlign: pw.TextAlign.center,
+                  ),
                 ),
               ),
               pw.Padding(
                 padding: const pw.EdgeInsets.all(5),
                 child: pw.Container(
-                  width: 95,
+                  width: 51,
+                  child: pw.Text(
+                    'Wyniki\nprzeliczone',
+                    style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
+                    textAlign: pw.TextAlign.center,
+                  ),
+                ),
+              ),
+              pw.Padding(
+                padding: const pw.EdgeInsets.all(5),
+                child: pw.Container(
+                  width: 110,
                   child: pw.Text(
                     'Uwagi',
                     style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),

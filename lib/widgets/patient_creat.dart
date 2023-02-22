@@ -103,21 +103,29 @@ class _PatientCreateState extends State<PatientCreate> {
                           });
                           return;
                         }
-                        await viewModel.inserData(clear: true);
+                        if (viewModel.uid == null) {
+                          await viewModel.inserData(clear: true);
+                        } else {
+                          await viewModel.editData();
+                        }
 
                         setState(() {
                           errorText = null;
                         });
                       },
-                      child: const Text('Zapisz'),
+                      child: Text(viewModel.uid == null ? 'Zapisz' : 'Edytuj'),
                     ),
                     const SizedBox(
                       width: 20,
                     ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Zapisz i wybierz'),
-                    )
+                    viewModel.uid == null
+                        ? ElevatedButton(
+                            onPressed: () {
+                              // TODO MAKE SAVE AND SELECT PATIENT
+                            },
+                            child: const Text('Zapisz i wybierz'),
+                          )
+                        : Container(),
                   ],
                 )
               ],
