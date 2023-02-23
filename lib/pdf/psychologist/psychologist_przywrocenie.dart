@@ -112,7 +112,7 @@ pw.Widget psychologist_przywrocenie({required String date}) {
           ),
         ),
       ),
-      dataOfIssue('22-05-2022', '***'),
+      dataOfIssue('22-05-2022', '****'),
       line(),
       instruction(),
       pw.Column(

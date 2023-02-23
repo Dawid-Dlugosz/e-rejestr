@@ -51,7 +51,7 @@ pw.Widget psychologist_egzaminator_instruktor({required String date}) {
                 style: pw.TextStyle(fontSize: 11, decoration: pw.TextDecoration.lineThrough),
               ),
               pw.TextSpan(
-                text: '**) przeciwwskazań psychologicznych do wykonywania czynności',
+                text: '**) przeciwwskazań psychologicznych do wykonywania czynności ',
                 style: pw.TextStyle(fontSize: 11),
               ),
               pw.TextSpan(
