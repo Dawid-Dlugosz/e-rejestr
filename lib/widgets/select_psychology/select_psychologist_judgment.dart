@@ -1,3 +1,4 @@
+import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/judgments.dart';
 import 'package:e_rejestr/widgets/select_psychology/cars_category.dart';
@@ -7,16 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SelectPsychologistJudgment extends StatefulWidget {
-  const SelectPsychologistJudgment({required this.name, super.key});
+  SelectPsychologistJudgment({required this.name, required this.addRemoveJudgment, required this.updateJudgment, required this.select, super.key});
   final String name;
+  final Function(Judgment judgment) addRemoveJudgment;
+  final Function(Judgment judgment) updateJudgment;
+  bool select;
 
   @override
   State<SelectPsychologistJudgment> createState() => _SelectPsychologistJudgmentState();
 }
 
 class _SelectPsychologistJudgmentState extends State<SelectPsychologistJudgment> with TickerProviderStateMixin {
-  bool _selected = false;
-
+  late Judgment judgment;
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 400),
     vsync: this,
@@ -35,7 +38,10 @@ class _SelectPsychologistJudgmentState extends State<SelectPsychologistJudgment>
   void updateRadio(String value) {
     setState(() {
       _radioDate = value;
+      judgment.termOfValidyty = _radioDate;
     });
+
+    widget.updateJudgment(judgment);
   }
 
   void updateCar(String car, bool value) {
@@ -43,24 +49,62 @@ class _SelectPsychologistJudgmentState extends State<SelectPsychologistJudgment>
       case 'A':
         setState(() {
           _carA = value;
+          judgment.carA = _carA;
         });
         break;
       case 'B':
         setState(() {
           _carB = value;
+          judgment.carB = _carB;
         });
         break;
       case 'C':
         setState(() {
           _carC = value;
+          judgment.carC = _carC;
         });
         break;
     }
+    widget.updateJudgment(judgment);
   }
 
-  // TODO ZROBIĆ WYJĄTKI DLA 39 I UPRZYWILEJOWANEGO Z WORDA, TEŻ PRZEJŻEĆ CZY JEST ON PRZEROBIONY W PDF, ORAZ DOSTOSOWĄC GÓWNO INSTRUKTORA EGZAMINATORA
+  @override
+  void initState() {
+    var currentDate = DateTime.now();
+    var dateOfIssue = DateFormat('dd-MM-yyyy').format(currentDate);
+
+    judgment = Judgment(
+      judgmentName: widget.name,
+      number: '',
+      article: getJudgmentArticle(widget.name),
+      patientName: '',
+      document: '',
+      residence: '',
+      state: _radioButton,
+      carA: _carA,
+      carB: _carB,
+      carC: _carC,
+      termOfValidyty: _radioDate,
+      dateOfIssue: dateOfIssue,
+      pdf: widget.name,
+    );
+
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    _controller.dispose(); // you need this
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.select) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
@@ -74,11 +118,12 @@ class _SelectPsychologistJudgmentState extends State<SelectPsychologistJudgment>
               widget.name,
               style: const TextStyle(fontSize: 23),
             ),
-            value: _selected,
+            value: widget.select,
             onChanged: (value) {
               setState(() {
-                _selected = value!;
-                if (_selected) {
+                widget.addRemoveJudgment(judgment);
+                widget.select = value!;
+                if (widget.select) {
                   _controller.forward();
                 } else {
                   _controller.reverse();
@@ -108,7 +153,10 @@ class _SelectPsychologistJudgmentState extends State<SelectPsychologistJudgment>
                     onChanged: (value) {
                       setState(() {
                         _radioButton = value!;
+                        judgment.state = _radioButton;
                       });
+
+                      widget.updateJudgment(judgment);
                     },
                   ),
                   RadioListTile(
@@ -118,7 +166,9 @@ class _SelectPsychologistJudgmentState extends State<SelectPsychologistJudgment>
                     onChanged: (value) {
                       setState(() {
                         _radioButton = value!;
+                        judgment.state = _radioButton;
                       });
+                      widget.updateJudgment(judgment);
                     },
                   ),
                   widget.name != judgment39

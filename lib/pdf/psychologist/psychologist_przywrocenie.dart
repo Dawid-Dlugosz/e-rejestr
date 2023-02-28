@@ -1,3 +1,5 @@
+import 'package:e_rejestr/models/judgment.dart';
+import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/contraindications.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/date_of_issue.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/delete_instruction.dart';
@@ -17,11 +19,11 @@ import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget psychologist_przywrocenie({required String date}) {
+pw.Widget psychologist_przywrocenie({required Patient patient, required Judgment judgment}) {
   return pw.Column(
     children: [
       medicalLab(),
-      header('1/2/2023'),
+      header(judgment.number),
       pw.Align(
         alignment: pw.Alignment.centerLeft,
         child: pw.Text(
@@ -77,22 +79,32 @@ pw.Widget psychologist_przywrocenie({required String date}) {
           style: pw.TextStyle(fontSize: 11),
         ),
       ),
-      patientName("Dawid Długosz"),
-      pesel('iohjawdoiajdioawod;'),
-      residence('Smocza 5 Siedlce'),
+      patientName(patient.getFullName()),
+      pesel(patient.getDocument()),
+      residence(patient.residentialAddress.toString()),
       pw.SizedBox(height: 15),
       pw.Align(
         alignment: pw.Alignment.centerLeft,
         child: pw.RichText(
-          text: const pw.TextSpan(
+          text: pw.TextSpan(
             text: 'stwierdzam brak/',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
             children: [
               pw.TextSpan(
-                text: 'istnienie ',
-                style: pw.TextStyle(fontSize: 11, decoration: pw.TextDecoration.lineThrough),
+                text: 'brak / ',
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  decoration: judgment.state == 'brak' ? null : pw.TextDecoration.lineThrough,
+                ),
               ),
               pw.TextSpan(
+                text: ' istnienie',
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  decoration: judgment.state == 'brak' ? pw.TextDecoration.lineThrough : null,
+                ),
+              ),
+              const pw.TextSpan(
                 text: '**) przeciwwskazań psychologicznych do kierowania:',
                 style: pw.TextStyle(fontSize: 11),
               ),
@@ -100,7 +112,7 @@ pw.Widget psychologist_przywrocenie({required String date}) {
           ),
         ),
       ),
-      drivingVehicles(a: true),
+      drivingVehicles(a: judgment.carA, b: judgment.carB, c: judgment.carC),
       pw.SizedBox(height: 30),
       pw.Align(
         alignment: pw.Alignment.centerLeft,
@@ -108,11 +120,11 @@ pw.Widget psychologist_przywrocenie({required String date}) {
           text: pw.TextSpan(
             text: 'Termin ważności orzeczenia psychologicznego***) ',
             style: pw.TextStyle(fontSize: 11),
-            children: [pw.TextSpan(text: date, style: pw.TextStyle(fontWeight: pw.FontWeight.bold))],
+            children: [pw.TextSpan(text: judgment.termOfValidyty, style: pw.TextStyle(fontWeight: pw.FontWeight.bold))],
           ),
         ),
       ),
-      dataOfIssue('22-05-2022', '****'),
+      dataOfIssue(judgment.dateOfIssue, '****'),
       line(),
       instruction(),
       pw.Column(

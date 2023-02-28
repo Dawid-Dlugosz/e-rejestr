@@ -16,7 +16,7 @@ class MedicalRegisterViewModel {
     var currentDate = DateTime.now();
     var formatter = DateFormat('M/yy');
 
-    if (timestampDate.day != currentDate.day) {
+    if (timestampDate.month != currentDate.month) {
       await firestore.collection(Collection.judgments.name).document(Documents.medical.name).update({
         'timestamp': currentDate.millisecondsSinceEpoch,
         'number': '1/${formatter.format(DateTime.now())}',

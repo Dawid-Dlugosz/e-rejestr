@@ -6,6 +6,7 @@ const judgmentAlkohol = 'Alkohol';
 const judgmentPunktyKarne = 'Punkty karne';
 const judgmentPrzywrocenie = 'Przywrócenie';
 const judgmentWypadek = 'Wypadek';
+const judgmentInstruktor = 'Instruktor';
 
 const art82 = 'art. 82';
 const art39 = 'art. 39k';
@@ -27,6 +28,8 @@ String getJudgmentArticle(String name) {
     case judgmentPrzedluzenie:
       return art82;
     case judgmentWypadek:
+      return art82;
+    case judgmentInstruktor:
       return art82;
     default:
       return '';

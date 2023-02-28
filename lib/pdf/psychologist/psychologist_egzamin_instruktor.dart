@@ -1,3 +1,4 @@
+import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/contraindications.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/date_of_issue.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/delete_instruction.dart';
@@ -19,11 +20,13 @@ import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget psychologist_egzaminator_instruktor({required String date}) {
+import '../../models/patient.dart';
+
+pw.Widget psychologist_egzaminator_instruktor({required Patient patient, required Judgment judgment}) {
   return pw.Column(
     children: [
       medicalLab(),
-      header('1/2/2023'),
+      header(judgment.number),
       pw.Align(
         alignment: pw.Alignment.centerLeft,
         child: pw.Text(
@@ -31,40 +34,55 @@ pw.Widget psychologist_egzaminator_instruktor({required String date}) {
           style: pw.TextStyle(fontSize: 11, color: PdfColor.fromHex('#000000')),
         ),
       ),
-      patientName("Dawid Długosz"),
-      pesel('iohjawdoiajdioawod;'),
-      residence('Smocza 5 Siedlce'),
+      patientName(patient.getFullName()),
+      pesel(patient.getDocument()),
+      residence(patient.residentialAddress.toString()),
       pw.SizedBox(height: 15),
       pw.Align(
         alignment: pw.Alignment.centerLeft,
         child: pw.RichText(
-          text: const pw.TextSpan(
+          text: pw.TextSpan(
             text: 'stwierdzam ',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
             children: [
               pw.TextSpan(
                 text: 'brak/ ',
-                style: pw.TextStyle(fontSize: 11, decoration: null),
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  decoration: judgment.state == 'brak' ? null : pw.TextDecoration.lineThrough,
+                ),
               ),
               pw.TextSpan(
                 text: 'istnienie ',
-                style: pw.TextStyle(fontSize: 11, decoration: pw.TextDecoration.lineThrough),
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  decoration: judgment.state == 'brak' ? pw.TextDecoration.lineThrough : null,
+                ),
               ),
-              pw.TextSpan(
+              const pw.TextSpan(
                 text: '**) przeciwwskazań psychologicznych do wykonywania czynności ',
                 style: pw.TextStyle(fontSize: 11),
               ),
               pw.TextSpan(
                 text: 'instruktora/',
-                style: pw.TextStyle(fontSize: 11),
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  decoration: judgment.carA ? null : pw.TextDecoration.lineThrough,
+                ),
               ),
               pw.TextSpan(
-                text: ' egzaminatora/ instruktora technik jazdy:',
-                style: pw.TextStyle(fontSize: 11),
+                text: ' egzaminatora/ ',
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  decoration: judgment.carB ? null : pw.TextDecoration.lineThrough,
+                ),
               ),
               pw.TextSpan(
                 text: ' instruktora technik jazdy:',
-                style: pw.TextStyle(fontSize: 11),
+                style: pw.TextStyle(
+                  fontSize: 11,
+                  decoration: judgment.carC ? null : pw.TextDecoration.lineThrough,
+                ),
               ),
             ],
           ),
@@ -85,12 +103,12 @@ pw.Widget psychologist_egzaminator_instruktor({required String date}) {
             style: pw.TextStyle(fontSize: 11),
           ),
           pw.Text(
-            'AWAWDAWWAWA',
+            judgment.termOfValidyty,
             style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold),
           ),
         ],
       ),
-      dataOfIssue('22-05-2022', '***'),
+      dataOfIssue(judgment.dateOfIssue, '***'),
       line(),
       instruction(),
       pw.Column(

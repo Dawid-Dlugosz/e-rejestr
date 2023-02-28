@@ -25,6 +25,39 @@ class CarsCategory extends StatefulWidget {
   State<CarsCategory> createState() => _CarsCategoryState();
 }
 
+String carA(String value) {
+  switch (value) {
+    case judgmentUprzywilej:
+      return 'A1, A2, A';
+    case judgmentInstruktor:
+      return 'instruktora';
+    default:
+      return 'AM, A1, A2, A, B1, B, B+E, T,';
+  }
+}
+
+String carB(String value) {
+  switch (value) {
+    case judgmentUprzywilej:
+      return 'B1, B, B+E';
+    case judgmentInstruktor:
+      return 'egzaminatora';
+    default:
+      return 'C1, C1+E, C, C+E, D1, D1+E, D, D+E';
+  }
+}
+
+String carC(String value) {
+  switch (value) {
+    case judgmentUprzywilej:
+      return 'C1+E, C, C+E, D1, D1+E, D, D+E **)';
+    case judgmentInstruktor:
+      return 'instruktora technik jazdy';
+    default:
+      return 'tramwajem';
+  }
+}
+
 class _CarsCategoryState extends State<CarsCategory> {
   @override
   Widget build(BuildContext context) {
@@ -33,7 +66,7 @@ class _CarsCategoryState extends State<CarsCategory> {
         const TitleJudgment(name: 'Kierowane pojazdy: '),
         CheckboxListTile(
           controlAffinity: ListTileControlAffinity.leading,
-          title: Text(widget.judgmentName == judgmentUprzywilej ? 'A1, A2, A' : 'AM, A1, A2, A, B1, B, B+E, T,'),
+          title: Text(carA(widget.judgmentName)),
           value: widget.carA,
           onChanged: (value) {
             widget.updateCar('A', value!);
@@ -41,7 +74,7 @@ class _CarsCategoryState extends State<CarsCategory> {
         ),
         CheckboxListTile(
           controlAffinity: ListTileControlAffinity.leading,
-          title: Text(widget.judgmentName == judgmentUprzywilej ? 'B1, B, B+E' : 'C1, C1+E, C, C+E, D1, D1+E, D, D+E'),
+          title: Text(carB(widget.judgmentName)),
           value: widget.carB,
           onChanged: (value) {
             widget.updateCar('B', value!);
@@ -49,7 +82,7 @@ class _CarsCategoryState extends State<CarsCategory> {
         ),
         CheckboxListTile(
           controlAffinity: ListTileControlAffinity.leading,
-          title: Text(widget.judgmentName == judgmentUprzywilej ? 'C1+E, C, C+E, D1, D1+E, D, D+E **)' : 'tramwajem'),
+          title: Text(carC(widget.judgmentName)),
           value: widget.carC,
           onChanged: (value) {
             widget.updateCar('C', value!);

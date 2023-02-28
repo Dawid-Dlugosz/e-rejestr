@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/pdf/karta_kz/p1_right_size.dart';
 import 'package:e_rejestr/utils/colors.dart';
@@ -45,10 +47,13 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                       ),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: viewModel.psychologistJudgments.length,
+                          itemCount: viewModel.typeOfJudgments.length,
                           itemBuilder: (context, index) {
                             return SelectPsychologistJudgment(
-                              name: viewModel.psychologistJudgments[index],
+                              name: viewModel.typeOfJudgments[index],
+                              addRemoveJudgment: viewModel.addRemoveJudgment,
+                              updateJudgment: viewModel.updateJudgment,
+                              select: viewModel.judgments.where((element) => element.judgmentName == viewModel.typeOfJudgments[index]).isEmpty ? false : true,
                             );
                           },
                         ),
@@ -57,8 +62,15 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                         width: double.infinity,
                         padding: const EdgeInsets.only(top: 10),
                         child: ElevatedButton(
-                          onPressed: () {
-                            // TODO MAKE SAVE JUDGMENTS AND CREATE KARTA KZ
+                          onPressed: () async {
+                            if (patient == null || viewModel.judgments.isEmpty) {
+                              var snackBar = const SnackBar(
+                                content: Text('Wybierz pacjenta i jedno z orzeczeń'),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            } else {
+                              await viewModel.saveJudgments(patient!);
+                            }
                           },
                           child: const Text('Zapisz'),
                         ),
