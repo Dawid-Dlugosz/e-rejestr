@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget kierowca_starajacy_sie({required String date}) {
+pw.Widget kierowca_starajacy_sie_przedluzenie({required String date}) {
   return pw.Column(
     children: [
       medicalHeader(date),
@@ -24,14 +24,27 @@ pw.Widget kierowca_starajacy_sie({required String date}) {
             style: pw.TextStyle(fontSize: 10),
             children: [
               pw.TextSpan(
-                text: ' art. 75 ust. 1 pkt 1 ',
+                text: ' art. 75 ust. 1  ',
                 style: pw.TextStyle(
                   fontSize: 10,
                   decoration: pw.TextDecoration.underline,
                 ),
               ),
               pw.TextSpan(
-                text: ' / pkt 2/ pkt 3/ pkt 4/ pkt 5/pkt 7/pkt 8 ',
+                text: ' pkt 1 / ',
+                style: pw.TextStyle(
+                  fontSize: 10,
+                  decoration: pw.TextDecoration.lineThrough,
+                ),
+              ),
+              pw.TextSpan(
+                text: '  pkt 2/  ',
+                style: pw.TextStyle(
+                  fontSize: 10,
+                ),
+              ),
+              pw.TextSpan(
+                text: ' pkt 3/ pkt 4/ pkt 5/pkt 7/pkt 8 ',
                 style: pw.TextStyle(
                   fontSize: 10,
                   decoration: pw.TextDecoration.lineThrough,

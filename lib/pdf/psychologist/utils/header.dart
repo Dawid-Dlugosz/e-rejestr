@@ -17,7 +17,7 @@ pw.Widget header(String number, {bool orginal = true}) {
         height: 15,
       ),
       pw.Text(
-        'ORZECZENIE PSYCHOLOGICZNE    NR $number',
+        'ORZECZENIE PSYCHOLOGICZNE  NR $number',
         style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
       ),
       pw.SizedBox(
