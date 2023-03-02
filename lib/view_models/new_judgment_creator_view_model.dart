@@ -1,4 +1,5 @@
 import 'package:e_rejestr/enums/collections.dart';
+import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/judgment_number.dart';
 import 'package:e_rejestr/models/karta_kz.dart';
@@ -20,7 +21,6 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
   bool loaded = false;
 
-  // TODO dodać egzaminatora
   List<String> typeOfJudgments = [
     judgmentOgolny,
     judgmentPrzedluzenie,
@@ -32,13 +32,37 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     judgmentWypadek,
     judgmentInstruktor,
   ];
+
+  List<String> typeOfJudgmentsMedical = [
+    medicalMedycynaPracy,
+    medicalMedycynaPracyInstruktor,
+    medicalStarajacySie,
+    medicalStarajacySiePrzedluzenie,
+    medicalStarajacySieNieletni,
+  ];
+
   List<Judgment> judgments = [];
+  List<MedicaJudgmentInterface> judgmentMedicals = [];
 
   late final MedicalRegisterViewModel medicalRegisterViewModel;
   Future<void> _init() async {
     // TODO zrobić sprawdzanie czy zmenił się miesiąc jeśli tak wyzeorwać licznik i ustawić na 1 i miesiać + 1
     medicalRegisterViewModel = Provider.of<MedicalRegisterViewModel>(context, listen: false);
     loaded = true;
+    notifyListeners();
+  }
+
+  void addRemoveMedicalJudgment(MedicaJudgmentInterface judgment) {
+    if (judgmentMedicals.where((element) => element.judgmentName == judgment.judgmentName).isEmpty) {
+      judgmentMedicals.add(judgment);
+    } else {
+      judgmentMedicals.removeWhere((element) => element.judgmentName == judgment.judgmentName);
+    }
+    notifyListeners();
+  }
+
+  void updateMedicalJudgment(MedicaJudgmentInterface judgment) {
+    judgmentMedicals[judgmentMedicals.indexWhere((element) => element.judgmentName == judgment.judgmentName)] = judgment;
     notifyListeners();
   }
 
@@ -56,8 +80,18 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> saveMedicalJudgments(Patient patient) async {
+    //TODO ZROBIĆ ZAPIS MEDYCZNEGO ORZECZENIE
+
+    // createMedicalKartKz();
+  }
+
+  Future<void> createMedicalKartKz(Patient patient, String number) async {
+    //TODO ZROBIĆ ZAPIS KARTY KZ DLA ORZECZENIA MEDYCZNEGO
+  }
+
   Future<void> saveJudgments(Patient patient) async {
-    var registerNumber = await medicalRegisterViewModel.getRegisterNumbre();
+    var registerNumber = await medicalRegisterViewModel.getPsychoRegisterNumber();
     var judgmentNumber = JudgmentNumber.fromString(registerNumber);
     var asciiChar = 65; // A
 
@@ -92,10 +126,5 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     );
 
     await Firestore.instance.collection(Collection.kartaKzPsycho.name).document(kartaKz.uid).create(kartaKz.toJson());
-    print("poadawjpd ${kartaKz.uid}");
-  }
-
-  Future<JudgmentNumber> getJudgmentNumber() async {
-    return await getPsychoJudgmentNumber();
   }
 }

@@ -1,3 +1,4 @@
 enum Documents {
   medical,
+  psycho,
 }

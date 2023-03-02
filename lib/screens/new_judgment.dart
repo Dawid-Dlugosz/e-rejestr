@@ -8,6 +8,7 @@ import 'package:e_rejestr/view_models/new_judgment_creator_view_model.dart';
 import 'package:e_rejestr/widgets/my_app_bar.dart';
 import 'package:e_rejestr/widgets/patient_info.dart';
 import 'package:e_rejestr/widgets/psychologist_menu.dart';
+import 'package:e_rejestr/widgets/select_medical/select_medical_judgment.dart';
 import 'package:e_rejestr/widgets/select_psychology/select_psychologist_judgment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,16 +47,43 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                         child: Divider(color: white, height: 2),
                       ),
                       Expanded(
-                        child: ListView.builder(
-                          itemCount: viewModel.typeOfJudgments.length,
-                          itemBuilder: (context, index) {
-                            return SelectPsychologistJudgment(
-                              name: viewModel.typeOfJudgments[index],
-                              addRemoveJudgment: viewModel.addRemoveJudgment,
-                              updateJudgment: viewModel.updateJudgment,
-                              select: viewModel.judgments.where((element) => element.judgmentName == viewModel.typeOfJudgments[index]).isEmpty ? false : true,
-                            );
-                          },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    ...viewModel.typeOfJudgments.map(
+                                      (e) => SelectPsychologistJudgment(
+                                        name: e,
+                                        addRemoveJudgment: viewModel.addRemoveJudgment,
+                                        updateJudgment: viewModel.updateJudgment,
+                                        select: viewModel.judgments.where((element) => element.judgmentName == e).isEmpty ? false : true,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    ...viewModel.typeOfJudgmentsMedical.map(
+                                      (e) => SelectMedicalJudgment(
+                                        name: e,
+                                        addRemoveJudgment: viewModel.addRemoveMedicalJudgment,
+                                        updateJudgment: viewModel.updateMedicalJudgment,
+                                        select: viewModel.judgmentMedicals.where((element) => element.judgmentName == e).isEmpty ? false : true,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Container(

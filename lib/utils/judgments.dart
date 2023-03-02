@@ -7,6 +7,11 @@ const judgmentPunktyKarne = 'Punkty karne';
 const judgmentPrzywrocenie = 'Przywrócenie';
 const judgmentWypadek = 'Wypadek';
 const judgmentInstruktor = 'Instruktor';
+const medicalMedycynaPracy = 'Medycyna pracy';
+const medicalMedycynaPracyInstruktor = 'Medycyna pracy instruktor';
+const medicalStarajacySie = 'Kierowca starający się';
+const medicalStarajacySiePrzedluzenie = 'Kierowca starający się przedłużenie';
+const medicalStarajacySieNieletni = 'Kierowca starający się przedłużenie nieletni 3 pieczątki';
 
 const art82 = 'art. 82';
 const art39 = 'art. 39k';
