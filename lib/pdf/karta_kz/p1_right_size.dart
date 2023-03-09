@@ -1,3 +1,4 @@
+import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/pdf/karta_kz/cail_header.dart';
 import 'package:e_rejestr/pdf/karta_kz/cail_row.dart';
 import 'package:e_rejestr/pdf/karta_kz/text_field.dart';
@@ -16,7 +17,7 @@ const padding = 5.0;
 const width = 400.0;
 const rowHeight = 30;
 
-pw.Widget p1_right_side(String nrRej) {
+pw.Widget p1_right_side({required String nrRej, required Patient patient, required String dateOfIssue}) {
   return pw.Padding(
     padding: const pw.EdgeInsets.only(left: 10.0),
     child: pw.Column(
@@ -28,7 +29,7 @@ pw.Widget p1_right_side(String nrRej) {
           ),
           padding: const pw.EdgeInsets.all(10),
           child: pw.Text(
-            'Nr rej. ${nrRej}',
+            'Nr rej. $nrRej',
             style: pw.TextStyle(fontSize: 11),
           ),
         ),
@@ -50,23 +51,23 @@ pw.Widget p1_right_side(String nrRej) {
         pw.Column(
           children: [
             cailHeader('osoba badana', width: width),
-            cailRow('Imię i nazwisko', width: width),
+            cailRow('Imię i nazwisko', width: width, text: patient.getFullName()),
             pw.Row(
               children: [
-                cailRow('Numer PESEL (w przypadku osoby nieposiadającej Numeru PESEL podać nazwę i numer dokumentu stwierzającego tożsamosć)', width: 300, height: 40),
+                cailRow('Numer PESEL (w przypadku osoby nieposiadającej Numeru PESEL podać nazwę i numer dokumentu stwierzającego tożsamosć)', width: 300, height: 40, text: patient.getDocument()),
                 cailRow('Wiek', width: 50, height: 40),
                 cailRow('Płeć*', text: 'K/M', width: 50, height: 40),
               ],
             ),
             pw.Row(
               children: [
-                cailRow('Adres', width: width / 2),
+                cailRow('Adres', width: width / 2, text: patient.residentialAddress.toString()),
                 cailRow('Wykształcenie', width: width / 2),
               ],
             ),
             pw.Row(
               children: [
-                cailRow('Data badania', width: width / 2),
+                cailRow('Data badania', width: width / 2, text: dateOfIssue),
                 cailRow('Data poprzedniego badania', width: width / 2),
               ],
             ),

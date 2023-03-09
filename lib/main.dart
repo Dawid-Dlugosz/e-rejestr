@@ -41,9 +41,13 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: themeData,
-        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
         supportedLocales: const [
-          Locale('pl'),
+          Locale('en', 'US'),
+          Locale('pl', 'PL'),
         ],
         // Get timestamp session session duration is one day
         home: FutureBuilder<int?>(

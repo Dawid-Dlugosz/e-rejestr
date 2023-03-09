@@ -16,12 +16,26 @@ class MedicalRegisterViewModel {
     var currentDate = DateTime.now();
     var formatter = DateFormat('M/yy');
 
-    if (timestampDate.day != currentDate.day) {
+    if (timestampDate.month != currentDate.month) {
       await firestore.collection(Collection.judgments.name).document(Documents.medical.name).update({
         'timestamp': currentDate.millisecondsSinceEpoch,
         'number': '1/${formatter.format(DateTime.now())}',
       });
     }
+  }
+
+  // TODO ZROBIĆ TO PO STRONIE FIREBASE
+  Future<String> getPsychoRegisterNumber() async {
+    var firestore = Firestore.instance;
+    var document = await firestore.collection(Collection.judgments.name).document(Documents.psycho.name).get();
+    return document.map['number'];
+  }
+
+  void updatePsychoRegisterNumber(String number) async {
+    var firestore = Firestore.instance;
+    await firestore.collection(Collection.judgments.name).document(Documents.psycho.name).update(
+      {'number': number},
+    );
   }
 
   Future<String> getRegisterNumbre() async {

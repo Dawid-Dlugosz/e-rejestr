@@ -18,7 +18,7 @@ class MenuContainer extends StatelessWidget {
         return const PsychologicalRegister();
       case newJudgment:
         return ChangeNotifierProvider(
-          create: (_) => NewJudgmentCreatorViewModel(),
+          create: (_) => NewJudgmentCreatorViewModel(context),
           child: const NewJudgmentCreator(),
         );
       default:

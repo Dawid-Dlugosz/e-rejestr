@@ -1,17 +1,17 @@
-abstract class Judgment {
-  final String judgmentName;
-  final String number;
-  final String article;
-  final String patientName;
-  final String document;
-  final String residence;
-  final String state;
-  final String termOfValidyty;
-  final String dateOfIssue;
-  final bool carA;
-  final bool carB;
-  final bool carC;
-  final String pdf;
+class Judgment {
+  String judgmentName;
+  String number;
+  String article;
+  String patientName;
+  String document;
+  String residence;
+  String state;
+  String termOfValidyty;
+  String dateOfIssue;
+  bool carA;
+  bool carB;
+  bool carC;
+  String pdf;
 
   Judgment({
     required this.judgmentName,
@@ -29,6 +29,24 @@ abstract class Judgment {
     required this.pdf,
   });
 
+  factory Judgment.fromJson(Map<String, dynamic> json) {
+    return Judgment(
+      judgmentName: json['judgmentName'],
+      number: json['number'],
+      article: json['article'],
+      patientName: json['patientName'],
+      document: json['document'],
+      residence: json['residence'],
+      state: json['state'],
+      carA: json['carA'],
+      carB: json['carB'],
+      carC: json['carC'],
+      termOfValidyty: json['termOfValidyty'],
+      dateOfIssue: json['dateOfIssue'],
+      pdf: json['pdf'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
 
@@ -45,7 +63,6 @@ abstract class Judgment {
     json['termOfValidyty'] = termOfValidyty;
     json['dateOfIssue'] = dateOfIssue;
     json['pdf'] = pdf;
-
     return json;
   }
 }

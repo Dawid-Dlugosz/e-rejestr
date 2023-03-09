@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_1.dart';
 import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_2.dart';
 import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie.dart';
+import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie_niepelnoletni_3_pieczatki.dart';
+import 'package:e_rejestr/pdf/medical/medycyna_pracy.dart';
+import 'package:e_rejestr/pdf/medical/medycyna_pracy_instruktor.dart';
+import 'package:e_rejestr/pdf/medical/page2.dart';
+import 'package:e_rejestr/pdf/medical/utils/page2_kodeks.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_39.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_alkohol.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_egzamin_instruktor.dart';
@@ -12,6 +17,7 @@ import 'package:e_rejestr/pdf/psychologist/psychologist_przywrocenie.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_punkty_karne.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_uprzywilej.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_wypadek.dart';
+import 'package:e_rejestr/pdf/psychologist/utils/instruction.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
@@ -68,10 +74,10 @@ class HomeNav extends StatelessWidget {
               pdf.addPage(
                 pw.Page(
                   pageFormat: PdfPageFormat.a4,
-                  margin: const pw.EdgeInsets.all(10),
+                  // margin: const pw.EdgeInsets.all(10),
                   // orientation: pw.PageOrientation.landscape,
                   build: (pw.Context context) {
-                    return psychologist_egzaminator_instruktor(date: "23-23-2323");
+                    return medycyna_pracy(date: "23-23-2323");
                     // return kierowca_starajacy_sie(date: "23-23-2323");
                     // return karta_kz_page_1();
                     // return psychologist_wypadek(date: "23-23-2323");
@@ -84,18 +90,16 @@ class HomeNav extends StatelessWidget {
                   },
                 ),
               );
-              // pdf.addPage(
-              //   pw.Page(
-              //     pageFormat: PdfPageFormat.a4,
-              //     margin: const pw.EdgeInsets.all(10),
-              //     orientation: pw.PageOrientation.landscape,
-              //     build: (pw.Context context) {
-              //       return karta_kz_page_2();
-              //     },
-              //   ),
-              // );
+              pdf.addPage(
+                pw.Page(
+                  pageFormat: PdfPageFormat.a4,
+                  build: (pw.Context context) {
+                    return page2Kodeks();
+                  },
+                ),
+              );
 
-              final file = File("egzaminator.pdf");
+              final file = File("medycyna_pracy_instruktor.pdf");
               await file.writeAsBytes(await pdf.save());
             },
           ),

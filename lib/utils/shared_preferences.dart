@@ -1,4 +1,5 @@
 import 'package:e_rejestr/enums/preferences.dart';
+import 'package:e_rejestr/models/judgment_number.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> saveSession(int timeStamp) async {
@@ -14,4 +15,14 @@ Future<int?> getSession() async {
 Future<bool> resetSession() async {
   final prefs = await SharedPreferences.getInstance();
   return await prefs.remove(Preferences.session.name);
+}
+
+Future<String> getFilePath() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString(Preferences.fiePath.name) ?? 'C:\\Users\\Public\\Documents';
+}
+
+Future<void> saveFilePath(String value) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(Preferences.fiePath.name, value);
 }

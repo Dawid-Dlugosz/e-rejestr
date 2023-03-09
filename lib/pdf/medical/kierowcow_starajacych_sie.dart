@@ -1,7 +1,11 @@
+import 'package:e_rejestr/pdf/medical/utils/cars.dart';
+import 'package:e_rejestr/pdf/medical/utils/evidence.dart';
+import 'package:e_rejestr/pdf/medical/utils/limitations.dart';
 import 'package:e_rejestr/pdf/medical/utils/medical_header.dart';
 import 'package:e_rejestr/pdf/medical/utils/medical_title.dart';
 import 'package:e_rejestr/pdf/medical/utils/patient_name.dart';
 import 'package:e_rejestr/pdf/medical/utils/patient_pesel.dart';
+import 'package:e_rejestr/pdf/medical/utils/therm_of_validate.dart';
 
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
@@ -55,7 +59,7 @@ pw.Widget kierowca_starajacy_sie({required String date}) {
       pw.Align(
         alignment: pw.Alignment.center,
         child: pw.Padding(
-          padding: const pw.EdgeInsets.only(top: 5, bottom: 10),
+          padding: const pw.EdgeInsets.only(top: 20, bottom: 10),
           child: pw.Text(
             'Stwierdzam',
             style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
@@ -67,7 +71,7 @@ pw.Widget kierowca_starajacy_sie({required String date}) {
         child: pw.RichText(
           text: const pw.TextSpan(
             text: '1) ',
-            style: pw.TextStyle(fontSize: 10),
+            style: pw.TextStyle(fontSize: 11),
             children: [
               pw.TextSpan(
                 text: ' Brak ',
@@ -105,6 +109,10 @@ pw.Widget kierowca_starajacy_sie({required String date}) {
           ),
         ),
       ),
+      cars(),
+      limitions(false, false),
+      thermOfValidate("22-04-2222"),
+      evidence()
     ],
   );
 }
