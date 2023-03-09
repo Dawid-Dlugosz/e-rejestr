@@ -12,9 +12,12 @@ const medicalMedycynaPracyInstruktor = 'Medycyna pracy instruktor';
 const medicalStarajacySie = 'Kierowca starający się';
 const medicalStarajacySiePrzedluzenie = 'Kierowca starający się przedłużenie';
 const medicalStarajacySieNieletni = 'Kierowca starający się przedłużenie nieletni 3 pieczątki';
+const medicalUprzywilejowany = 'Kirowcy poj. uprzywilejowanych lub przewożące pieniądze';
 
 const art82 = 'art. 82';
 const art39 = 'art. 39k';
+const artMedicine = 'art. 43 art. 229';
+const art75 = 'art. 75';
 
 String getJudgmentArticle(String name) {
   switch (name) {
@@ -36,6 +39,18 @@ String getJudgmentArticle(String name) {
       return art82;
     case judgmentInstruktor:
       return art82;
+    case medicalMedycynaPracy:
+      return artMedicine;
+    case medicalMedycynaPracyInstruktor:
+      return artMedicine;
+    case medicalStarajacySiePrzedluzenie:
+      return art75;
+    case medicalStarajacySieNieletni:
+      return art75;
+    case medicalStarajacySie:
+      return art75;
+    case medicalUprzywilejowany:
+      return art75;
     default:
       return '';
   }

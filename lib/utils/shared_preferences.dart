@@ -16,3 +16,13 @@ Future<bool> resetSession() async {
   final prefs = await SharedPreferences.getInstance();
   return await prefs.remove(Preferences.session.name);
 }
+
+Future<String> getFilePath() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString(Preferences.fiePath.name) ?? 'C:\\Users\\Public\\Documents';
+}
+
+Future<void> saveFilePath(String value) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString(Preferences.fiePath.name, value);
+}

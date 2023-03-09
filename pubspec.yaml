@@ -43,6 +43,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter  
   uuid: ^3.0.7
+  file_picker: ^5.2.5
 dev_dependencies:
 
   # The "flutter_lints" package below contains a set of recommended lints to

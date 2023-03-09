@@ -1,12 +1,13 @@
 import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
+import 'package:e_rejestr/models/firm.dart';
 import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/judgment_number.dart';
 import 'package:e_rejestr/models/karta_kz.dart';
+import 'package:e_rejestr/models/medical_judgment.dart';
+import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/patient.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/line.dart';
 import 'package:e_rejestr/utils/judgments.dart';
-import 'package:e_rejestr/utils/shared_preferences.dart';
 import 'package:e_rejestr/view_models/medical_register_view_model.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,8 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
   List<Judgment> judgments = [];
   List<MedicaJudgmentInterface> judgmentMedicals = [];
+
+  Firm? firm;
 
   late final MedicalRegisterViewModel medicalRegisterViewModel;
   Future<void> _init() async {
@@ -89,6 +92,20 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   Future<void> createMedicalKartKz(Patient patient, String number) async {
     //TODO ZROBIĆ ZAPIS KARTY KZ DLA ORZECZENIA MEDYCZNEGO
   }
+
+  void _addFirmToMedicineJudgment() {
+    if (firm == null) {
+      return;
+    }
+
+    judgmentMedicals.forEach((element) {
+      if (element.judgmentName == medicalMedycynaPracyInstruktor || element.judgmentName == medicalMedycynaPracy) {
+        (element as Medicine).firm = firm!;
+      }
+    });
+  }
+
+  void _createFiles() {}
 
   Future<void> saveJudgments(Patient patient) async {
     var registerNumber = await medicalRegisterViewModel.getPsychoRegisterNumber();

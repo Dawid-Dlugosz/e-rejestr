@@ -21,7 +21,7 @@ class MedicalJudgment extends MedicaJudgmentInterface {
     required super.number,
   });
 
-  bool state;
+  String state;
   bool carA;
   bool carB;
   bool carC;

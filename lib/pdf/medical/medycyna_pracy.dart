@@ -6,6 +6,7 @@ import 'package:e_rejestr/pdf/medical/utils/patient_pesel_kodeks.dart';
 import 'package:e_rejestr/pdf/medical/utils/patient_residence_kodeks.dart';
 import 'package:e_rejestr/pdf/medical/utils/work.dart';
 import 'package:e_rejestr/pdf/medical/utils/work_position.dart';
+import 'package:e_rejestr/utils/judgments.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -41,7 +42,7 @@ pw.Widget medycyna_pracy({required String date}) {
         pw.SizedBox(height: 10),
         workPosition('ofijhoijhioawj', a: true, b: true, c: false, date: '22=202--2'),
         pw.SizedBox(height: 20),
-        date_of_validyty_kodeks("dasasds"),
+        date_of_validyty_kodeks("dasasds", medicalMedycynaPracyInstruktor),
         pw.SizedBox(height: 280),
         pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,

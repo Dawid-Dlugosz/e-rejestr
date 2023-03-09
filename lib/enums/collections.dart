@@ -3,4 +3,5 @@ enum Collection {
   patients,
   kartaKzPsycho,
   judgments,
+  firms,
 }

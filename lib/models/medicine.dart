@@ -16,6 +16,7 @@ class Medicine extends MedicaJudgmentInterface {
     required this.typeMedical,
     required super.patient,
     required super.number,
+    required this.checkboxCDate,
   });
 
   Firm firm;
@@ -24,6 +25,7 @@ class Medicine extends MedicaJudgmentInterface {
   bool checkboxA;
   bool checkboxB;
   bool checkboxC;
+  String checkboxCDate;
 
   factory Medicine.fromJson(Map<String, dynamic> json) {
     return Medicine(
@@ -39,6 +41,7 @@ class Medicine extends MedicaJudgmentInterface {
       typeMedical: json['typeMedical'],
       patient: json['patient'],
       number: json['number'],
+      checkboxCDate: json['checkboxCDate'],
     );
   }
 
@@ -57,6 +60,7 @@ class Medicine extends MedicaJudgmentInterface {
     json['typeMedical'] = typeMedical;
     json['patient'] = patient.toJson();
     json['number'] = number;
+    json['checkboxCDate'] = checkboxCDate;
 
     return json;
   }

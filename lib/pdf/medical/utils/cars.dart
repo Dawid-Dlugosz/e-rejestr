@@ -33,7 +33,7 @@ pw.Widget cars({bool a = false, bool b = false, bool c = false, bool d = false})
         ),
         pw.RichText(
           text: pw.TextSpan(
-            text: 'b) [${c ? 'x' : ''}] C1, C1+E, C, C+E;',
+            text: 'c) [${c ? 'x' : ''}] C1, C1+E, C, C+E;',
             style: pw.TextStyle(fontSize: 11, decoration: c ? null : pw.TextDecoration.lineThrough),
             children: [
               pw.TextSpan(
