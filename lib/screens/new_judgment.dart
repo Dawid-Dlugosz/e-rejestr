@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:e_rejestr/dialogs/firm_container.dart';
+import 'package:e_rejestr/dialogs/preview_dialog/preview_dialog.dart';
 import 'package:e_rejestr/models/firm.dart';
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/pdf/karta_kz/p1_right_size.dart';
@@ -50,10 +51,49 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
     });
   }
 
+  Future<void> saveJudgment({bool saveAndPrint = false}) async {
+    {
+      if (patient == null) {
+        var snackBar = const SnackBar(
+          content: Text('Wybierz pacjenta'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        await model.saveJudgments(patient!, saveAndPrint: saveAndPrint);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<NewJudgmentCreatorViewModel>(
       builder: (_, viewModel, __) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          if (viewModel.showPreviewPopup) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return PreviewDialog(
+                  path: viewModel.filePath,
+                  judgments: viewModel.judgments,
+                  medicalJudgments: viewModel.judgmentMedicals,
+                  openFile: viewModel.openFile,
+                );
+              },
+            ).then(
+              (value) {
+                setState(() {
+                  viewModel.showPreviewPopup = false;
+                });
+                if (value != null && value == true) {
+                  // TODO ZAPISZ PLIKÓW I TWORZENIE KART
+                } else {
+                  viewModel.removeFiles();
+                }
+              },
+            );
+          }
+        });
         model = viewModel;
         return Scaffold(
           body: viewModel.loaded
@@ -167,7 +207,7 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                         width: double.infinity,
                         padding: const EdgeInsets.only(top: 10),
                         child: ElevatedButton(
-                          onPressed: viewModel.judgments.isEmpty && viewModel.judgmentMedicals.isEmpty ? null : () {},
+                          onPressed: viewModel.judgments.isEmpty && viewModel.judgmentMedicals.isEmpty ? null : () async => saveJudgment(),
                           child: const Text('Podgląd'),
                         ),
                       ),
@@ -175,17 +215,8 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                         width: double.infinity,
                         padding: const EdgeInsets.only(top: 10),
                         child: ElevatedButton(
-                          onPressed: () async {
-                            if (patient == null) {
-                              var snackBar = const SnackBar(
-                                content: Text('Wybierz pacjenta'),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                            } else {
-                              await viewModel.saveJudgments(patient!);
-                            }
-                          },
-                          child: const Text('Zapisz'),
+                          onPressed: viewModel.judgments.isEmpty && viewModel.judgmentMedicals.isEmpty ? null : () async => saveJudgment(saveAndPrint: true),
+                          child: const Text('Zapisz i drukuj'),
                         ),
                       )
                     ],
