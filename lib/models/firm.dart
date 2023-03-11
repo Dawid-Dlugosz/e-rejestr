@@ -19,4 +19,9 @@ class Firm {
     json['id'] = id;
     return json;
   }
+
+  @override
+  String toString() {
+    return '$name $nip $address';
+  }
 }

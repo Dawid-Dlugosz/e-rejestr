@@ -74,7 +74,7 @@ class _SelectMedicalJudgmentState extends State<SelectMedicalJudgment> with Tick
       article: getJudgmentArticle(widget.name),
       pdf: widget.name,
       dateOfIssue: dateOfIssue,
-      dateOfValidity: _radioButton,
+      dateOfValidity: _radioDate,
       patient: emptyPatient,
       number: '',
     );

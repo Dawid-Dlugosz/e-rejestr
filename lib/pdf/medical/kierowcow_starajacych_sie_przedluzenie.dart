@@ -1,3 +1,4 @@
+import 'package:e_rejestr/models/medical_judgment.dart';
 import 'package:e_rejestr/pdf/medical/utils/cars.dart';
 import 'package:e_rejestr/pdf/medical/utils/evidence.dart';
 import 'package:e_rejestr/pdf/medical/utils/limitations.dart';
@@ -6,16 +7,13 @@ import 'package:e_rejestr/pdf/medical/utils/medical_title.dart';
 import 'package:e_rejestr/pdf/medical/utils/patient_name.dart';
 import 'package:e_rejestr/pdf/medical/utils/patient_pesel.dart';
 import 'package:e_rejestr/pdf/medical/utils/therm_of_validate.dart';
-
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget kierowca_starajacy_sie_przedluzenie({required String date}) {
+pw.Widget kierowca_starajacy_sie_przedluzenie({required MedicalJudgment judgment}) {
   return pw.Column(
     children: [
-      medicalHeader(date),
-      medical_title(number: '6/1/2023'),
+      medicalHeader(judgment.dateOfIssue),
+      medical_title(number: judgment.number),
       pw.Align(
         alignment: pw.Alignment.centerLeft,
         child: pw.RichText(
@@ -67,8 +65,8 @@ pw.Widget kierowca_starajacy_sie_przedluzenie({required String date}) {
           ),
         ),
       ),
-      patientName("Dawid Długosz"),
-      patientPesel("097070970907"),
+      patientName(judgment.patient.getFullName()),
+      patientPesel(judgment.patient.getDocument()),
       pw.Align(
         alignment: pw.Alignment.center,
         child: pw.Padding(
@@ -82,17 +80,18 @@ pw.Widget kierowca_starajacy_sie_przedluzenie({required String date}) {
       pw.Align(
         alignment: pw.Alignment.centerLeft,
         child: pw.RichText(
-          text: const pw.TextSpan(
+          text: pw.TextSpan(
             text: '1) ',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
             children: [
               pw.TextSpan(
                 text: ' Brak ',
                 style: pw.TextStyle(
                   fontSize: 10,
+                  decoration: judgment.state == 'brak' ? null : pw.TextDecoration.lineThrough,
                 ),
               ),
-              pw.TextSpan(
+              const pw.TextSpan(
                 text: ' / ',
                 style: pw.TextStyle(
                   fontSize: 10,
@@ -102,17 +101,17 @@ pw.Widget kierowca_starajacy_sie_przedluzenie({required String date}) {
                 text: 'istnienie',
                 style: pw.TextStyle(
                   fontSize: 10,
-                  decoration: pw.TextDecoration.lineThrough,
+                  decoration: judgment.state == 'brak' ? pw.TextDecoration.lineThrough : null,
                 ),
               ),
-              pw.TextSpan(
+              const pw.TextSpan(
                 text: ' 1) ',
                 baseline: 6,
                 style: pw.TextStyle(
                   fontSize: 10,
                 ),
               ),
-              pw.TextSpan(
+              const pw.TextSpan(
                 text: ' przeciwwskazań zdrowotnych do kierowania pojazdami, do których jest wymagane:',
                 style: pw.TextStyle(
                   fontSize: 10,
@@ -122,9 +121,9 @@ pw.Widget kierowca_starajacy_sie_przedluzenie({required String date}) {
           ),
         ),
       ),
-      cars(),
-      limitions(false, false),
-      thermOfValidate("22-04-2222"),
+      cars(a: judgment.carA, b: judgment.carB, c: judgment.carC, d: judgment.carD),
+      limitions(judgment.limitA, judgment.limitB),
+      thermOfValidate(judgment.dateOfValidity),
       evidence()
     ],
   );

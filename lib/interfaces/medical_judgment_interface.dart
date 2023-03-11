@@ -9,6 +9,6 @@ abstract class MedicaJudgmentInterface {
   final String dateOfIssue;
   String dateOfValidity;
   final String pdf;
-  final Patient patient;
-  final String number;
+  Patient patient;
+  String number;
 }

@@ -1,3 +1,4 @@
+import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/pdf/medical/utils/date_of_validity_kodeks.dart';
 import 'package:e_rejestr/pdf/medical/utils/medical_header.dart';
 import 'package:e_rejestr/pdf/medical/utils/medical_title.dart';
@@ -10,13 +11,16 @@ import 'package:e_rejestr/utils/judgments.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget medycyna_pracy_instruktor({required String date}) {
+pw.Widget medycyna_pracy_instruktor({required Medicine judgment}) {
   return pw.Align(
     alignment: pw.Alignment.centerLeft,
     child: pw.Column(
       children: [
-        medicalHeader(date, showCity: false),
-        medical_title(number: '6/1/2023'),
+        medicalHeader(
+          judgment.dateOfIssue,
+          showCity: false,
+        ),
+        medical_title(number: judgment.number),
         pw.Align(
           alignment: pw.Alignment.centerLeft,
           child: pw.Text(
@@ -31,14 +35,14 @@ pw.Widget medycyna_pracy_instruktor({required String date}) {
           'W wyniku badania lekarskiego i oceny narażeń występujących na stanowisku pracy, stosownie do art. 43 pkt 2 i art. 229 § 4 Kodeksu pracy oraz art.34 ustawy z dnia 5 stycznia 2011r. o kierujących pojazdami  ((t.j.Dz. U. z 2015 r. poz. 155 z późn. Zm.), orzeka się, że:',
           style: const pw.TextStyle(fontSize: 10),
         ),
-        patientNameKodeks("Dawid Długosz"),
-        patientPeselKodeks("097070970907"),
-        patientResidenceKodeks("Smocza 5"),
-        work('Genesismobo oefase fseafsae '),
+        patientNameKodeks(judgment.patient.getFullName()),
+        patientPeselKodeks(judgment.patient.getDocument()),
+        patientResidenceKodeks(judgment.patient.residentialAddress.toString()),
+        work(judgment.firm.toString()),
         pw.SizedBox(height: 10),
-        workPosition('ofijhoijhioawj', a: true, b: true, c: false, date: '22=202--2'),
+        workPosition(judgment.workPosition, a: judgment.checkboxA, b: judgment.checkboxB, c: judgment.checkboxC, date: judgment.checkboxCDate),
         pw.SizedBox(height: 20),
-        date_of_validyty_kodeks("dasasds", medicalMedycynaPracyInstruktor),
+        date_of_validyty_kodeks(judgment.dateOfValidity, judgment.judgmentName),
         pw.SizedBox(height: 280),
         pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -47,7 +51,7 @@ pw.Widget medycyna_pracy_instruktor({required String date}) {
               mainAxisAlignment: pw.MainAxisAlignment.center,
               children: [
                 pw.Text(
-                  'Łuków $date',
+                  'Łuków ${judgment.dateOfIssue}',
                   style: pw.TextStyle(fontSize: 12),
                 ),
                 pw.Text(
