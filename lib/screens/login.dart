@@ -1,10 +1,7 @@
-import 'package:e_rejestr/utils/firestore.dart';
 import 'package:e_rejestr/view_models/login_view_model.dart';
 import 'package:e_rejestr/widgets/loading_widget.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -101,6 +98,6 @@ class _LoginState extends State<Login> {
               ),
             ),
           )
-        : LoadingWidget();
+        : const LoadingWidget();
   }
 }

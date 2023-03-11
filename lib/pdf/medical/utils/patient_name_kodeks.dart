@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget patientNameKodeks(String patientName) {
   return pw.Row(
     children: [
-      pw.Text('Pan(i)', style: pw.TextStyle(fontSize: 11)),
+      pw.Text('Pan(i)', style: const pw.TextStyle(fontSize: 11)),
       pw.SizedBox(
         width: 10,
       ),
@@ -21,11 +20,11 @@ pw.Widget patientNameKodeks(String patientName) {
           ),
           pw.Text(
             '...............................................................................................................................................................................................................................',
-            style: pw.TextStyle(fontSize: 8),
+            style: const pw.TextStyle(fontSize: 8),
           ),
           pw.Text(
             '(imię i nazwisko)',
-            style: pw.TextStyle(fontSize: 8),
+            style: const pw.TextStyle(fontSize: 8),
           )
         ],
       )

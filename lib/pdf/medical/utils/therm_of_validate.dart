@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget thermOfValidate(String date) {
@@ -9,7 +7,7 @@ pw.Widget thermOfValidate(String date) {
       margin: const pw.EdgeInsets.only(top: 20),
       child: pw.Row(
         children: [
-          pw.Text('Termin następnego badania', style: pw.TextStyle(fontSize: 12)),
+          pw.Text('Termin następnego badania', style: const pw.TextStyle(fontSize: 12)),
           pw.Column(
             mainAxisSize: pw.MainAxisSize.min,
             mainAxisAlignment: pw.MainAxisAlignment.start,

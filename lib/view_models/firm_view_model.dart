@@ -2,7 +2,6 @@ import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/models/firm.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 class FirmViewModel extends ChangeNotifier {
   FirmViewModel() {

@@ -1,8 +1,6 @@
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/widgets/register_header/header_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class RegisterHeader extends StatelessWidget {
   const RegisterHeader({super.key});

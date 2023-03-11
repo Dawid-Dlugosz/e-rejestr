@@ -1,7 +1,6 @@
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/view_models/medical_register_view_model.dart';
-import 'package:e_rejestr/screens/psychological_register.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

@@ -1,4 +1,3 @@
-import 'package:firedart/auth/user_gateway.dart';
 
 class User {
   User({required this.login, required this.password});

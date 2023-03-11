@@ -1,6 +1,5 @@
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/firm.dart';
-import 'package:e_rejestr/utils/judgments.dart';
 
 class Medicine extends MedicaJudgmentInterface {
   Medicine({

@@ -28,7 +28,6 @@ import 'package:e_rejestr/pdf/psychologist/psychologist_przywrocenie.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_punkty_karne.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_uprzywilej.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_wypadek.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/psychologist_instruction.dart';
 import 'package:e_rejestr/utils/judgments.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';
 import 'package:e_rejestr/view_models/medical_register_view_model.dart';

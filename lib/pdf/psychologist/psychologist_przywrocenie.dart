@@ -1,6 +1,5 @@
 import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/patient.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/contraindications.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/date_of_issue.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/delete_instruction.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/driving_vehicles.dart';
@@ -15,7 +14,6 @@ import 'package:e_rejestr/pdf/psychologist/utils/pesel.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/psychologist_instruction.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/residence.dart';
 
-import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -66,7 +64,7 @@ pw.Widget psychologist_przywrocenie({required Patient patient, required Judgment
         alignment: pw.Alignment.centerLeft,
         child: pw.Text(
           'b)    art. 82 ust. 2 pkt 3/4',
-          style: pw.TextStyle(
+          style: const pw.TextStyle(
             fontSize: 11,
             decoration: pw.TextDecoration.lineThrough,
           ),
@@ -76,7 +74,7 @@ pw.Widget psychologist_przywrocenie({required Patient patient, required Judgment
         alignment: pw.Alignment.centerLeft,
         child: pw.Text(
           'ustawy z dnia 5 stycznia 2011 r. o kierujących pojazdami (Dz. U. z 2019r. poz. 341, 622, i 1287).',
-          style: pw.TextStyle(fontSize: 11),
+          style: const pw.TextStyle(fontSize: 11),
         ),
       ),
       patientName(patient.getFullName()),
@@ -119,7 +117,7 @@ pw.Widget psychologist_przywrocenie({required Patient patient, required Judgment
         child: pw.RichText(
           text: pw.TextSpan(
             text: 'Termin ważności orzeczenia psychologicznego***) ',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
             children: [pw.TextSpan(text: judgment.termOfValidyty, style: pw.TextStyle(fontWeight: pw.FontWeight.bold))],
           ),
         ),
@@ -130,7 +128,7 @@ pw.Widget psychologist_przywrocenie({required Patient patient, required Judgment
       pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text('Objaśnienia', style: pw.TextStyle(fontSize: 8)),
+          pw.Text('Objaśnienia', style: const pw.TextStyle(fontSize: 8)),
           infoInstruction('*'),
           deleteInstruction('**'),
           judgmentDate('***'),

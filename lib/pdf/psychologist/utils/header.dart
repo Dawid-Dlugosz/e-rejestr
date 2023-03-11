@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget header(String number, {bool orginal = true}) {
@@ -11,7 +10,7 @@ pw.Widget header(String number, {bool orginal = true}) {
       ),
       pw.Text(
         orginal ? 'orginał' : 'kopia',
-        style: pw.TextStyle(fontSize: 11),
+        style: const pw.TextStyle(fontSize: 11),
       ),
       pw.SizedBox(
         height: 15,

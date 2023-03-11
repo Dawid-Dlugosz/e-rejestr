@@ -1,8 +1,6 @@
 import 'package:e_rejestr/utils/judgments.dart';
 import 'package:e_rejestr/widgets/select_psychology/title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class CarsCategoryMedicial extends StatefulWidget {
   CarsCategoryMedicial({

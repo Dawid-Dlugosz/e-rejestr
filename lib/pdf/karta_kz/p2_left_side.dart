@@ -1,10 +1,7 @@
-import 'package:e_rejestr/pdf/karta_kz/disease.dart';
 import 'package:e_rejestr/pdf/karta_kz/disense_list.dart';
 import 'package:e_rejestr/pdf/karta_kz/medical_step.dart';
 import 'package:e_rejestr/pdf/karta_kz/p2_header.dart';
 import 'package:e_rejestr/pdf/karta_kz/tests_and_results.dart';
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget p2_left_side() {

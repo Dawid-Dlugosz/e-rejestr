@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SelectPatient extends StatefulWidget {
-  SelectPatient({super.key});
+  const SelectPatient({super.key});
 
   @override
   State<SelectPatient> createState() => _SelectPatientState();

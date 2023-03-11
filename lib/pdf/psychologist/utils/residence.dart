@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget residence(String residence) {
@@ -6,7 +5,7 @@ pw.Widget residence(String residence) {
     children: [
       pw.Text(
         'zamieszkałego(-ej)',
-        style: pw.TextStyle(fontSize: 11),
+        style: const pw.TextStyle(fontSize: 11),
       ),
       pw.SizedBox(
         width: 10,
@@ -24,11 +23,11 @@ pw.Widget residence(String residence) {
           ),
           pw.Text(
             '.......................................................................................................................................................................................................',
-            style: pw.TextStyle(fontSize: 8),
+            style: const pw.TextStyle(fontSize: 8),
           ),
           pw.Text(
             '(miejscowość, ulica, nr domu i nr lokalu)',
-            style: pw.TextStyle(fontSize: 8),
+            style: const pw.TextStyle(fontSize: 8),
           )
         ],
       )

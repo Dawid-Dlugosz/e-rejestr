@@ -1,7 +1,5 @@
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
-import 'package:e_rejestr/models/judgment_number.dart';
 import 'package:e_rejestr/models/patient.dart';
-import 'package:flutter/services.dart';
 
 class MedicalJudgment extends MedicaJudgmentInterface {
   MedicalJudgment({

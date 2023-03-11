@@ -1,7 +1,5 @@
 import 'package:e_rejestr/models/firm.dart';
 import 'package:e_rejestr/widgets/firm_list/firm_list_item.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/widgets.dart';
 
 class FirmList extends StatelessWidget {

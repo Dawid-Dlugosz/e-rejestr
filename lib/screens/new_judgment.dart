@@ -1,17 +1,13 @@
-import 'dart:math';
 
 import 'package:e_rejestr/dialogs/firm_container.dart';
 import 'package:e_rejestr/dialogs/preview_dialog/preview_dialog.dart';
 import 'package:e_rejestr/models/firm.dart';
 import 'package:e_rejestr/models/patient.dart';
-import 'package:e_rejestr/pdf/karta_kz/p1_right_size.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/judgments.dart';
-import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/firm_view_model.dart';
 import 'package:e_rejestr/view_models/new_judgment_creator_view_model.dart';
 import 'package:e_rejestr/widgets/firm_info.dart';
-import 'package:e_rejestr/widgets/my_app_bar.dart';
 import 'package:e_rejestr/widgets/patient_info.dart';
 import 'package:e_rejestr/widgets/psychologist_menu.dart';
 import 'package:e_rejestr/widgets/select_medical/select_medical_judgment.dart';

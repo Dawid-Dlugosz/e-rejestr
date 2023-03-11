@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:e_rejestr/utils/shared_preferences.dart';
 import 'package:flutter/material.dart';

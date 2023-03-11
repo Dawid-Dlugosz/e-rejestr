@@ -1,7 +1,5 @@
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 
 class SelectDateCheckboxC extends StatefulWidget {
@@ -81,7 +79,7 @@ class _SelectDateCheckboxCState extends State<SelectDateCheckboxC> with Restorat
           width: 20,
         ),
         Text(
-          'Data: ${formatDate}',
+          'Data: $formatDate',
           style: const TextStyle(
             color: white,
             fontSize: 20,

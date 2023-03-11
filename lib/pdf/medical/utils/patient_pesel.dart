@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget patientPesel(String pesel) {
@@ -9,13 +8,13 @@ pw.Widget patientPesel(String pesel) {
     children: [
       pw.Text(
         'numer PESEL, a w przypadku osoby, której nie nadano numeru PESEL – nazwa i numer',
-        style: pw.TextStyle(fontSize: 11),
+        style: const pw.TextStyle(fontSize: 11),
       ),
       pw.Row(
         children: [
           pw.Text(
             'dokumentu stwierdzającego tożsamość',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
           ),
           pw.SizedBox(
             width: 10,
@@ -33,7 +32,7 @@ pw.Widget patientPesel(String pesel) {
               ),
               pw.Text(
                 '..................................................................................................................................................................................',
-                style: pw.TextStyle(fontSize: 8),
+                style: const pw.TextStyle(fontSize: 8),
               ),
             ],
           )

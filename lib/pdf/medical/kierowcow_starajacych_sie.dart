@@ -1,5 +1,4 @@
 import 'package:e_rejestr/models/medical_judgment.dart';
-import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/pdf/medical/utils/cars.dart';
 import 'package:e_rejestr/pdf/medical/utils/evidence.dart';
 import 'package:e_rejestr/pdf/medical/utils/limitations.dart';
@@ -9,8 +8,6 @@ import 'package:e_rejestr/pdf/medical/utils/patient_name.dart';
 import 'package:e_rejestr/pdf/medical/utils/patient_pesel.dart';
 import 'package:e_rejestr/pdf/medical/utils/therm_of_validate.dart';
 
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget kierowca_starajacy_sie({required MedicalJudgment judgment}) {

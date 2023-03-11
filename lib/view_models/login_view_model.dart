@@ -42,7 +42,7 @@ class LoginViewModel extends ChangeNotifier {
       return;
     }
 
-    reference.forEach((element) {
+    for (var element in reference) {
       var user = User.fromJson(element.map);
       if (user.password == passwordHash.toString()) {
         int timestamp = DateTime.now().add(const Duration(days: 1)).millisecondsSinceEpoch;
@@ -63,9 +63,9 @@ class LoginViewModel extends ChangeNotifier {
           ),
         );
 
-        return;
+        continue;
       }
-    });
+    }
 
     if (!context.mounted) return;
     if (showWrongPassword) {

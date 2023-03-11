@@ -1,24 +1,16 @@
-import 'package:e_rejestr/dialogs/firm_container.dart';
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/firm.dart';
-import 'package:e_rejestr/models/judgment.dart';
-import 'package:e_rejestr/models/medical_judgment.dart';
 import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/models/residental_address.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/judgments.dart';
-import 'package:e_rejestr/utils/pages.dart';
-import 'package:e_rejestr/view_models/firm_view_model.dart';
-import 'package:e_rejestr/widgets/select_medical/cars_category_medical.dart';
-import 'package:e_rejestr/widgets/select_medical/limitation.dart';
 import 'package:e_rejestr/widgets/select_medical/select_date_checkbox_c.dart';
 import 'package:e_rejestr/widgets/select_medicine/type_medical.dart';
 import 'package:e_rejestr/widgets/select_psychology/expiration_date.dart';
 import 'package:e_rejestr/widgets/select_psychology/title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class SelectMedicineJudgment extends StatefulWidget {
   SelectMedicineJudgment({required this.name, required this.addRemoveJudgment, required this.updateJudgment, required this.select, required this.firm, required this.setFirm, super.key});
@@ -169,7 +161,7 @@ class _SelectMedicineJudgmentState extends State<SelectMedicineJudgment> with Ti
                         )
                       : Container(),
                   TextField(
-                    decoration: InputDecoration(label: const Text('Stanowisko pracy')),
+                    decoration: const InputDecoration(label: Text('Stanowisko pracy')),
                     onChanged: (value) {
                       setState(() {
                         _workPosition = value;

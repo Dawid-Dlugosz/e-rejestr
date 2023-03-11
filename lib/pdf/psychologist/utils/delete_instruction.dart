@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget deleteInstruction(String stars) {
@@ -7,12 +6,12 @@ pw.Widget deleteInstruction(String stars) {
     children: [
       pw.Container(
         width: 20,
-        child: pw.Text('$stars)', style: pw.TextStyle(fontSize: 8)),
+        child: pw.Text('$stars)', style: const pw.TextStyle(fontSize: 8)),
       ),
       pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text('Niepotrzebne skreślić.', style: pw.TextStyle(fontSize: 8)),
+          pw.Text('Niepotrzebne skreślić.', style: const pw.TextStyle(fontSize: 8)),
         ],
       ),
     ],
