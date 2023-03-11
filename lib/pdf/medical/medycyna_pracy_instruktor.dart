@@ -7,8 +7,6 @@ import 'package:e_rejestr/pdf/medical/utils/patient_pesel_kodeks.dart';
 import 'package:e_rejestr/pdf/medical/utils/patient_residence_kodeks.dart';
 import 'package:e_rejestr/pdf/medical/utils/work.dart';
 import 'package:e_rejestr/pdf/medical/utils/work_position.dart';
-import 'package:e_rejestr/utils/judgments.dart';
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget medycyna_pracy_instruktor({required Medicine judgment}) {
@@ -52,11 +50,11 @@ pw.Widget medycyna_pracy_instruktor({required Medicine judgment}) {
               children: [
                 pw.Text(
                   'Łuków ${judgment.dateOfIssue}',
-                  style: pw.TextStyle(fontSize: 12),
+                  style: const pw.TextStyle(fontSize: 12),
                 ),
                 pw.Text(
                   '(miejscowość, data)',
-                  style: pw.TextStyle(fontSize: 8),
+                  style: const pw.TextStyle(fontSize: 8),
                 ),
               ],
             ),
@@ -64,11 +62,11 @@ pw.Widget medycyna_pracy_instruktor({required Medicine judgment}) {
               children: [
                 pw.Text(
                   '............................................................................',
-                  style: pw.TextStyle(fontSize: 12),
+                  style: const pw.TextStyle(fontSize: 12),
                 ),
                 pw.Text(
                   '  (pieczątka i podpis lekarza przeprowadzającego badanie lekarskie)',
-                  style: pw.TextStyle(fontSize: 8),
+                  style: const pw.TextStyle(fontSize: 8),
                 ),
               ],
             ),

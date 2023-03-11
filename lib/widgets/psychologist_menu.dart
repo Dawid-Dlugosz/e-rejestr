@@ -22,7 +22,7 @@ class PsychologistMenu extends StatelessWidget {
               showDialog<Patient?>(
                 context: context,
                 builder: (BuildContext context) {
-                  return SelectPatient();
+                  return const SelectPatient();
                 },
               ).then((value) {
                 if (value != null) {

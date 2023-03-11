@@ -3,8 +3,6 @@ import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class PreviewItem extends StatelessWidget {
   const PreviewItem({required this.openFile, required this.path, this.judgment, this.mecicalJudgment, super.key});
@@ -30,7 +28,7 @@ class PreviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var filePath = path + '\\' + getName() + '-' + getNumber() + '.pdf';
+    var filePath = '$path\\${getName()}-${getNumber()}.pdf';
     filePath = filePath.replaceAll('/', '\\');
 
     return InkWell(

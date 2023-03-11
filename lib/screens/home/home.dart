@@ -1,5 +1,4 @@
 import 'package:e_rejestr/screens/home/home_container.dart';
-import 'package:e_rejestr/utils/shared_preferences.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:e_rejestr/widgets/my_app_bar.dart';
 import 'package:flutter/material.dart';

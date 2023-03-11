@@ -8,8 +8,6 @@ import 'package:e_rejestr/pdf/medical/utils/patient_name.dart';
 import 'package:e_rejestr/pdf/medical/utils/patient_pesel.dart';
 import 'package:e_rejestr/pdf/medical/utils/therm_of_validate.dart';
 
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget kierowca_starajacy_sie_niepelnoletni_3_pieczatki({required MedicalJudgment judgment}) {

@@ -1,4 +1,3 @@
-import 'package:e_rejestr/pdf/psychologist/psychologist_39.dart';
 import 'package:e_rejestr/screens/home/home.dart';
 import 'package:e_rejestr/screens/login.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';
@@ -6,7 +5,6 @@ import 'package:e_rejestr/utils/theme_data.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:e_rejestr/view_models/login_view_model.dart';
 import 'package:e_rejestr/view_models/medical_register_view_model.dart';
-import 'package:e_rejestr/screens/psychological_register.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

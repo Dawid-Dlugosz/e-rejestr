@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget patientResidenceKodeks(String residence) {
@@ -11,7 +10,7 @@ pw.Widget patientResidenceKodeks(String residence) {
         children: [
           pw.Text(
             'zamieszkały(-ła) w',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
           ),
           pw.Column(
             mainAxisSize: pw.MainAxisSize.min,
@@ -26,11 +25,11 @@ pw.Widget patientResidenceKodeks(String residence) {
               ),
               pw.Text(
                 '..................................................................................................................................................................................',
-                style: pw.TextStyle(fontSize: 8),
+                style: const pw.TextStyle(fontSize: 8),
               ),
               pw.Text(
                 '(miejscowość, ulica, nr domu, nr lokalu)',
-                style: pw.TextStyle(fontSize: 8),
+                style: const pw.TextStyle(fontSize: 8),
               )
             ],
           )

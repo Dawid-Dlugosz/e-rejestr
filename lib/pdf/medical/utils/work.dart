@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget work(String work) {
@@ -21,7 +20,7 @@ pw.Widget work(String work) {
         pw.SizedBox(height: 10),
         pw.Text(
           '(nazwa i adres pracodawcy)',
-          style: pw.TextStyle(fontSize: 8),
+          style: const pw.TextStyle(fontSize: 8),
         ),
       ],
     ),

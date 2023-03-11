@@ -5,7 +5,6 @@ import 'package:e_rejestr/pdf/psychologist/utils/date_of_issue.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/info_instruction.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/header.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/instruction.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/judgment_date.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/line.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/medical_lab.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/patient_name.dart';
@@ -13,7 +12,6 @@ import 'package:e_rejestr/pdf/psychologist/utils/pesel.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/psychologist_instruction.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/delete_instruction.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/residence.dart';
-import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -24,7 +22,7 @@ pw.Widget psychologist_39({required Patient patient, required Judgment judgment}
       header(judgment.number),
       pw.Text(
         'W wyniku badania psychologicznego przeprowadzonego na podstawie art. 39k ust. 1/ art. 39m **) ustawy z dnia 6 września 2001 r. o transporcie drogowym (Dz. U. z 2021 r. poz. 919,1005,1997 z późn. zm.)',
-        style: pw.TextStyle(fontSize: 11),
+        style: const pw.TextStyle(fontSize: 11),
       ),
       patientName(patient.getFullName()),
       pesel(patient.getDocument()),
@@ -52,7 +50,7 @@ pw.Widget psychologist_39({required Patient patient, required Judgment judgment}
       pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text('Objaśnienia', style: pw.TextStyle(fontSize: 8)),
+          pw.Text('Objaśnienia', style: const pw.TextStyle(fontSize: 8)),
           infoInstruction('*'),
           deleteInstruction('**'),
           psychologistInstruction('***'),

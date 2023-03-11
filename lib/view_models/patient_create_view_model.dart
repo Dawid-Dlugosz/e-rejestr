@@ -1,5 +1,4 @@
 import 'package:e_rejestr/enums/collections.dart';
-import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/models/residental_address.dart';
 import 'package:firedart/firedart.dart';

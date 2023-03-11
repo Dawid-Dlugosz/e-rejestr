@@ -1,10 +1,8 @@
 import 'package:e_rejestr/models/patient.dart';
-import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/widgets/patient_list/patient_list_item.dart';
 import 'package:firedart/firestore/models.dart';
 import 'package:flutter/material.dart';
 
-import '../../dialogs/select_patient/patient_header_item.dart';
 
 class PatientList extends StatelessWidget {
   const PatientList(this.list, {required this.refresh, super.key});

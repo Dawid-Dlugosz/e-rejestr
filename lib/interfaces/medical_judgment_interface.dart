@@ -1,4 +1,3 @@
-import 'package:e_rejestr/models/judgment_number.dart';
 import 'package:e_rejestr/models/patient.dart';
 
 abstract class MedicaJudgmentInterface {

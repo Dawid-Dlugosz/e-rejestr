@@ -1,22 +1,15 @@
-import 'package:e_rejestr/dialogs/firm_container.dart';
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
-import 'package:e_rejestr/models/firm.dart';
-import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/medical_judgment.dart';
-import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/models/residental_address.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/judgments.dart';
-import 'package:e_rejestr/utils/pages.dart';
-import 'package:e_rejestr/view_models/firm_view_model.dart';
 import 'package:e_rejestr/widgets/select_medical/cars_category_medical.dart';
 import 'package:e_rejestr/widgets/select_medical/limitation.dart';
 import 'package:e_rejestr/widgets/select_psychology/expiration_date.dart';
 import 'package:e_rejestr/widgets/select_psychology/title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class SelectMedicalJudgment extends StatefulWidget {
   SelectMedicalJudgment({required this.name, required this.addRemoveJudgment, required this.updateJudgment, required this.select, super.key});

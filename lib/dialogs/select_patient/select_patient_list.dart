@@ -1,12 +1,10 @@
 import 'package:e_rejestr/dialogs/select_patient/patient_header_item.dart';
 import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/utils/colors.dart';
-import 'package:e_rejestr/view_models/patient_create_view_model.dart';
 import 'package:e_rejestr/widgets/empty_widget.dart';
 import 'package:e_rejestr/widgets/patient_list/patient_list.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SelectPatientList extends StatefulWidget {
   const SelectPatientList(this.changePage, {super.key});

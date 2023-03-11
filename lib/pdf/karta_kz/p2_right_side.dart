@@ -1,6 +1,4 @@
 import 'package:e_rejestr/pdf/karta_kz/p2_header.dart';
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget p2_right_side() {
@@ -270,7 +268,7 @@ pw.Widget p2_right_side() {
                               alignment: pw.Alignment.center,
                               child: pw.Text(
                                 'Tempo\nnarzucone...',
-                                style: pw.TextStyle(fontSize: 8),
+                                style: const pw.TextStyle(fontSize: 8),
                               ),
                             ),
                           ),
@@ -372,7 +370,7 @@ pw.Widget p2_right_side() {
                               alignment: pw.Alignment.center,
                               child: pw.Text(
                                 'Czas reakcji\nprosty',
-                                style: pw.TextStyle(fontSize: 8),
+                                style: const pw.TextStyle(fontSize: 8),
                               ),
                             ),
                           ),
@@ -396,7 +394,7 @@ pw.Widget p2_right_side() {
                               alignment: pw.Alignment.center,
                               child: pw.Text(
                                 'Czas reakcji\nzłożony',
-                                style: pw.TextStyle(fontSize: 8),
+                                style: const pw.TextStyle(fontSize: 8),
                               ),
                             ),
                           ),

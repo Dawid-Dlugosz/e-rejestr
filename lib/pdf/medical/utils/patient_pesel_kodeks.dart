@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget patientPeselKodeks(String pesel) {
@@ -11,7 +10,7 @@ pw.Widget patientPeselKodeks(String pesel) {
         children: [
           pw.Text(
             'nr PESEL **)',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
           ),
           pw.Column(
             mainAxisSize: pw.MainAxisSize.min,
@@ -26,7 +25,7 @@ pw.Widget patientPeselKodeks(String pesel) {
               ),
               pw.Text(
                 '..................................................................................................................................................................................',
-                style: pw.TextStyle(fontSize: 8),
+                style: const pw.TextStyle(fontSize: 8),
               ),
             ],
           )

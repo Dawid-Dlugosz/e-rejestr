@@ -1,7 +1,5 @@
 import 'package:e_rejestr/pdf/medical/utils/sub_list.dart';
 import 'package:e_rejestr/utils/judgments.dart';
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget instructions(String judgmentName) {

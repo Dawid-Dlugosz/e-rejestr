@@ -1,23 +1,6 @@
 import 'dart:io';
 
-import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_1.dart';
-import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_2.dart';
-import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie.dart';
-import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie_niepelnoletni_3_pieczatki.dart';
-import 'package:e_rejestr/pdf/medical/medycyna_pracy.dart';
-import 'package:e_rejestr/pdf/medical/medycyna_pracy_instruktor.dart';
-import 'package:e_rejestr/pdf/medical/page2.dart';
 import 'package:e_rejestr/pdf/medical/utils/page2_kodeks.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_39.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_alkohol.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_egzamin_instruktor.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_ogolny.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_przedluzenie.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_przywrocenie.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_punkty_karne.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_uprzywilej.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_wypadek.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/instruction.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
@@ -27,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart';
 
 class HomeNav extends StatelessWidget {
   const HomeNav({super.key});

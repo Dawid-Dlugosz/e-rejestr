@@ -1,5 +1,4 @@
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
-import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/medical_judgment.dart';
 import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/patient.dart';

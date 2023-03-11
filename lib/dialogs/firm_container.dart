@@ -5,8 +5,6 @@ import 'package:e_rejestr/view_models/firm_view_model.dart';
 import 'package:e_rejestr/widgets/empty_widget.dart';
 import 'package:e_rejestr/widgets/firm_list/firm_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 class FirmContainer extends StatefulWidget {

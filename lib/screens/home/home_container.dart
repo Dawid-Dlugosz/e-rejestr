@@ -1,8 +1,5 @@
 import 'package:e_rejestr/screens/home/home_nav.dart';
-import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
-import 'package:e_rejestr/screens/medical_register.dart';
-import 'package:e_rejestr/screens/psychological_register.dart';
 import 'package:e_rejestr/widgets/menu_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +21,7 @@ class HomeContainer extends StatelessWidget {
           Expanded(
             flex: 4,
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: MenuContainer(homeViewModel.initialRegisterPage),
             ),
           ),

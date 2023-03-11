@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget disense(String title, String description) {
@@ -21,13 +19,13 @@ pw.Widget disense(String title, String description) {
               child: pw.Text(
                 description,
                 maxLines: 2,
-                style: pw.TextStyle(fontSize: 6),
+                style: const pw.TextStyle(fontSize: 6),
               ),
             )
           ],
         ),
       ),
-      pw.Text('...................................................................................................................................................................................................................................................................................................................', style: pw.TextStyle(fontSize: 6))
+      pw.Text('...................................................................................................................................................................................................................................................................................................................', style: const pw.TextStyle(fontSize: 6))
     ],
   );
 }

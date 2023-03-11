@@ -3,8 +3,6 @@ import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class PreviewDialog extends StatelessWidget {
   const PreviewDialog({required this.path, required this.judgments, required this.medicalJudgments, required this.openFile, super.key});

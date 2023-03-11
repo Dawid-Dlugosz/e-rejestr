@@ -2,9 +2,6 @@ import 'package:e_rejestr/models/firm.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/view_models/firm_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddFirm extends StatelessWidget {

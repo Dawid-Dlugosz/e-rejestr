@@ -68,7 +68,7 @@ pw.Widget psychologist_uprzywilej({required Patient patient, required Judgment j
         child: pw.RichText(
           text: pw.TextSpan(
             text: 'Termin ważności orzeczenia psychologicznego***) ',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
             children: [pw.TextSpan(text: judgment.termOfValidyty, style: pw.TextStyle(fontWeight: pw.FontWeight.bold))],
           ),
         ),
@@ -79,7 +79,7 @@ pw.Widget psychologist_uprzywilej({required Patient patient, required Judgment j
       pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text('Objaśnienia', style: pw.TextStyle(fontSize: 8)),
+          pw.Text('Objaśnienia', style: const pw.TextStyle(fontSize: 8)),
           infoInstruction('*'),
           deleteInstruction('**'),
           judgmentDate('***'),

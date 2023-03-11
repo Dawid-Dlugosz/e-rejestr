@@ -1,16 +1,7 @@
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/pdf/karta_kz/cail_header.dart';
 import 'package:e_rejestr/pdf/karta_kz/cail_row.dart';
-import 'package:e_rejestr/pdf/karta_kz/text_field.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/date_of_issue.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/delete_instruction.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/info_instruction.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/instruction.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/line.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/medical_lab.dart';
-import 'package:e_rejestr/pdf/psychologist/utils/psychologist_instruction.dart';
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 const padding = 5.0;
@@ -30,7 +21,7 @@ pw.Widget p1_right_side({required String nrRej, required Patient patient, requir
           padding: const pw.EdgeInsets.all(10),
           child: pw.Text(
             'Nr rej. $nrRej',
-            style: pw.TextStyle(fontSize: 11),
+            style: const pw.TextStyle(fontSize: 11),
           ),
         ),
         pw.SizedBox(

@@ -25,7 +25,7 @@ class FirmInfo extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: clearFirm,
-          child: Text('Wyczyść firmę'),
+          child: const Text('Wyczyść firmę'),
         )
       ],
     );

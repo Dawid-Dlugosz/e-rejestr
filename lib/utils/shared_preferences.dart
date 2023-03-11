@@ -1,5 +1,4 @@
 import 'package:e_rejestr/enums/preferences.dart';
-import 'package:e_rejestr/models/judgment_number.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> saveSession(int timeStamp) async {

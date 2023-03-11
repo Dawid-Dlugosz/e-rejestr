@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 pw.Widget medicalLab() {
@@ -10,11 +8,11 @@ pw.Widget medicalLab() {
       children: [
         pw.Text(
           '............................................................',
-          style: pw.TextStyle(fontSize: 11),
+          style: const pw.TextStyle(fontSize: 11),
         ),
         pw.Text(
           '(określenie pracowni psychologicznej*)',
-          style: pw.TextStyle(fontSize: 8),
+          style: const pw.TextStyle(fontSize: 8),
         ),
       ],
     ),
