@@ -17,6 +17,7 @@ pw.Widget workPosition(
           'na stanowisku / stanowiskach / stanowisko / stanowiska*) ',
           style: const pw.TextStyle(fontSize: 11),
         ),
+        pw.SizedBox(height: 10),
         pw.Text(
           workPosition,
           style: pw.TextStyle(

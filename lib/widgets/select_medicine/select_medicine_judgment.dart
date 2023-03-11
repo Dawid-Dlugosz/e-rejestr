@@ -51,7 +51,7 @@ class _SelectMedicineJudgmentState extends State<SelectMedicineJudgment> with Ti
   bool _checkboxC = false;
   String _typeMedical = 'Wstępne';
   String _checkboxCDate = '';
-
+  String _workPosition = '';
   @override
   void initState() {
     super.initState();
@@ -89,6 +89,7 @@ class _SelectMedicineJudgmentState extends State<SelectMedicineJudgment> with Ti
       typeMedical: _typeMedical,
       firm: widget.firm!,
       checkboxCDate: _checkboxCDate,
+      workPosition: _workPosition,
     );
   }
 
@@ -167,6 +168,16 @@ class _SelectMedicineJudgmentState extends State<SelectMedicineJudgment> with Ti
                           updateType: updateType,
                         )
                       : Container(),
+                  TextField(
+                    decoration: InputDecoration(label: const Text('Stanowisko pracy')),
+                    onChanged: (value) {
+                      setState(() {
+                        _workPosition = value;
+                      });
+                      medicineJudgment.workPosition = _workPosition;
+                      widget.updateJudgment(medicineJudgment);
+                    },
+                  ),
                   const TitleJudgment(name: 'Przeciwskazania:'),
                   CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,

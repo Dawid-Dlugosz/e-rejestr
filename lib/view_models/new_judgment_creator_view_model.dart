@@ -12,6 +12,13 @@ import 'package:e_rejestr/models/karta_kz_medical.dart';
 import 'package:e_rejestr/models/medical_judgment.dart';
 import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/patient.dart';
+import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie.dart';
+import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie_niepelnoletni_3_pieczatki.dart';
+import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie_przedluzenie.dart';
+import 'package:e_rejestr/pdf/medical/kierowcow_uprzywilejowany.dart';
+import 'package:e_rejestr/pdf/medical/medycyna_pracy.dart';
+import 'package:e_rejestr/pdf/medical/medycyna_pracy_instruktor.dart';
+import 'package:e_rejestr/pdf/medical/page2.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_39.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_alkohol.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_egzamin_instruktor.dart';
@@ -127,20 +134,58 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
   Future<void> _createFiles() async {
     var path = await getFilePath();
-    var montFolder = '${DateTime.now().day}-${DateTime.now().year}';
+    var montFolder = '${DateTime.now().month}-${DateTime.now().year}';
     filePath = '$path\\$montFolder';
 
     notifyListeners();
     if (!await Directory(filePath).exists()) {
       await Directory(filePath).create();
-    } else {}
-    if (judgments.isEmpty) {}
-    for (var element in judgments) {
-      _createPsychoJudgmentPdf(element, filePath);
     }
-    if (judgmentMedicals.isEmpty) {
-      // TODO ZROBIĆTO SAMO CO DLA _createPsychoJudgmentPdf I BĘDZIE GIT
+
+    if (judgments.isNotEmpty) {
+      for (var element in judgments) {
+        _createPsychoJudgmentPdf(element, filePath);
+      }
     }
+
+    if (judgmentMedicals.isNotEmpty) {
+      for (var element in judgmentMedicals) {
+        _crateMedicalJudgmentPdf(element, filePath);
+      }
+    }
+
+    // TODO ZROBIĆTO SAMO CO DLA _createPsychoJudgmentPdf I BĘDZIE GIT
+  }
+
+  Future<void> _crateMedicalJudgmentPdf(MedicaJudgmentInterface judgment, String path) async {
+    var font = await rootBundle.load("fonts/Lato-Regular.ttf");
+    var myTheme = pw.ThemeData.withFont(
+      base: pw.Font.ttf(await rootBundle.load("fonts/Lato-Regular.ttf")),
+      bold: pw.Font.ttf(await rootBundle.load("fonts/Lato-Bold.ttf")),
+    );
+
+    var pdf = pw.Document(theme: myTheme);
+    pw.Font.ttf(font);
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return _getMedicialJudgment(judgment);
+        },
+      ),
+    );
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return page2(judgment.judgmentName);
+        },
+      ),
+    );
+
+    final file = File('$path\\${removeDiacritics(judgment.judgmentName.replaceAll(' ', '-'))}-${judgment.number.replaceAll('/', '-')}.pdf');
+
+    await file.writeAsBytes(await pdf.save());
   }
 
   Future<void> _createPsychoJudgmentPdf(Judgment judgment, String path) async {
@@ -156,17 +201,36 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
-          return _getPsychoJudgment(judgment.judgmentName, judgment);
+          return _getPsychoJudgment(judgment);
         },
       ),
     );
 
-    final file = File('$path\\${removeDiacritics(judgment.judgmentName)}-${judgment.number.replaceAll('/', '-')}.pdf');
+    final file = File('$path\\${removeDiacritics(judgment.judgmentName.replaceAll(' ', '-'))}-${judgment.number.replaceAll('/', '-')}.pdf');
     await file.writeAsBytes(await pdf.save());
   }
 
-  pw.Widget _getPsychoJudgment(String name, Judgment judgment) {
-    switch (name) {
+  pw.Widget _getMedicialJudgment(MedicaJudgmentInterface judgment) {
+    switch (judgment.judgmentName) {
+      case medicalMedycynaPracy:
+        return medycyna_pracy(judgment: judgment as Medicine);
+      case medicalMedycynaPracyInstruktor:
+        return medycyna_pracy_instruktor(judgment: judgment as Medicine);
+      case medicalStarajacySie:
+        return kierowca_starajacy_sie(judgment: judgment as MedicalJudgment);
+      case medicalStarajacySiePrzedluzenie:
+        return kierowca_starajacy_sie_przedluzenie(judgment: judgment as MedicalJudgment);
+      case medicalStarajacySieNieletni:
+        return kierowca_starajacy_sie_niepelnoletni_3_pieczatki(judgment: judgment as MedicalJudgment);
+      case medicalUprzywilejowany:
+        return kierowcow_uprzewilejowanych(judgment: judgment as MedicalJudgment);
+      default:
+        return medycyna_pracy(judgment: judgment as Medicine);
+    }
+  }
+
+  pw.Widget _getPsychoJudgment(Judgment judgment) {
+    switch (judgment.judgmentName) {
       case judgmentOgolny:
         return psychologist_ogolny(patient: patient!, judgment: judgment);
       case judgmentPrzedluzenie:
@@ -190,7 +254,11 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> saveMedicalJudgments(Patient patient) async {
+  Future<void> saveMedicalJudgments(Patient patient, {bool saveAndPrint = false}) async {
+    if (judgmentMedicals.isEmpty) {
+      return;
+    }
+
     var registerNumber = await medicalRegisterViewModel.getRegisterNumbre();
     var judgmentNumber = JudgmentNumber.fromString(registerNumber);
     var asciiChar = 65; // A
@@ -207,13 +275,21 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       judgmentMedicals[0].number = judgmentNumber.toString();
       judgmentMedicals[0].patient = patient;
     }
-
     _addFirmToMedicineJudgment();
 
+    _createFiles();
+
+    if (!saveAndPrint) {
+      showPreviewPopup = true;
+    }
     notifyListeners();
   }
 
   Future<void> saveJudgments(Patient patient, {bool saveAndPrint = false}) async {
+    if (judgments.isEmpty) {
+      return;
+    }
+
     this.patient = patient;
     var registerNumber = await medicalRegisterViewModel.getPsychoRegisterNumber();
     var judgmentNumber = JudgmentNumber.fromString(registerNumber);
@@ -297,14 +373,14 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   Future<void> removeFiles() async {
     if (judgments.isNotEmpty) {
       for (var element in judgments) {
-        var path = '$filePath\\${removeDiacritics(element.judgmentName)}-${element.number.replaceAll('/', '-')}.pdf';
+        var path = '$filePath\\${removeDiacritics(element.judgmentName.replaceAll(' ', '-'))}-${element.number.replaceAll('/', '-')}.pdf';
         await File(path).delete();
       }
     }
 
     if (judgmentMedicals.isNotEmpty) {
       for (var element in judgmentMedicals) {
-        var path = '$filePath\\${removeDiacritics(element.judgmentName)}-${element.number.replaceAll('/', '-')}.pdf';
+        var path = '$filePath\\${removeDiacritics(element.judgmentName.replaceAll(' ', '-'))}-${element.number.replaceAll('/', '-')}.pdf';
         await File(path).delete();
       }
     }

@@ -16,9 +16,9 @@ class PreviewItem extends StatelessWidget {
 
   String getName() {
     if (judgment != null) {
-      return removeDiacritics(judgment!.judgmentName);
+      return removeDiacritics(judgment!.judgmentName.replaceAll(' ', '-'));
     }
-    return removeDiacritics(mecicalJudgment!.judgmentName);
+    return removeDiacritics(mecicalJudgment!.judgmentName.replaceAll(' ', '-'));
   }
 
   String getNumber() {

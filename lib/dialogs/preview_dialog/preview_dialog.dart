@@ -50,6 +50,8 @@ class PreviewDialog extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             Wrap(
+                              spacing: 30,
+                              runSpacing: 30,
                               children: [
                                 ...judgments.map(
                                   (e) => PreviewItem(
@@ -65,9 +67,16 @@ class PreviewDialog extends StatelessWidget {
                       : Container(),
                   medicalJudgments.isNotEmpty
                       ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Orzeczenia lekarskie'),
+                            const Text(
+                              'Orzeczenia lekarskie',
+                              style: TextStyle(fontSize: 30, color: white),
+                            ),
+                            const SizedBox(height: 20),
                             Wrap(
+                              spacing: 30,
+                              runSpacing: 30,
                               children: [
                                 ...medicalJudgments.map(
                                   (e) => PreviewItem(

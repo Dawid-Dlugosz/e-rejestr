@@ -60,6 +60,7 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
         await model.saveJudgments(patient!, saveAndPrint: saveAndPrint);
+        await model.saveMedicalJudgments(patient!, saveAndPrint: saveAndPrint);
       }
     }
   }
