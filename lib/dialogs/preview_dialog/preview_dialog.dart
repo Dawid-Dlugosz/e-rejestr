@@ -1,16 +1,22 @@
 import 'package:e_rejestr/dialogs/preview_dialog/previed_item.dart';
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/judgment.dart';
+import 'package:e_rejestr/models/karta_kz.dart';
+import 'package:e_rejestr/models/karta_kz_medical.dart';
 import 'package:e_rejestr/utils/colors.dart';
+import 'package:e_rejestr/view_models/new_judgment_creator_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PreviewDialog extends StatelessWidget {
-  const PreviewDialog({required this.path, required this.judgments, required this.medicalJudgments, required this.openFile, super.key});
+  const PreviewDialog({required this.kartaKzMedical, required this.kartaKzPsycho, required this.path, required this.judgments, required this.medicalJudgments, required this.openFile, super.key});
 
   final String path;
   final List<Judgment> judgments;
   final List<MedicaJudgmentInterface> medicalJudgments;
   final Function(String path) openFile;
+  final KartaKz? kartaKzPsycho;
+  final KartaKzMedical? kartaKzMedical;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +44,20 @@ class PreviewDialog extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Column(
+                    children: [
+                      const Text(
+                        'Karty kz',
+                        style: TextStyle(fontSize: 30, color: white),
+                      ),
+                      Row(
+                        children: [
+                          kartaKzMedical != null ? Text('jesty') : Container(),
+                          kartaKzPsycho != null ? Text('jesty www') : Container(),
+                        ],
+                      ),
+                    ],
+                  ),
                   judgments.isNotEmpty
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,3 @@
-
 import 'package:e_rejestr/dialogs/firm_container.dart';
 import 'package:e_rejestr/dialogs/preview_dialog/preview_dialog.dart';
 import 'package:e_rejestr/models/firm.dart';
@@ -55,8 +54,14 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
-        await model.saveJudgments(patient!, saveAndPrint: saveAndPrint);
-        await model.saveMedicalJudgments(patient!, saveAndPrint: saveAndPrint);
+        await model.saveJudgments(patient!);
+        await model.saveMedicalJudgments(patient!);
+
+        if (!saveAndPrint) {
+          setState(() {
+            model.showPreviewPopup = true;
+          });
+        }
       }
     }
   }
@@ -75,6 +80,8 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                   judgments: viewModel.judgments,
                   medicalJudgments: viewModel.judgmentMedicals,
                   openFile: viewModel.openFile,
+                  kartaKzPsycho: viewModel.kartaKzPsycho,
+                  kartaKzMedical: viewModel.kartaKzMedical,
                 );
               },
             ).then(
