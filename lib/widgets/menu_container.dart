@@ -1,4 +1,4 @@
-import 'package:e_rejestr/screens/medical_register.dart';
+import 'package:e_rejestr/screens/medical_register/medical_register.dart';
 import 'package:e_rejestr/screens/new_judgment.dart';
 import 'package:e_rejestr/screens/psychological_register.dart';
 import 'package:e_rejestr/utils/pages.dart';
@@ -13,7 +13,7 @@ class MenuContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (number) {
       case medicalRegister:
-        return const MedicalRegister();
+        return MedicalRegister();
       case psychologicalRegister:
         return const PsychologicalRegister();
       case newJudgment:

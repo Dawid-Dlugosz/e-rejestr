@@ -1,5 +1,6 @@
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/firm.dart';
+import 'package:e_rejestr/models/patient.dart';
 
 class Medicine extends MedicaJudgmentInterface {
   Medicine({
@@ -40,7 +41,7 @@ class Medicine extends MedicaJudgmentInterface {
       checkboxB: json['checkboxB'],
       checkboxC: json['checkboxC'],
       typeMedical: json['typeMedical'],
-      patient: json['patient'],
+      patient: Patient.fromJson(json['patient']),
       number: json['number'],
       checkboxCDate: json['checkboxCDate'],
       workPosition: json['workPosition'],

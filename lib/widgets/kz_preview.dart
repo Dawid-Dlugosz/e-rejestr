@@ -27,9 +27,9 @@ class KzPreview extends StatelessWidget {
 
   String getPath() {
     if (kartaKz != null) {
-      return getKzFileWithPath(path: path, number: kartaKz!.number, type: Documents.psycho).path;
+      return getKzFileWithPath(path: path, number: kartaKz!.number, type: DocumentType.psycho).path;
     } else if (kartaKzMedical != null) {
-      return getKzFileWithPath(path: path, number: kartaKzMedical!.number, type: Documents.medical).path;
+      return getKzFileWithPath(path: path, number: kartaKzMedical!.number, type: DocumentType.medical).path;
     } else {
       return '';
     }

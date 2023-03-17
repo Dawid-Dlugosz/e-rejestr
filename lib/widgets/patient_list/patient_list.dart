@@ -3,7 +3,6 @@ import 'package:e_rejestr/widgets/patient_list/patient_list_item.dart';
 import 'package:firedart/firestore/models.dart';
 import 'package:flutter/material.dart';
 
-
 class PatientList extends StatelessWidget {
   const PatientList(this.list, {required this.refresh, super.key});
   final List<Document> list;

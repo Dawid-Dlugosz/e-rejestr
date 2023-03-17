@@ -20,8 +20,9 @@ class RegisterMenu extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.2,
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      onChanged: (value) => onTextChange(value),
+                      decoration: const InputDecoration(
                         label: Text('Wyszukaj po nazwisku'),
                         suffixIcon: Icon(Icons.search),
                       ),

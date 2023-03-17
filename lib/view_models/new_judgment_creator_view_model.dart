@@ -390,7 +390,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
         ),
       );
 
-      var file = getKzFileWithPath(path: filePath, number: nrPsycho, type: Documents.psycho);
+      var file = getKzFileWithPath(path: filePath, number: nrPsycho, type: DocumentType.psycho);
       await file.writeAsBytes(await pdf.save());
     }
 
@@ -433,7 +433,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
         ),
       );
 
-      var file = getKzFileWithPath(path: filePath, number: nrMedical, type: Documents.medical);
+      var file = getKzFileWithPath(path: filePath, number: nrMedical, type: DocumentType.medical);
       await file.writeAsBytes(await pdf.save());
     }
     notifyListeners();
@@ -475,12 +475,12 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
   Future<void> removeFiles() async {
     if (kartaKzMedical != null) {
-      await getKzFileWithPath(path: filePath, number: kartaKzMedical!.number, type: Documents.medical).delete();
+      await getKzFileWithPath(path: filePath, number: kartaKzMedical!.number, type: DocumentType.medical).delete();
       kartaKzMedical = null;
     }
 
     if (kartaKzPsycho != null) {
-      await getKzFileWithPath(path: filePath, number: kartaKzPsycho!.number, type: Documents.psycho).delete();
+      await getKzFileWithPath(path: filePath, number: kartaKzPsycho!.number, type: DocumentType.psycho).delete();
       kartaKzPsycho = null;
     }
 
