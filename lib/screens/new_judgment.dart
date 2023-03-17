@@ -1,4 +1,3 @@
-
 import 'package:e_rejestr/dialogs/firm_container.dart';
 import 'package:e_rejestr/dialogs/preview_dialog/preview_dialog.dart';
 import 'package:e_rejestr/models/firm.dart';
@@ -55,8 +54,14 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
-        await model.saveJudgments(patient!, saveAndPrint: saveAndPrint);
-        await model.saveMedicalJudgments(patient!, saveAndPrint: saveAndPrint);
+        model.patient = patient;
+        await model.saveFiles();
+        await model.addToFirebase();
+        if (!saveAndPrint) {
+          setState(() {
+            model.showPreviewPopup = true;
+          });
+        }
       }
     }
   }
@@ -75,6 +80,8 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                   judgments: viewModel.judgments,
                   medicalJudgments: viewModel.judgmentMedicals,
                   openFile: viewModel.openFile,
+                  kartaKzPsycho: viewModel.kartaKzPsycho,
+                  kartaKzMedical: viewModel.kartaKzMedical,
                 );
               },
             ).then(
@@ -83,7 +90,7 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                   viewModel.showPreviewPopup = false;
                 });
                 if (value != null && value == true) {
-                  // TODO ZAPISZ PLIKÓW I TWORZENIE KART
+                  viewModel.addToFirebase();
                 } else {
                   viewModel.removeFiles();
                 }
@@ -114,8 +121,9 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                firm == null
-                                    ? ElevatedButton(
+                                firm != null
+                                    ? FirmInfo(firm!, clearFirm)
+                                    : ElevatedButton(
                                         onPressed: () {
                                           showDialog(
                                             context: context,
@@ -132,16 +140,78 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                                           });
                                         },
                                         child: const Text('Wybierz firmę'),
-                                      )
-                                    : const SizedBox(
-                                        width: 1,
-                                        height: 1,
                                       ),
-                                firm != null ? FirmInfo(firm!, clearFirm) : Container(),
                               ],
                             ),
                           ],
                         ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Wrap(
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            child: CheckboxListTile(
+                              title: const Text('Nadaj własny numer'),
+                              value: viewModel.enableTextFieldPsycho,
+                              onChanged: (value) {
+                                setState(() {
+                                  viewModel.enableTextFieldPsycho = value!;
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 300,
+                            child: TextField(
+                              enabled: viewModel.enableTextFieldPsycho,
+                              controller: viewModel.psychoTextCotroller,
+                              decoration: const InputDecoration(
+                                hintText: '1/3/23',
+                                label: Text('numer badania psychologicznego'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            child: CheckboxListTile(
+                              title: const Text('Nadaj własny numer'),
+                              value: viewModel.enableTextFieldMedic,
+                              onChanged: (value) {
+                                setState(() {
+                                  viewModel.enableTextFieldMedic = value!;
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 300,
+                            child: TextField(
+                              enabled: viewModel.enableTextFieldMedic,
+                              controller: viewModel.medicalTextController,
+                              decoration: const InputDecoration(
+                                hintText: '1/3/23',
+                                label: Text('numer badania medycznego'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      viewModel.enableTextFieldMedic == true || viewModel.enableTextFieldPsycho == true
+                          ? const Text(
+                              'Jeśli jest włączone wpysywanie własnego numeru, numer automatycznie nie zaktualizuje się w bazie!',
+                              style: TextStyle(color: white),
+                            )
+                          : Container(),
+                      const SizedBox(
+                        height: 5,
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),

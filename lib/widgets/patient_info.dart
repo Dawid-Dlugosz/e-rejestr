@@ -1,6 +1,6 @@
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/utils/colors.dart';
-import 'package:e_rejestr/view_models/medical_register_view_model.dart';
+import 'package:e_rejestr/view_models/register_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -19,41 +19,60 @@ class PatientInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FutureBuilder<String>(
-            // TODO PRZEROBIĆ TO TAK ZEBY POKAZYWAĆ DWA REJESTRY JEDEN DO PSYCHO A DRUG DO MEDYCZNYCH
-            future: Provider.of<MedicalRegisterViewModel>(context, listen: false).getPsychoRegisterNumber(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
-                return Text(
-                  'Nr. rej. : ${snapshot.data!}',
-                  style: const TextStyle(color: white, fontSize: 30),
-                );
-              }
-              return const Text(
-                'Nr. rej. :',
-                style: TextStyle(color: white, fontSize: 30),
-              );
-            },
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FutureBuilder<String>(
+                future: Provider.of<RegisterViewModel>(context, listen: false).getPsychoRegisterNumber(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    return Text(
+                      'Nr. rej. psycho : ${snapshot.data!}',
+                      style: const TextStyle(color: white, fontSize: 25),
+                    );
+                  }
+                  return const Text(
+                    'Nr. rej. psycho :',
+                    style: TextStyle(color: white, fontSize: 25),
+                  );
+                },
+              ),
+              FutureBuilder<String>(
+                future: Provider.of<RegisterViewModel>(context, listen: false).getRegisterMedicalNumber(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    return Text(
+                      'Nr. rej. medyczny : ${snapshot.data!}',
+                      style: const TextStyle(color: white, fontSize: 25),
+                    );
+                  }
+                  return const Text(
+                    'Nr. rej. medyczny :',
+                    style: TextStyle(color: white, fontSize: 25),
+                  );
+                },
+              ),
+            ],
           ),
           Text(
             'Imię i Nazwisko: ${patient != null ? patient!.getFullName() : ''}',
-            style: const TextStyle(color: white, fontSize: 30),
+            style: const TextStyle(color: white, fontSize: 25),
           ),
           Text(
             'Data urodzenia: ${patient != null ? patient!.birthday : ''}',
-            style: const TextStyle(color: white, fontSize: 30),
+            style: const TextStyle(color: white, fontSize: 25),
           ),
           Text(
             'PESEL / nr. dokumentu: ${patient != null ? patient!.getDocument() : ''}',
-            style: const TextStyle(color: white, fontSize: 30),
+            style: const TextStyle(color: white, fontSize: 25),
           ),
           Text(
             'Ades: ${patient != null ? patient!.residentialAddress.toString() : ''}',
-            style: const TextStyle(color: white, fontSize: 30),
+            style: const TextStyle(color: white, fontSize: 25),
           ),
           Text(
             'Data badania: $formattedDate',
-            style: const TextStyle(color: white, fontSize: 30),
+            style: const TextStyle(color: white, fontSize: 25),
           ),
         ],
       ),

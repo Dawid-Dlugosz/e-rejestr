@@ -4,7 +4,7 @@ import 'package:e_rejestr/utils/shared_preferences.dart';
 import 'package:e_rejestr/utils/theme_data.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:e_rejestr/view_models/login_view_model.dart';
-import 'package:e_rejestr/view_models/medical_register_view_model.dart';
+import 'package:e_rejestr/view_models/register_view_model.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -32,8 +32,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<MedicalRegisterViewModel>(
-          create: (_) => MedicalRegisterViewModel(),
+        Provider<RegisterViewModel>(
+          create: (_) => RegisterViewModel(),
         ),
       ],
       child: MaterialApp(

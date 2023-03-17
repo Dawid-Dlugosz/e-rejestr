@@ -6,7 +6,6 @@ import 'package:pdf/widgets.dart' as pw;
 pw.Widget karta_kz_page_2() {
   return pw.LayoutBuilder(builder: (context, constraint) {
     return pw.Container(
-      color: PdfColor.fromHex('#ec9b4c'),
       width: constraint!.maxWidth / 2,
       child: pw.Row(
         children: [

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:diacritic/diacritic.dart';
 import 'package:e_rejestr/dialogs/open_error.dart';
 import 'package:e_rejestr/enums/collections.dart';
+import 'package:e_rejestr/enums/documents.dart';
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/firm.dart';
 import 'package:e_rejestr/models/judgment.dart';
@@ -12,6 +12,8 @@ import 'package:e_rejestr/models/karta_kz_medical.dart';
 import 'package:e_rejestr/models/medical_judgment.dart';
 import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/patient.dart';
+import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_1.dart';
+import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_2.dart';
 import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie.dart';
 import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie_niepelnoletni_3_pieczatki.dart';
 import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie_przedluzenie.dart';
@@ -28,9 +30,10 @@ import 'package:e_rejestr/pdf/psychologist/psychologist_przywrocenie.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_punkty_karne.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_uprzywilej.dart';
 import 'package:e_rejestr/pdf/psychologist/psychologist_wypadek.dart';
+import 'package:e_rejestr/utils/files.dart';
 import 'package:e_rejestr/utils/judgments.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';
-import 'package:e_rejestr/view_models/medical_register_view_model.dart';
+import 'package:e_rejestr/view_models/register_view_model.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,7 +51,11 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
   bool loaded = false;
   bool showPreviewPopup = false;
-  bool loadPreview = false;
+  bool enableTextFieldPsycho = false;
+  bool enableTextFieldMedic = false;
+
+  TextEditingController psychoTextCotroller = TextEditingController();
+  TextEditingController medicalTextController = TextEditingController();
 
   List<String> typeOfJudgments = [
     judgmentOgolny,
@@ -75,16 +82,32 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
   Firm? firm;
   Patient? patient;
+  KartaKz? kartaKzPsycho;
+  KartaKzMedical? kartaKzMedical;
 
-  late final MedicalRegisterViewModel medicalRegisterViewModel;
+  late final RegisterViewModel registerViewModel;
   late String filePath;
 
   Future<void> _init() async {
     // TODO zrobić sprawdzanie czy zmenił się miesiąc jeśli tak wyzeorwać licznik i ustawić na 1 i miesiać + 1
-    medicalRegisterViewModel = Provider.of<MedicalRegisterViewModel>(context, listen: false);
+    registerViewModel = Provider.of<RegisterViewModel>(context, listen: false);
 
     loaded = true;
     notifyListeners();
+  }
+
+  bool enableChangeKZPsychoNumber() {
+    if (enableTextFieldPsycho && psychoTextCotroller.text.isNotEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  bool enableChangeKZMedicalNumber() {
+    if (enableTextFieldMedic && medicalTextController.text.isNotEmpty) {
+      return false;
+    }
+    return true;
   }
 
   void addRemoveMedicalJudgment(MedicaJudgmentInterface judgment) {
@@ -113,10 +136,6 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   void updateJudgment(Judgment judgment) {
     judgments[judgments.indexWhere((element) => element.judgmentName == judgment.judgmentName)] = judgment;
     notifyListeners();
-  }
-
-  Future<void> createMedicalKartKz(Patient patient, String number) async {
-    //TODO ZROBIĆ ZAPIS KARTY KZ DLA ORZECZENIA MEDYCZNEGO
   }
 
   void _addFirmToMedicineJudgment() {
@@ -153,7 +172,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       }
     }
 
-    // TODO ZROBIĆTO SAMO CO DLA _createPsychoJudgmentPdf I BĘDZIE GIT
+    await _createKzPdf();
   }
 
   Future<void> _crateMedicalJudgmentPdf(MedicaJudgmentInterface judgment, String path) async {
@@ -182,8 +201,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       ),
     );
 
-    final file = File('$path\\${removeDiacritics(judgment.judgmentName.replaceAll(' ', '-'))}-${judgment.number.replaceAll('/', '-')}.pdf');
-
+    var file = getFileWithPath(path: path, name: judgment.judgmentName, number: judgment.number);
     await file.writeAsBytes(await pdf.save());
   }
 
@@ -205,7 +223,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       ),
     );
 
-    final file = File('$path\\${removeDiacritics(judgment.judgmentName.replaceAll(' ', '-'))}-${judgment.number.replaceAll('/', '-')}.pdf');
+    var file = getFileWithPath(path: path, name: judgment.judgmentName, number: judgment.number);
     await file.writeAsBytes(await pdf.save());
   }
 
@@ -253,12 +271,17 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> saveMedicalJudgments(Patient patient, {bool saveAndPrint = false}) async {
+  Future<void> _saveMedicalJudgments() async {
     if (judgmentMedicals.isEmpty) {
       return;
     }
+    late String registerNumber;
+    if (!enableChangeKZMedicalNumber()) {
+      registerNumber = medicalTextController.text;
+    } else {
+      registerNumber = await registerViewModel.getRegisterMedicalNumber();
+    }
 
-    var registerNumber = await medicalRegisterViewModel.getRegisterNumbre();
     var judgmentNumber = JudgmentNumber.fromString(registerNumber);
     var asciiChar = 65; // A
     if (judgmentMedicals.length > 1) {
@@ -268,29 +291,34 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           month: judgmentNumber.month,
           year: judgmentNumber.year,
         ).toString();
-        judgmentMedicals[i].patient = patient;
+        judgmentMedicals[i].patient = patient!;
       }
     } else {
       judgmentMedicals[0].number = judgmentNumber.toString();
-      judgmentMedicals[0].patient = patient;
+      judgmentMedicals[0].patient = patient!;
     }
     _addFirmToMedicineJudgment();
 
-    _createFiles();
-
-    if (!saveAndPrint) {
-      showPreviewPopup = true;
-    }
     notifyListeners();
   }
 
-  Future<void> saveJudgments(Patient patient, {bool saveAndPrint = false}) async {
+  Future<void> saveFiles() async {
+    await _saveMedicalJudgments();
+    await _saveJudgments();
+    await _createFiles();
+  }
+
+  Future<void> _saveJudgments() async {
     if (judgments.isEmpty) {
       return;
     }
+    late String registerNumber;
+    if (!enableChangeKZPsychoNumber()) {
+      registerNumber = psychoTextCotroller.text;
+    } else {
+      registerNumber = await registerViewModel.getPsychoRegisterNumber();
+    }
 
-    this.patient = patient;
-    var registerNumber = await medicalRegisterViewModel.getPsychoRegisterNumber();
     var judgmentNumber = JudgmentNumber.fromString(registerNumber);
     var asciiChar = 65; // A
 
@@ -301,60 +329,136 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           month: judgmentNumber.month,
           year: judgmentNumber.year,
         ).toString();
-        judgments[i].patientName = patient.getFullName();
-        judgments[i].document = patient.getDocument();
-        judgments[i].residence = patient.residentialAddress.toString();
+        judgments[i].patientName = patient!.getFullName();
+        judgments[i].document = patient!.getDocument();
+        judgments[i].residence = patient!.residentialAddress.toString();
       }
     } else {
       judgments[0].number = judgmentNumber.toString();
-      judgments[0].patientName = patient.getFullName();
-      judgments[0].document = patient.getDocument();
-      judgments[0].residence = patient.residentialAddress.toString();
+      judgments[0].patientName = patient!.getFullName();
+      judgments[0].document = patient!.getDocument();
+      judgments[0].residence = patient!.residentialAddress.toString();
     }
 
-    _createFiles();
+    // TODO ZROBIĆ SAVE dodać do firebase I ODRAZU DO DRUKU
+    notifyListeners();
+  }
 
-    if (!saveAndPrint) {
-      showPreviewPopup = true;
+  Future<void> _createKzPdf() async {
+    var font = await rootBundle.load("fonts/Lato-Regular.ttf");
+    var myTheme = pw.ThemeData.withFont(
+      base: pw.Font.ttf(await rootBundle.load("fonts/Lato-Regular.ttf")),
+      bold: pw.Font.ttf(await rootBundle.load("fonts/Lato-Bold.ttf")),
+    );
+
+    if (judgments.isNotEmpty) {
+      late String nrPsycho;
+      if (!enableChangeKZPsychoNumber()) {
+        nrPsycho = psychoTextCotroller.text;
+      } else {
+        nrPsycho = await registerViewModel.getPsychoRegisterNumber();
+      }
+
+      var pdf = pw.Document(theme: myTheme);
+      pw.Font.ttf(font);
+
+      kartaKzPsycho = KartaKz(
+        uid: const Uuid().v4(),
+        patient: patient!,
+        number: nrPsycho,
+        judgments: judgments,
+      );
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: nrPsycho);
+          },
+        ),
+      );
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return karta_kz_page_2();
+          },
+        ),
+      );
+
+      var file = getKzFileWithPath(path: filePath, number: nrPsycho, type: Documents.psycho);
+      await file.writeAsBytes(await pdf.save());
     }
 
-    // TODO ZROBIĆ SAVE dodaćdo firebase I ODRAZU DO DRUKU
+    if (judgmentMedicals.isNotEmpty) {
+      late String nrMedical;
+      if (!enableChangeKZMedicalNumber()) {
+        nrMedical = medicalTextController.text;
+      } else {
+        nrMedical = await registerViewModel.getRegisterMedicalNumber();
+      }
+      var pdf = pw.Document(theme: myTheme);
+      pw.Font.ttf(font);
+
+      kartaKzMedical = KartaKzMedical(
+        uid: const Uuid().v4(),
+        patient: patient!,
+        number: nrMedical,
+        judgments: judgmentMedicals,
+      );
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: nrMedical);
+          },
+        ),
+      );
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return karta_kz_page_2();
+          },
+        ),
+      );
+
+      var file = getKzFileWithPath(path: filePath, number: nrMedical, type: Documents.medical);
+      await file.writeAsBytes(await pdf.save());
+    }
     notifyListeners();
   }
 
   Future<void> addToFirebase() async {
     if (judgments.isNotEmpty) {
-      var number = await medicalRegisterViewModel.getPsychoRegisterNumber();
-      _createKartKz(number);
-      // TODO ZROBIĆ UPDATE NUMERU
+      await Firestore.instance.collection(Collection.kartKzPsycho.name).document(kartaKzPsycho!.uid).set(kartaKzPsycho!.toJson());
+
+      if (enableChangeKZPsychoNumber()) {
+        var regNumber = JudgmentNumber.fromString(kartaKzPsycho!.number);
+        var newRegNumber = '${int.parse(regNumber.personNo) + 1}/${regNumber.month}/${regNumber.year}';
+        registerViewModel.updatePsychoRegisterNumber(newRegNumber);
+      }
     }
+
     if (judgmentMedicals.isNotEmpty) {
-      var number = await medicalRegisterViewModel.getRegisterNumbre();
-      _createKartKzMedicla(number);
-      // TODO ZROBIĆ UPDATE NUMERU
+      await Firestore.instance.collection(Collection.kartKzMedical.name).document(kartaKzMedical!.uid).set(kartaKzMedical!.toJson());
+
+      if (enableChangeKZMedicalNumber()) {
+        var regNumber = JudgmentNumber.fromString(kartaKzMedical!.number);
+        var newRegNumber = '${int.parse(regNumber.personNo) + 1}/${regNumber.month}/${regNumber.year}';
+        registerViewModel.updateMedicalRegisterNumber(newRegNumber);
+      }
     }
-  }
-
-  Future<void> _createKartKzMedicla(String number) async {
-    var kartaKz = KartaKzMedical(
-      uid: const Uuid().v4(),
-      patient: patient!,
-      number: number,
-      judgments: judgmentMedicals,
-    );
-
-    await Firestore.instance.collection(Collection.kartaKzMedical.name).document(kartaKz.uid).create(kartaKz.toJson());
-  }
-
-  Future<void> _createKartKz(String number) async {
-    var kartaKz = KartaKz(
-      uid: const Uuid().v4(),
-      patient: patient!,
-      number: number,
-      judgments: judgments,
-    );
-
-    await Firestore.instance.collection(Collection.kartaKzPsycho.name).document(kartaKz.uid).create(kartaKz.toJson());
   }
 
   Future<void> openFile(String path) async {
@@ -370,18 +474,28 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   }
 
   Future<void> removeFiles() async {
+    if (kartaKzMedical != null) {
+      await getKzFileWithPath(path: filePath, number: kartaKzMedical!.number, type: Documents.medical).delete();
+      kartaKzMedical = null;
+    }
+
+    if (kartaKzPsycho != null) {
+      await getKzFileWithPath(path: filePath, number: kartaKzPsycho!.number, type: Documents.psycho).delete();
+      kartaKzPsycho = null;
+    }
+
     if (judgments.isNotEmpty) {
       for (var element in judgments) {
-        var path = '$filePath\\${removeDiacritics(element.judgmentName.replaceAll(' ', '-'))}-${element.number.replaceAll('/', '-')}.pdf';
-        await File(path).delete();
+        await getFileWithPath(path: filePath, name: element.judgmentName, number: element.number).delete();
       }
     }
 
     if (judgmentMedicals.isNotEmpty) {
       for (var element in judgmentMedicals) {
-        var path = '$filePath\\${removeDiacritics(element.judgmentName.replaceAll(' ', '-'))}-${element.number.replaceAll('/', '-')}.pdf';
-        await File(path).delete();
+        await getFileWithPath(path: filePath, name: element.judgmentName, number: element.number).delete();
       }
     }
+
+    notifyListeners();
   }
 }

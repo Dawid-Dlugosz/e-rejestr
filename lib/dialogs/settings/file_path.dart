@@ -8,27 +8,30 @@ class FilePath extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Scieżka zapisu plików:',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: white),
-        ),
-        Row(
-          children: [
-            Text(
-              filePath,
-              style: const TextStyle(fontSize: 18, color: white),
-            ),
-            const SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () async => changeFielPaht(),
-              child: const Text('Zmień ścieżkę'),
-            ),
-          ],
-        )
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Ścieżka zapisu plików:',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: white),
+          ),
+          Row(
+            children: [
+              Text(
+                filePath,
+                style: const TextStyle(fontSize: 18, color: white),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () async => changeFielPaht(),
+                child: const Text('Zmień ścieżkę'),
+              ),
+            ],
+          )
+          // TODO ZROBIĆ MOŻLIWOŚĆ ZMIANY NUMERY DLA KARTY KZ MEDYCZNEJ I PSYCHOLOGICZNEJ
+        ],
+      ),
     );
   }
 }
