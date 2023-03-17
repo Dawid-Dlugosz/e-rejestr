@@ -7,23 +7,22 @@ import 'package:e_rejestr/widgets/empty_widget.dart';
 import 'package:e_rejestr/widgets/loading_widget.dart';
 import 'package:e_rejestr/widgets/register_header/register_header.dart';
 import 'package:e_rejestr/widgets/register_menu.dart';
-import 'package:firedart/firestore/firestore.dart';
-import 'package:firedart/firestore/models.dart';
+import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 
-class PsychologicalRegister extends StatefulWidget {
-  const PsychologicalRegister({super.key});
+class MedicalRegister extends StatefulWidget {
+  const MedicalRegister({super.key});
 
   @override
-  State<PsychologicalRegister> createState() => _PsychologicalRegisterState();
+  State<MedicalRegister> createState() => _MedicalRegisterState();
 }
 
-class _PsychologicalRegisterState extends State<PsychologicalRegister> {
+class _MedicalRegisterState extends State<MedicalRegister> {
   List<Register> convertToList(List<Document> documents) {
     var registers = <Register>[];
 
     for (var element in documents) {
-      var json = Register.converJugmnetToRightPdf(element.map, DocumentType.psycho);
+      var json = Register.converJugmnetToRightPdf(element.map, DocumentType.medical);
       var register = Register.fromJson(json);
       if (register.fullName.contains(searchController.text)) {
         registers.add(register);
@@ -34,7 +33,8 @@ class _PsychologicalRegisterState extends State<PsychologicalRegister> {
   }
 
   TextEditingController searchController = TextEditingController();
-  var stream = Firestore.instance.collection(Collection.kartKzPsycho.name).stream;
+  var stram = Firestore.instance.collection(Collection.kartKzMedical.name).stream;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -50,8 +50,9 @@ class _PsychologicalRegisterState extends State<PsychologicalRegister> {
         const SizedBox(height: 10),
         Expanded(
           child: StreamBuilder<List<Document>>(
-            stream: stream,
+            stream: stram,
             builder: (context, snapshot) {
+              print("asas ${snapshot.connectionState}");
               if (snapshot.connectionState != ConnectionState.active) {
                 return const LoadingWidget();
               }

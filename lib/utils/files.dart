@@ -7,8 +7,8 @@ File getFileWithPath({required String path, required String name, required Strin
   return File('$path\\${removeDiacritics(name.replaceAll(' ', '-'))}-${number.replaceAll('/', '-')}.pdf');
 }
 
-File getKzFileWithPath({required String path, required String number, required Documents type}) {
-  if (type == Documents.medical) {
+File getKzFileWithPath({required String path, required String number, required DocumentType type}) {
+  if (type == DocumentType.medical) {
     return File('$path\\karta-kz-medyczna-${number.replaceAll('/', '-')}.pdf');
   }
   return File('$path\\karta-kz-psychologiczna-${number.replaceAll('/', '-')}.pdf');

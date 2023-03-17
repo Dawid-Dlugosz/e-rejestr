@@ -17,7 +17,7 @@ class KartaKz {
   factory KartaKz.fromJson(Map<String, dynamic> json) {
     return KartaKz(
       uid: json['uid'],
-      patient: json['patient'],
+      patient: Patient.fromJson(json['patient']),
       number: json['number'],
       judgments: (json['judgments'] as List<dynamic>).map((e) => Judgment.fromJson(e)).toList(),
     );

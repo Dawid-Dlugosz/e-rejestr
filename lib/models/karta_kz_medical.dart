@@ -20,7 +20,7 @@ class KartaKzMedical {
   factory KartaKzMedical.fromJson(Map<String, dynamic> json) {
     return KartaKzMedical(
       uid: json['uid'],
-      patient: json['patient'],
+      patient: Patient.fromJson(json['patient']),
       number: json['number'],
       judgments: (json['judgments'] as List<dynamic>).map((e) => e['judgmentName'] == medicalMedycynaPracy || e['judgmentName'] == medicalMedycynaPracyInstruktor ? Medicine.fromJson(e) : MedicalJudgment.fromJson(e)).toList(),
     );

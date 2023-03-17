@@ -1,4 +1,4 @@
-enum Documents {
+enum DocumentType {
   medical,
   psycho,
 }
