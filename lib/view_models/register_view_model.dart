@@ -3,8 +3,8 @@ import 'package:e_rejestr/enums/documents.dart';
 import 'package:firedart/firedart.dart';
 import 'package:intl/intl.dart';
 
-class MedicalRegisterViewModel {
-  MedicalRegisterViewModel() {
+class RegisterViewModel {
+  RegisterViewModel() {
     _init();
   }
 
@@ -24,7 +24,6 @@ class MedicalRegisterViewModel {
     }
   }
 
-  // TODO ZROBIĆ TO PO STRONIE FIREBASE
   Future<String> getPsychoRegisterNumber() async {
     var firestore = Firestore.instance;
     var document = await firestore.collection(Collection.judgments.name).document(Documents.psycho.name).get();
@@ -38,13 +37,13 @@ class MedicalRegisterViewModel {
     );
   }
 
-  Future<String> getRegisterNumbre() async {
+  Future<String> getRegisterMedicalNumber() async {
     var firestore = Firestore.instance;
     var document = await firestore.collection(Collection.judgments.name).document(Documents.medical.name).get();
     return document.map['number'];
   }
 
-  void updateRegisterNumber(String number) async {
+  void updateMedicalRegisterNumber(String number) async {
     var firestore = Firestore.instance;
     await firestore.collection(Collection.judgments.name).document(Documents.medical.name).update(
       {'number': number},

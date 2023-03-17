@@ -34,7 +34,7 @@ pw.Widget p1_right_side({required String nrRej, required Patient patient, requir
         pw.Container(
           width: width,
           child: pw.Text(
-            'KARTA BADANIA PSYCHOLOGICZNEGO',
+            'KARTA BADANIA',
             style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
             textAlign: pw.TextAlign.center,
           ),

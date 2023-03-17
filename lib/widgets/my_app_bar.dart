@@ -32,7 +32,7 @@ class MyAppBar extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return ChangeNotifierProvider(create: (_) => SettingsViewModel(), child: const Settings());
+                    return ChangeNotifierProvider(create: (_) => SettingsViewModel(context), child: const Settings());
                   },
                 )
               },

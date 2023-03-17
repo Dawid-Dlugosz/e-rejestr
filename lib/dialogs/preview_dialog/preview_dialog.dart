@@ -5,6 +5,7 @@ import 'package:e_rejestr/models/karta_kz.dart';
 import 'package:e_rejestr/models/karta_kz_medical.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/view_models/new_judgment_creator_view_model.dart';
+import 'package:e_rejestr/widgets/kz_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -52,8 +53,9 @@ class PreviewDialog extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          kartaKzMedical != null ? Text('jesty') : Container(),
-                          kartaKzPsycho != null ? Text('jesty www') : Container(),
+                          kartaKzMedical != null ? KzPreview(path: path, openFile: openFile, kartaKzMedical: kartaKzMedical) : Container(),
+                          const SizedBox(width: 20),
+                          kartaKzPsycho != null ? KzPreview(path: path, openFile: openFile, kartaKz: kartaKzPsycho) : Container(),
                         ],
                       ),
                     ],

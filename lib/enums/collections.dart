@@ -1,8 +1,8 @@
 enum Collection {
   users,
   patients,
-  kartaKzPsycho,
-  kartaKzMedical,
+  kartKzPsycho,
+  kartKzMedical,
   judgments,
   firms,
 }

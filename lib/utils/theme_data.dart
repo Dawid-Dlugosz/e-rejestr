@@ -26,6 +26,7 @@ var themeData = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: const TextStyle(color: orange),
     errorStyle: const TextStyle(color: red),
+    hintStyle: const TextStyle(color: orange),
     suffixIconColor: orange,
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(50),

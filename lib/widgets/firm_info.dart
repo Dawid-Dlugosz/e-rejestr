@@ -13,15 +13,15 @@ class FirmInfo extends StatelessWidget {
       children: [
         Text(
           'Nazwa firmy: ${firm.name}',
-          style: const TextStyle(color: white, fontSize: 30),
+          style: const TextStyle(color: white, fontSize: 25),
         ),
         Text(
           'Nr. nip: ${firm.nip}',
-          style: const TextStyle(color: white, fontSize: 30),
+          style: const TextStyle(color: white, fontSize: 25),
         ),
         Text(
           'Adres firmy: ${firm.address}',
-          style: const TextStyle(color: white, fontSize: 30),
+          style: const TextStyle(color: white, fontSize: 25),
         ),
         ElevatedButton(
           onPressed: clearFirm,

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:e_rejestr/dialogs/open_error.dart';
+import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/enums/documents.dart';
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/firm.dart';
@@ -32,7 +33,8 @@ import 'package:e_rejestr/pdf/psychologist/psychologist_wypadek.dart';
 import 'package:e_rejestr/utils/files.dart';
 import 'package:e_rejestr/utils/judgments.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';
-import 'package:e_rejestr/view_models/medical_register_view_model.dart';
+import 'package:e_rejestr/view_models/register_view_model.dart';
+import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
@@ -49,7 +51,11 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
   bool loaded = false;
   bool showPreviewPopup = false;
-  bool loadPreview = false;
+  bool enableTextFieldPsycho = false;
+  bool enableTextFieldMedic = false;
+
+  TextEditingController psychoTextCotroller = TextEditingController();
+  TextEditingController medicalTextController = TextEditingController();
 
   List<String> typeOfJudgments = [
     judgmentOgolny,
@@ -79,15 +85,29 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   KartaKz? kartaKzPsycho;
   KartaKzMedical? kartaKzMedical;
 
-  late final MedicalRegisterViewModel medicalRegisterViewModel;
+  late final RegisterViewModel registerViewModel;
   late String filePath;
 
   Future<void> _init() async {
     // TODO zrobić sprawdzanie czy zmenił się miesiąc jeśli tak wyzeorwać licznik i ustawić na 1 i miesiać + 1
-    medicalRegisterViewModel = Provider.of<MedicalRegisterViewModel>(context, listen: false);
+    registerViewModel = Provider.of<RegisterViewModel>(context, listen: false);
 
     loaded = true;
     notifyListeners();
+  }
+
+  bool enableChangeKZPsychoNumber() {
+    if (enableTextFieldPsycho && psychoTextCotroller.text.isNotEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  bool enableChangeKZMedicalNumber() {
+    if (enableTextFieldMedic && medicalTextController.text.isNotEmpty) {
+      return false;
+    }
+    return true;
   }
 
   void addRemoveMedicalJudgment(MedicaJudgmentInterface judgment) {
@@ -116,10 +136,6 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   void updateJudgment(Judgment judgment) {
     judgments[judgments.indexWhere((element) => element.judgmentName == judgment.judgmentName)] = judgment;
     notifyListeners();
-  }
-
-  Future<void> createMedicalKartKz(Patient patient, String number) async {
-    //TODO ZROBIĆ ZAPIS KARTY KZ DLA ORZECZENIA MEDYCZNEGO
   }
 
   void _addFirmToMedicineJudgment() {
@@ -255,12 +271,17 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> saveMedicalJudgments(Patient patient, {bool saveAndPrint = false}) async {
+  Future<void> _saveMedicalJudgments() async {
     if (judgmentMedicals.isEmpty) {
       return;
     }
+    late String registerNumber;
+    if (!enableChangeKZMedicalNumber()) {
+      registerNumber = medicalTextController.text;
+    } else {
+      registerNumber = await registerViewModel.getRegisterMedicalNumber();
+    }
 
-    var registerNumber = await medicalRegisterViewModel.getRegisterNumbre();
     var judgmentNumber = JudgmentNumber.fromString(registerNumber);
     var asciiChar = 65; // A
     if (judgmentMedicals.length > 1) {
@@ -270,26 +291,34 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           month: judgmentNumber.month,
           year: judgmentNumber.year,
         ).toString();
-        judgmentMedicals[i].patient = patient;
+        judgmentMedicals[i].patient = patient!;
       }
     } else {
       judgmentMedicals[0].number = judgmentNumber.toString();
-      judgmentMedicals[0].patient = patient;
+      judgmentMedicals[0].patient = patient!;
     }
     _addFirmToMedicineJudgment();
-
-    _createFiles();
 
     notifyListeners();
   }
 
-  Future<void> saveJudgments(Patient patient, {bool saveAndPrint = false}) async {
+  Future<void> saveFiles() async {
+    await _saveMedicalJudgments();
+    await _saveJudgments();
+    await _createFiles();
+  }
+
+  Future<void> _saveJudgments() async {
     if (judgments.isEmpty) {
       return;
     }
+    late String registerNumber;
+    if (!enableChangeKZPsychoNumber()) {
+      registerNumber = psychoTextCotroller.text;
+    } else {
+      registerNumber = await registerViewModel.getPsychoRegisterNumber();
+    }
 
-    this.patient = patient;
-    var registerNumber = await medicalRegisterViewModel.getPsychoRegisterNumber();
     var judgmentNumber = JudgmentNumber.fromString(registerNumber);
     var asciiChar = 65; // A
 
@@ -300,20 +329,18 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           month: judgmentNumber.month,
           year: judgmentNumber.year,
         ).toString();
-        judgments[i].patientName = patient.getFullName();
-        judgments[i].document = patient.getDocument();
-        judgments[i].residence = patient.residentialAddress.toString();
+        judgments[i].patientName = patient!.getFullName();
+        judgments[i].document = patient!.getDocument();
+        judgments[i].residence = patient!.residentialAddress.toString();
       }
     } else {
       judgments[0].number = judgmentNumber.toString();
-      judgments[0].patientName = patient.getFullName();
-      judgments[0].document = patient.getDocument();
-      judgments[0].residence = patient.residentialAddress.toString();
+      judgments[0].patientName = patient!.getFullName();
+      judgments[0].document = patient!.getDocument();
+      judgments[0].residence = patient!.residentialAddress.toString();
     }
 
-    _createFiles();
-
-    // TODO ZROBIĆ SAVE dodaćdo firebase I ODRAZU DO DRUKU
+    // TODO ZROBIĆ SAVE dodać do firebase I ODRAZU DO DRUKU
     notifyListeners();
   }
 
@@ -324,11 +351,16 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       bold: pw.Font.ttf(await rootBundle.load("fonts/Lato-Bold.ttf")),
     );
 
-    var pdf = pw.Document(theme: myTheme);
-    pw.Font.ttf(font);
-
     if (judgments.isNotEmpty) {
-      var nrPsycho = await medicalRegisterViewModel.getPsychoRegisterNumber();
+      late String nrPsycho;
+      if (!enableChangeKZPsychoNumber()) {
+        nrPsycho = psychoTextCotroller.text;
+      } else {
+        nrPsycho = await registerViewModel.getPsychoRegisterNumber();
+      }
+
+      var pdf = pw.Document(theme: myTheme);
+      pw.Font.ttf(font);
 
       kartaKzPsycho = KartaKz(
         uid: const Uuid().v4(),
@@ -337,10 +369,11 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
         judgments: judgments,
       );
 
-      // TODO ZROBIĆ ODWÓCONĄ KARTĘ I CZEMU NIE ZAPISUJE SIĘ MEDYCZNA
       pdf.addPage(
         pw.Page(
           pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
             return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: nrPsycho);
           },
@@ -349,6 +382,8 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       pdf.addPage(
         pw.Page(
           pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
             return karta_kz_page_2();
           },
@@ -360,7 +395,14 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     }
 
     if (judgmentMedicals.isNotEmpty) {
-      var nrMedical = await medicalRegisterViewModel.getRegisterNumbre();
+      late String nrMedical;
+      if (!enableChangeKZMedicalNumber()) {
+        nrMedical = medicalTextController.text;
+      } else {
+        nrMedical = await registerViewModel.getRegisterMedicalNumber();
+      }
+      var pdf = pw.Document(theme: myTheme);
+      pw.Font.ttf(font);
 
       kartaKzMedical = KartaKzMedical(
         uid: const Uuid().v4(),
@@ -372,6 +414,8 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       pdf.addPage(
         pw.Page(
           pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
             return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: nrMedical);
           },
@@ -381,6 +425,8 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       pdf.addPage(
         pw.Page(
           pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
             return karta_kz_page_2();
           },
@@ -395,38 +441,24 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
   Future<void> addToFirebase() async {
     if (judgments.isNotEmpty) {
-      var number = await medicalRegisterViewModel.getPsychoRegisterNumber();
-      _saveKzPsycho(number);
-      // TODO ZROBIĆ UPDATE NUMERU
+      await Firestore.instance.collection(Collection.kartKzPsycho.name).document(kartaKzPsycho!.uid).set(kartaKzPsycho!.toJson());
+
+      if (enableChangeKZPsychoNumber()) {
+        var regNumber = JudgmentNumber.fromString(kartaKzPsycho!.number);
+        var newRegNumber = '${int.parse(regNumber.personNo) + 1}/${regNumber.month}/${regNumber.year}';
+        registerViewModel.updatePsychoRegisterNumber(newRegNumber);
+      }
     }
 
     if (judgmentMedicals.isNotEmpty) {
-      var number = await medicalRegisterViewModel.getRegisterNumbre();
-      _saveKzMedicial(number);
-      // TODO ZROBIĆ UPDATE NUMERU
+      await Firestore.instance.collection(Collection.kartKzMedical.name).document(kartaKzMedical!.uid).set(kartaKzMedical!.toJson());
+
+      if (enableChangeKZMedicalNumber()) {
+        var regNumber = JudgmentNumber.fromString(kartaKzMedical!.number);
+        var newRegNumber = '${int.parse(regNumber.personNo) + 1}/${regNumber.month}/${regNumber.year}';
+        registerViewModel.updateMedicalRegisterNumber(newRegNumber);
+      }
     }
-  }
-
-  Future<void> _saveKzMedicial(String number) async {
-    var kartaKz = KartaKzMedical(
-      uid: const Uuid().v4(),
-      patient: patient!,
-      number: number,
-      judgments: judgmentMedicals,
-    );
-
-    // await Firestore.instance.collection(Collection.kartaKzMedical.name).document(kartaKz.uid).create(kartaKz.toJson());
-  }
-
-  Future<void> _saveKzPsycho(String number) async {
-    var kartaKz = KartaKz(
-      uid: const Uuid().v4(),
-      patient: patient!,
-      number: number,
-      judgments: judgments,
-    );
-
-    // await Firestore.instance.collection(Collection.kartaKzPsycho.name).document(kartaKz.uid).create(kartaKz.toJson());
   }
 
   Future<void> openFile(String path) async {
@@ -448,7 +480,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     }
 
     if (kartaKzPsycho != null) {
-      await getKzFileWithPath(path: filePath, number: kartaKzMedical!.number, type: Documents.psycho).delete();
+      await getKzFileWithPath(path: filePath, number: kartaKzPsycho!.number, type: Documents.psycho).delete();
       kartaKzPsycho = null;
     }
 
