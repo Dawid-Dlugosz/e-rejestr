@@ -69,7 +69,7 @@ class Register {
         articles.add(element.article);
       }
       jsonMap['articles'] = articles.map((e) => e).toList();
-      jsonMap['releaseDate'] = kartaKz.number;
+      jsonMap['releaseDate'] = kartaKz.judgments[0].dateOfIssue;
       jsonMap['fullName'] = patient.getFullName();
 
       return jsonMap;
@@ -89,7 +89,7 @@ class Register {
       articles.add(element.article);
     }
     jsonMap['articles'] = articles.map((e) => e).toList();
-    jsonMap['releaseDate'] = kartaKz.number;
+    jsonMap['releaseDate'] = kartaKz.judgments[0].dateOfIssue;
     jsonMap['fullName'] = patient.getFullName();
 
     return jsonMap;
