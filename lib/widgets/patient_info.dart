@@ -42,12 +42,12 @@ class PatientInfo extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data != null) {
                     return Text(
-                      'Nr. rej. medyczny : ${snapshot.data!}',
+                      'Nr. rej. lekarskiego : ${snapshot.data!}',
                       style: const TextStyle(color: white, fontSize: 25),
                     );
                   }
                   return const Text(
-                    'Nr. rej. medyczny :',
+                    'Nr. rej. lekarskiego :',
                     style: TextStyle(color: white, fontSize: 25),
                   );
                 },

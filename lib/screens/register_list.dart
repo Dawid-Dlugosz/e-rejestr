@@ -9,6 +9,18 @@ class RegisterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    registerItems.sort((a, b) {
+      var aParts = a.lp.split('/').map(int.parse).toList();
+      var bParts = b.lp.split('/').map(int.parse).toList();
+      for (var i = 2; i >= 0; i--) {
+        var cmp = aParts[i].compareTo(bParts[i]);
+        if (cmp != 0) {
+          return cmp;
+        }
+      }
+      return 0;
+    });
+
     return SingleChildScrollView(
       child: Table(
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,

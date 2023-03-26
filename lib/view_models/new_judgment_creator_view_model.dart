@@ -138,18 +138,6 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _addFirmToMedicineJudgment() {
-    if (firm == null) {
-      return;
-    }
-
-    for (var element in judgmentMedicals) {
-      if (element.judgmentName == medicalMedycynaPracyInstruktor || element.judgmentName == medicalMedycynaPracy) {
-        (element as Medicine).firm = firm!;
-      }
-    }
-  }
-
   Future<void> _createFiles() async {
     var path = await getFilePath();
     var montFolder = '${DateTime.now().month}-${DateTime.now().year}';
@@ -230,19 +218,19 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   pw.Widget _getMedicialJudgment(MedicaJudgmentInterface judgment) {
     switch (judgment.judgmentName) {
       case medicalMedycynaPracy:
-        return medycyna_pracy(judgment: judgment as Medicine);
+        return medycyna_pracy(judgment: judgment as Medicine, patient: patient!, firm: firm!);
       case medicalMedycynaPracyInstruktor:
-        return medycyna_pracy_instruktor(judgment: judgment as Medicine);
+        return medycyna_pracy_instruktor(judgment: judgment as Medicine, patient: patient!, firm: firm!);
       case medicalStarajacySie:
-        return kierowca_starajacy_sie(judgment: judgment as MedicalJudgment);
+        return kierowca_starajacy_sie(judgment: judgment as MedicalJudgment, patient: patient!);
       case medicalStarajacySiePrzedluzenie:
-        return kierowca_starajacy_sie_przedluzenie(judgment: judgment as MedicalJudgment);
+        return kierowca_starajacy_sie_przedluzenie(judgment: judgment as MedicalJudgment, patient: patient!);
       case medicalStarajacySieNieletni:
-        return kierowca_starajacy_sie_niepelnoletni_3_pieczatki(judgment: judgment as MedicalJudgment);
+        return kierowca_starajacy_sie_niepelnoletni_3_pieczatki(judgment: judgment as MedicalJudgment, patient: patient!);
       case medicalUprzywilejowany:
-        return kierowcow_uprzewilejowanych(judgment: judgment as MedicalJudgment);
+        return kierowcow_uprzewilejowanych(judgment: judgment as MedicalJudgment, patient: patient!);
       default:
-        return medycyna_pracy(judgment: judgment as Medicine);
+        return medycyna_pracy(judgment: judgment as Medicine, patient: patient!, firm: firm!);
     }
   }
 
@@ -291,13 +279,10 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           month: judgmentNumber.month,
           year: judgmentNumber.year,
         ).toString();
-        judgmentMedicals[i].patient = patient!;
       }
     } else {
       judgmentMedicals[0].number = judgmentNumber.toString();
-      judgmentMedicals[0].patient = patient!;
     }
-    _addFirmToMedicineJudgment();
 
     notifyListeners();
   }
@@ -364,7 +349,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
       kartaKzPsycho = KartaKz(
         uid: const Uuid().v4(),
-        patient: patient!,
+        patientId: patient!.uid,
         number: nrPsycho,
         judgments: judgments,
       );
@@ -406,7 +391,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
 
       kartaKzMedical = KartaKzMedical(
         uid: const Uuid().v4(),
-        patient: patient!,
+        patientId: patient!.uid,
         number: nrMedical,
         judgments: judgmentMedicals,
       );
@@ -417,7 +402,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           margin: const pw.EdgeInsets.all(10),
           orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
-            return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: nrMedical);
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgmentMedicals[0].dateOfIssue, nrRej: nrMedical);
           },
         ),
       );

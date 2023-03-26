@@ -4,8 +4,6 @@ import 'package:e_rejestr/models/karta_kz_medical.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/files.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class KzPreview extends StatelessWidget {
   KzPreview({required this.path, required this.openFile, this.kartaKzMedical, this.kartaKz, super.key});
@@ -57,6 +55,5 @@ class KzPreview extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

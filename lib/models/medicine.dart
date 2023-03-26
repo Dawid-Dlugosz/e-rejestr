@@ -1,10 +1,7 @@
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
-import 'package:e_rejestr/models/firm.dart';
-import 'package:e_rejestr/models/patient.dart';
 
 class Medicine extends MedicaJudgmentInterface {
   Medicine({
-    required this.firm,
     required super.judgmentName,
     required super.pdf,
     required super.article,
@@ -14,13 +11,10 @@ class Medicine extends MedicaJudgmentInterface {
     required this.checkboxB,
     required this.checkboxC,
     required this.typeMedical,
-    required super.patient,
     required super.number,
     required this.checkboxCDate,
     required this.workPosition,
   });
-
-  Firm firm;
 
   String typeMedical;
   bool checkboxA;
@@ -31,7 +25,6 @@ class Medicine extends MedicaJudgmentInterface {
 
   factory Medicine.fromJson(Map<String, dynamic> json) {
     return Medicine(
-      firm: Firm.fromJson(json['firm']),
       judgmentName: json['judgmentName'],
       pdf: json['pdf'],
       article: json['article'],
@@ -41,7 +34,6 @@ class Medicine extends MedicaJudgmentInterface {
       checkboxB: json['checkboxB'],
       checkboxC: json['checkboxC'],
       typeMedical: json['typeMedical'],
-      patient: Patient.fromJson(json['patient']),
       number: json['number'],
       checkboxCDate: json['checkboxCDate'],
       workPosition: json['workPosition'],
@@ -51,7 +43,6 @@ class Medicine extends MedicaJudgmentInterface {
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
 
-    json['firm'] = firm.toJson();
     json['judgmentName'] = judgmentName;
     json['pdf'] = pdf;
     json['article'] = article;
@@ -61,7 +52,6 @@ class Medicine extends MedicaJudgmentInterface {
     json['checkboxB'] = checkboxB;
     json['checkboxC'] = checkboxC;
     json['typeMedical'] = typeMedical;
-    json['patient'] = patient.toJson();
     json['number'] = number;
     json['checkboxCDate'] = checkboxCDate;
     json['workPosition'] = workPosition;

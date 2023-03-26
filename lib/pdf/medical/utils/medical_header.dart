@@ -41,16 +41,19 @@ pw.Widget medicalHeader(String date, {bool showCity = true, bool type = false, S
                 ),
                 pw.RichText(
                   text: pw.TextSpan(
-                    text: 'Wstępne/',
-                    style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold, decoration: typeText == 'Wstępne' ? null : pw.TextDecoration.lineThrough),
+                    text: '',
                     children: [
                       pw.TextSpan(
+                        text: 'Wstępne/',
+                        style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold, decoration: typeText == 'Wstępne' ? null : pw.TextDecoration.lineThrough),
+                      ),
+                      pw.TextSpan(
                         text: 'okresowe/',
-                        style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold, decoration: typeText == 'okresowe' ? null : pw.TextDecoration.lineThrough),
+                        style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold, decoration: typeText == 'Okresowe' ? null : pw.TextDecoration.lineThrough),
                       ),
                       pw.TextSpan(
                         text: 'kontrolne',
-                        style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold, decoration: typeText == 'kontrolne' ? null : pw.TextDecoration.lineThrough),
+                        style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold, decoration: typeText == 'Kontrolne' ? null : pw.TextDecoration.lineThrough),
                       ),
                     ],
                   ),

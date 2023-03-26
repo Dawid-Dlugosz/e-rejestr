@@ -1,4 +1,5 @@
 import 'package:e_rejestr/models/medical_judgment.dart';
+import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/pdf/medical/utils/cars_uprzywilejowany.dart';
 import 'package:e_rejestr/pdf/medical/utils/evidence.dart';
 import 'package:e_rejestr/pdf/medical/utils/limitations.dart';
@@ -10,7 +11,7 @@ import 'package:e_rejestr/pdf/medical/utils/therm_of_validate.dart';
 
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget kierowcow_uprzewilejowanych({required MedicalJudgment judgment}) {
+pw.Widget kierowcow_uprzewilejowanych({required MedicalJudgment judgment, required Patient patient}) {
   return pw.Column(
     children: [
       medicalHeader(judgment.dateOfIssue),
@@ -22,8 +23,8 @@ pw.Widget kierowcow_uprzewilejowanych({required MedicalJudgment judgment}) {
           style: const pw.TextStyle(fontSize: 10),
         ),
       ),
-      patientName(judgment.patient.getFullName()),
-      patientPesel(judgment.patient.getDocument()),
+      patientName(patient.getFullName()),
+      patientPesel(patient.getDocument()),
       pw.Align(
         alignment: pw.Alignment.center,
         child: pw.Padding(

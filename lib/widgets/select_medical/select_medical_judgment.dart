@@ -1,7 +1,5 @@
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/medical_judgment.dart';
-import 'package:e_rejestr/models/patient.dart';
-import 'package:e_rejestr/models/residental_address.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/judgments.dart';
 import 'package:e_rejestr/widgets/select_medical/cars_category_medical.dart';
@@ -45,15 +43,9 @@ class _SelectMedicalJudgmentState extends State<SelectMedicalJudgment> with Tick
 
   @override
   void initState() {
+    super.initState();
     var currentDate = DateTime.now();
     var dateOfIssue = DateFormat('dd-MM-yyyy').format(currentDate);
-    var emptyPatient = Patient(
-      firstName: '',
-      lastName: '',
-      residentialAddress: ResidentialAddress(postCodeCity: '', street: ''),
-      birthday: '',
-      uid: '',
-    );
 
     medicalJudgment = MedicalJudgment(
       state: _radioButton,
@@ -68,7 +60,6 @@ class _SelectMedicalJudgmentState extends State<SelectMedicalJudgment> with Tick
       pdf: widget.name,
       dateOfIssue: dateOfIssue,
       dateOfValidity: _radioDate,
-      patient: emptyPatient,
       number: '',
     );
   }

@@ -59,27 +59,17 @@ class _SelectMedicineJudgmentState extends State<SelectMedicineJudgment> with Ti
   }
 
   void _createJudgment() {
-    var emptyPatient = Patient(
-      firstName: '',
-      lastName: '',
-      residentialAddress: ResidentialAddress(postCodeCity: '', street: ''),
-      birthday: '',
-      uid: '',
-    );
-
     medicineJudgment = Medicine(
       judgmentName: widget.name,
       article: getJudgmentArticle(widget.name),
       pdf: widget.name,
       dateOfIssue: dateOfIssue,
       dateOfValidity: _radioDate,
-      patient: emptyPatient,
       number: '',
       checkboxA: _checkboxA,
       checkboxB: _checkboxB,
       checkboxC: _checkboxC,
       typeMedical: _typeMedical,
-      firm: widget.firm!,
       checkboxCDate: _checkboxCDate,
       workPosition: _workPosition,
     );

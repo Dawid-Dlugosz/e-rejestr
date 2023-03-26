@@ -36,12 +36,14 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
   void setFirm(Firm firm) {
     setState(() {
       this.firm = firm;
+      model.firm = firm;
     });
   }
 
   void clearFirm() {
     setState(() {
       firm = null;
+      model.firm = null;
       model.judgmentMedicals.removeWhere((element) => element.judgmentName == medicalMedycynaPracy || element.judgmentName == medicalMedycynaPracyInstruktor);
     });
   }
@@ -56,11 +58,12 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
       } else {
         model.patient = patient;
         await model.saveFiles();
-        await model.addToFirebase();
         if (!saveAndPrint) {
           setState(() {
             model.showPreviewPopup = true;
           });
+        } else {
+          await model.addToFirebase();
         }
       }
     }
@@ -133,11 +136,13 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                                                 child: const FirmContainer(),
                                               );
                                             },
-                                          ).then((value) {
-                                            if (value != null) {
-                                              setFirm(value);
-                                            }
-                                          });
+                                          ).then(
+                                            (value) {
+                                              if (value != null) {
+                                                setFirm(value);
+                                              }
+                                            },
+                                          );
                                         },
                                         child: const Text('Wybierz firmę'),
                                       ),

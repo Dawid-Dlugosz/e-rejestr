@@ -1,4 +1,5 @@
 import 'package:e_rejestr/models/medical_judgment.dart';
+import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/pdf/medical/utils/cars.dart';
 import 'package:e_rejestr/pdf/medical/utils/evidence.dart';
 import 'package:e_rejestr/pdf/medical/utils/limitations.dart';
@@ -10,7 +11,7 @@ import 'package:e_rejestr/pdf/medical/utils/therm_of_validate.dart';
 
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget kierowca_starajacy_sie_niepelnoletni_3_pieczatki({required MedicalJudgment judgment}) {
+pw.Widget kierowca_starajacy_sie_niepelnoletni_3_pieczatki({required MedicalJudgment judgment, required Patient patient}) {
   return pw.Column(
     children: [
       medicalHeader(judgment.dateOfIssue),
@@ -59,8 +60,8 @@ pw.Widget kierowca_starajacy_sie_niepelnoletni_3_pieczatki({required MedicalJudg
           ),
         ),
       ),
-      patientName(judgment.patient.getFullName()),
-      patientPesel(judgment.patient.getDocument()),
+      patientName(patient.getFullName()),
+      patientPesel(patient.getDocument()),
       pw.Align(
         alignment: pw.Alignment.center,
         child: pw.Padding(
