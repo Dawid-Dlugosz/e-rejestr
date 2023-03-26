@@ -1,4 +1,6 @@
+import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/models/residental_address.dart';
+import 'package:firedart/firedart.dart';
 
 class Patient {
   Patient({required this.firstName, required this.lastName, required this.residentialAddress, required this.birthday, required this.uid, this.pesel, this.documentNumer});
@@ -45,5 +47,15 @@ class Patient {
 
   String getFullName() {
     return '$firstName $lastName';
+  }
+
+  static Future<Patient> getPatientById({required String id}) async {
+    var documents = await Firestore.instance.collection(Collection.patients.name).where('uid', isEqualTo: id).get();
+
+    var document = documents.first;
+
+    var patient = Patient.fromJson(document.map);
+
+    return patient;
   }
 }

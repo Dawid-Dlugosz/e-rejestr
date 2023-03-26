@@ -1,23 +1,22 @@
 import 'package:e_rejestr/models/judgment.dart';
-import 'package:e_rejestr/models/patient.dart';
 
 class KartaKz {
   KartaKz({
     required this.uid,
-    required this.patient,
+    required this.patientId,
     required this.number,
     required this.judgments,
   });
 
   final String uid;
-  final Patient patient;
+  final String patientId;
   final String number;
   final List<Judgment> judgments;
 
   factory KartaKz.fromJson(Map<String, dynamic> json) {
     return KartaKz(
       uid: json['uid'],
-      patient: Patient.fromJson(json['patient']),
+      patientId: json['patientId'],
       number: json['number'],
       judgments: (json['judgments'] as List<dynamic>).map((e) => Judgment.fromJson(e)).toList(),
     );
@@ -27,7 +26,7 @@ class KartaKz {
     var json = <String, dynamic>{};
 
     json['uid'] = uid;
-    json['patient'] = patient.toJson();
+    json['patientId'] = patientId;
     json['number'] = number;
     json['judgments'] = judgments.map((e) => e.toJson()).toList();
 

@@ -1,5 +1,4 @@
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
-import 'package:e_rejestr/models/patient.dart';
 
 class MedicalJudgment extends MedicaJudgmentInterface {
   MedicalJudgment({
@@ -15,7 +14,6 @@ class MedicalJudgment extends MedicaJudgmentInterface {
     required super.pdf,
     required super.dateOfIssue,
     required super.dateOfValidity,
-    required super.patient,
     required super.number,
   });
 
@@ -41,7 +39,6 @@ class MedicalJudgment extends MedicaJudgmentInterface {
       dateOfIssue: json['dateOfIssue'],
       pdf: json['pdf'],
       article: json['article'],
-      patient: Patient.fromJson(json['patient']),
       number: json['number'],
     );
   }
@@ -61,7 +58,6 @@ class MedicalJudgment extends MedicaJudgmentInterface {
     json['dateOfIssue'] = dateOfIssue;
     json['pdf'] = pdf;
     json['article'] = article;
-    json['patient'] = patient.toJson();
     json['number'] = number;
 
     return json;

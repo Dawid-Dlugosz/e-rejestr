@@ -1,4 +1,6 @@
+import 'package:e_rejestr/models/firm.dart';
 import 'package:e_rejestr/models/medicine.dart';
+import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/pdf/medical/utils/date_of_validity_kodeks.dart';
 import 'package:e_rejestr/pdf/medical/utils/medical_header.dart';
 import 'package:e_rejestr/pdf/medical/utils/medical_title.dart';
@@ -9,7 +11,7 @@ import 'package:e_rejestr/pdf/medical/utils/work.dart';
 import 'package:e_rejestr/pdf/medical/utils/work_position.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget medycyna_pracy({required Medicine judgment}) {
+pw.Widget medycyna_pracy({required Medicine judgment, required Patient patient, required Firm firm}) {
   return pw.Align(
     alignment: pw.Alignment.centerLeft,
     child: pw.Column(
@@ -17,6 +19,7 @@ pw.Widget medycyna_pracy({required Medicine judgment}) {
         medicalHeader(
           judgment.dateOfIssue,
           showCity: false,
+          typeText: judgment.typeMedical,
           type: true,
         ),
         medical_title(number: judgment.number),
@@ -34,10 +37,10 @@ pw.Widget medycyna_pracy({required Medicine judgment}) {
           'W wyniku badania lekarskiego i oceny narażeń występujących na stanowisku pracy, stosownie do art. 43 pkt 2 i art. 229 § 4 ustawy z dnia 26 czerwca 1974 r. – Kodeks pracy ((t.j.Dz. U. z 2019 r. poz. 1040 z późn. Zm.), orzeka się, że:',
           style: const pw.TextStyle(fontSize: 10),
         ),
-        patientNameKodeks(judgment.patient.getFullName()),
-        patientPeselKodeks(judgment.patient.getDocument()),
-        patientResidenceKodeks(judgment.patient.residentialAddress.toString()),
-        work(judgment.firm.toString()),
+        patientNameKodeks(patient.getFullName()),
+        patientPeselKodeks(patient.getDocument()),
+        patientResidenceKodeks(patient.residentialAddress.toString()),
+        work(firm.toString()),
         pw.SizedBox(height: 10),
         workPosition(judgment.workPosition, a: judgment.checkboxA, b: judgment.checkboxB, c: judgment.checkboxC, date: judgment.checkboxCDate),
         pw.SizedBox(height: 20),

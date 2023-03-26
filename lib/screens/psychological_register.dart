@@ -1,7 +1,7 @@
 import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/enums/documents.dart';
 import 'package:e_rejestr/models/register.dart';
-import 'package:e_rejestr/screens/medical_register/register_list.dart';
+import 'package:e_rejestr/screens/register_list.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/widgets/empty_widget.dart';
 import 'package:e_rejestr/widgets/loading_widget.dart';
@@ -19,12 +19,13 @@ class PsychologicalRegister extends StatefulWidget {
 }
 
 class _PsychologicalRegisterState extends State<PsychologicalRegister> {
-  List<Register> convertToList(List<Document> documents) {
+  Future<List<Register>> convertToList(List<Document> documents) async {
     var registers = <Register>[];
 
     for (var element in documents) {
-      var json = Register.converJugmnetToRightPdf(element.map, DocumentType.psycho);
+      var json = await Register.converJugmnetToRightPdf(element.map, DocumentType.psycho);
       var register = Register.fromJson(json);
+
       if (register.fullName.contains(searchController.text)) {
         registers.add(register);
       }
@@ -35,6 +36,7 @@ class _PsychologicalRegisterState extends State<PsychologicalRegister> {
 
   TextEditingController searchController = TextEditingController();
   var stream = Firestore.instance.collection(Collection.kartKzPsycho.name).stream;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,12 +58,20 @@ class _PsychologicalRegisterState extends State<PsychologicalRegister> {
                 return const LoadingWidget();
               }
               if (snapshot.hasData && snapshot.data != null) {
-                if (snapshot.data!.isEmpty || convertToList(snapshot.data!).isEmpty) {
-                  return const EmptyWidget();
-                }
+                return FutureBuilder<List<Register>>(
+                    future: convertToList(snapshot.data!),
+                    builder: (context, futureSnap) {
+                      if (futureSnap.hasData && snapshot.data != null) {
+                        if (snapshot.data!.isEmpty || futureSnap.data!.isEmpty) {
+                          return const EmptyWidget();
+                        }
 
-                return RegisterList(registerItems: convertToList(snapshot.data!));
-                // TODO ZROBIĆ CRUDA REJESTRU
+                        return RegisterList(registerItems: futureSnap.data!);
+                        // TODO ZROBIĆ CRUDA REJESTRU
+                      }
+
+                      return Container();
+                    });
               }
               return const Text(
                 'Wystąpił niespodziwany błąd',
