@@ -1,5 +1,6 @@
 import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/enums/documents.dart';
+import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/register.dart';
 import 'package:e_rejestr/screens/register_list.dart';
 import 'package:e_rejestr/utils/colors.dart';
@@ -23,11 +24,15 @@ class _PsychologicalRegisterState extends State<PsychologicalRegister> {
     var registers = <Register>[];
 
     for (var element in documents) {
-      var json = await Register.converJugmnetToRightPdf(element.map, DocumentType.psycho);
-      var register = Register.fromJson(json);
+      var listOfJudgment = (element.map['judgments'] as List<dynamic>).map((e) => Judgment.fromJson(e)).toList();
+      var articles = listOfJudgment.map((e) => e.article).toList();
+      for (var judgment in listOfJudgment) {
+        var json = await Register.convertPsychologicalJudgmentToRegister(patientId: element.map['patientId'], judgment: judgment, articles: articles);
+        var register = Register.fromJson(json);
 
-      if (register.fullName.contains(searchController.text)) {
-        registers.add(register);
+        if (register.fullName.contains(searchController.text)) {
+          registers.add(register);
+        }
       }
     }
 

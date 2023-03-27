@@ -1,4 +1,6 @@
 import 'package:e_rejestr/enums/documents.dart';
+import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
+import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/karta_kz.dart';
 import 'package:e_rejestr/models/karta_kz_medical.dart';
 import 'package:e_rejestr/models/patient.dart';
@@ -53,7 +55,35 @@ class Register {
     return articles.join(', ');
   }
 
-  static Future<Map<String, dynamic>> converJugmnetToRightPdf(Map<String, dynamic> json, DocumentType document) async {
+  static Future<Map<String, dynamic>> convertPsychologicalJudgmentToRegister({required String patientId, required Judgment judgment, required List<String> articles}) async {
+    var jsonMap = <String, dynamic>{};
+    var patient = await Patient.getPatientById(id: patientId);
+
+    jsonMap['lp'] = judgment.number;
+    jsonMap['address'] = patient.residentialAddress.toJson();
+    jsonMap['documentNumber'] = patient.getDocument();
+    jsonMap['articles'] = articles;
+    jsonMap['releaseDate'] = judgment.dateOfIssue;
+    jsonMap['fullName'] = patient.getFullName();
+
+    return jsonMap;
+  }
+
+  static Future<Map<String, dynamic>> convertMedicalJudgmentToRegister({required String patientId, required MedicaJudgmentInterface judgment, required List<String> articles}) async {
+    var jsonMap = <String, dynamic>{};
+
+    var patient = await Patient.getPatientById(id: patientId);
+    jsonMap['lp'] = judgment.number;
+    jsonMap['address'] = patient.residentialAddress.toJson();
+    jsonMap['documentNumber'] = patient.getDocument();
+    jsonMap['articles'] = articles;
+    jsonMap['releaseDate'] = judgment.dateOfIssue;
+    jsonMap['fullName'] = patient.getFullName();
+
+    return jsonMap;
+  }
+
+  static Future<Map<String, dynamic>> converJugmnetToRegister(Map<String, dynamic> json, DocumentType document) async {
     if (document == DocumentType.medical) {
       var kartaKz = KartaKzMedical.fromJson(json);
 

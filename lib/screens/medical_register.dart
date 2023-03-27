@@ -1,8 +1,12 @@
 import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/enums/documents.dart';
+import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
+import 'package:e_rejestr/models/medical_judgment.dart';
+import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/register.dart';
 import 'package:e_rejestr/screens/register_list.dart';
 import 'package:e_rejestr/utils/colors.dart';
+import 'package:e_rejestr/utils/judgments.dart';
 import 'package:e_rejestr/widgets/empty_widget.dart';
 import 'package:e_rejestr/widgets/loading_widget.dart';
 import 'package:e_rejestr/widgets/register_header/register_header.dart';
@@ -22,10 +26,14 @@ class _MedicalRegisterState extends State<MedicalRegister> {
     var registers = <Register>[];
 
     for (var element in documents) {
-      var json = await Register.converJugmnetToRightPdf(element.map, DocumentType.medical);
-      var register = Register.fromJson(json);
-      if (register.fullName.contains(searchController.text)) {
-        registers.add(register);
+      List<MedicaJudgmentInterface> listOfJudgment = (element.map['judgments'] as List<dynamic>).map((e) => e['judgmentName'] == medicalMedycynaPracy || e['judgmentName'] == medicalMedycynaPracyInstruktor ? Medicine.fromJson(e) : MedicalJudgment.fromJson(e)).toList();
+      var articles = listOfJudgment.map((e) => e.article).toList();
+      for (var judgment in listOfJudgment) {
+        var json = await Register.convertMedicalJudgmentToRegister(patientId: element.map['patientId'], judgment: judgment, articles: articles);
+        var register = Register.fromJson(json);
+        if (register.fullName.contains(searchController.text)) {
+          registers.add(register);
+        }
       }
     }
 

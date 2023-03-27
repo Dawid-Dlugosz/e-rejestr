@@ -1,14 +1,9 @@
-import 'dart:io';
-
-import 'package:e_rejestr/pdf/medical/utils/page2_kodeks.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:e_rejestr/widgets/home_nav_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+
 import 'package:provider/provider.dart';
 
 class HomeNav extends StatelessWidget {
