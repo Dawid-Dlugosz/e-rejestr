@@ -15,21 +15,14 @@ class RegisterHeader extends StatelessWidget {
         1: FractionColumnWidth(0.2),
         2: FractionColumnWidth(0.2),
         3: FractionColumnWidth(0.2),
-        4: FractionColumnWidth(0.1),
-        5: FractionColumnWidth(0.1),
-        6: FractionColumnWidth(0.1),
+        4: FractionColumnWidth(0.05),
+        5: FractionColumnWidth(0.07),
+        6: FractionColumnWidth(0.08),
+        7: FractionColumnWidth(0.1),
       },
       children: const [
         TableRow(
-          children: [
-            HeaderItem('Lp'),
-            HeaderItem('Imię i nazwisko, adres zamieszkania osoby badanej'),
-            HeaderItem('Nr PESEL \n a w przypadku osoby której nie ma nadanego nr PESEL - nazwa i numer dokumentu tożsamości'),
-            HeaderItem('Określenie rodzaju wydanego orzeczenia wraz z podaniem kategorii prawa jazdy'),
-            HeaderItem('Uwagi'),
-            HeaderItem('Data wydania'),
-            HeaderItem('Potwierdzenie odbioru'),
-          ],
+          children: [HeaderItem('Lp'), HeaderItem('Imię i nazwisko, adres zamieszkania osoby badanej'), HeaderItem('Nr PESEL \n a w przypadku osoby której nie ma nadanego nr PESEL - nazwa i numer dokumentu tożsamości'), HeaderItem('Określenie rodzaju wydanego orzeczenia wraz z podaniem kategorii prawa jazdy'), HeaderItem('Uwagi'), HeaderItem('Data wydania'), HeaderItem('Potwierdzenie odbioru'), HeaderItem('Akcja')],
         ),
       ],
     );
