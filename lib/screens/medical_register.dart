@@ -72,7 +72,10 @@ class _MedicalRegisterState extends State<MedicalRegister> {
                           return const EmptyWidget();
                         }
 
-                        return RegisterList(registerItems: futureSnap.data!);
+                        return RegisterList(
+                          registerItems: futureSnap.data!,
+                          documentType: DocumentType.medical,
+                        );
                         // TODO ZROBIĆ CRUDA REJESTRU
                       }
                       return Container();

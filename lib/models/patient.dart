@@ -1,4 +1,5 @@
 import 'package:e_rejestr/enums/collections.dart';
+import 'package:e_rejestr/enums/documents.dart';
 import 'package:e_rejestr/models/residental_address.dart';
 import 'package:firedart/firedart.dart';
 
@@ -57,5 +58,17 @@ class Patient {
     var patient = Patient.fromJson(document.map);
 
     return patient;
+  }
+
+  static Future<Patient> getPatientByKartNumber({required String number, required DocumentType documentType}) async {
+    if (documentType == DocumentType.medical) {
+      var documents = await Firestore.instance.collection(Collection.kartKzMedical.name).where('number', isEqualTo: number).get();
+      var id = documents.first.map['patientId'];
+      return await getPatientById(id: id);
+    }
+
+    var documents = await Firestore.instance.collection(Collection.kartKzPsycho.name).where('number', isEqualTo: number).get();
+    var id = documents.first.map['patientId'];
+    return await getPatientById(id: id);
   }
 }

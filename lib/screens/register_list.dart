@@ -1,11 +1,19 @@
+import 'package:e_rejestr/dialogs/delete_kz.dart';
+import 'package:e_rejestr/enums/collections.dart';
+import 'package:e_rejestr/enums/documents.dart';
+import 'package:e_rejestr/screens/medical_edit.dart';
+import 'package:e_rejestr/screens/medical_judgment_preview.dart';
 import 'package:e_rejestr/models/register.dart';
+import 'package:e_rejestr/screens/psycho_judgment_preview.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/widgets/register_header/header_item.dart';
+import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 
 class RegisterList extends StatelessWidget {
-  const RegisterList({required this.registerItems, super.key});
+  const RegisterList({required this.registerItems, required this.documentType, super.key});
   final List<Register> registerItems;
+  final DocumentType documentType;
 
   List<String> splitOrderSubcomponents(String order) {
     List<String> subcomponents = [];
@@ -28,6 +36,18 @@ class RegisterList extends StatelessWidget {
     subcomponents.add(currentSubcomponent);
 
     return subcomponents;
+  }
+
+  Future<void> deleteKz(String number) async {
+    if (documentType == DocumentType.medical) {
+      var documents = await Firestore.instance.collection(Collection.kartKzMedical.name).where('number', isEqualTo: number).get();
+      var docId = documents.first.map['uid'];
+      await Firestore.instance.collection(Collection.kartKzMedical.name).document(docId).delete();
+    } else {
+      var documents = await Firestore.instance.collection(Collection.kartKzPsycho.name).where('number', isEqualTo: number).get();
+      var docId = documents.first.map['uid'];
+      await Firestore.instance.collection(Collection.kartKzPsycho.name).document(docId).delete();
+    }
   }
 
   @override
@@ -116,12 +136,55 @@ class RegisterList extends StatelessWidget {
                     runSpacing: 8,
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // TODO ZROBIĆ TO GDZIE JEST TWORZENIE TYCH ORZECZEŃ, BĘDZIE TAK NAPROŚCIEJ
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MedicalEdit(
+                                        register: e,
+                                      )));
+                        },
                         child: const Text('Edytuj'),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (documentType == DocumentType.medical) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MedicalJudgmentPreview(register: e),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PsychoJudgmentPreview(register: e),
+                              ),
+                            );
+                          }
+                          // TODO ZROBIĆ ODZIELNE ŻECZY DLA REJESTRU PSYCHOLOGICZNEGO
+                        },
                         child: const Text('Podgląd'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: DeleteKz(number: e.getNumberWithOutAlpha()),
+                              );
+                            },
+                          ).then((value) async {
+                            if (value != null && value == true) {
+                              await deleteKz(e.getNumberWithOutAlpha());
+                            }
+                          });
+                        },
+                        child: const Text('Usuń'),
                       ),
                     ],
                   ),

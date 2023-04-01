@@ -89,7 +89,6 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   late String filePath;
 
   Future<void> _init() async {
-    // TODO zrobić sprawdzanie czy zmenił się miesiąc jeśli tak wyzeorwać licznik i ustawić na 1 i miesiać + 1
     registerViewModel = Provider.of<RegisterViewModel>(context, listen: false);
 
     loaded = true;
@@ -176,7 +175,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
-          return _getMedicialJudgment(judgment);
+          return getMedicialJudgment(judgment, patient!, firm);
         },
       ),
     );
@@ -206,57 +205,13 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
-          return _getPsychoJudgment(judgment);
+          return getPsychoJudgment(judgment, patient!);
         },
       ),
     );
 
     var file = getFileWithPath(path: path, name: judgment.judgmentName, number: judgment.number);
     await file.writeAsBytes(await pdf.save());
-  }
-
-  pw.Widget _getMedicialJudgment(MedicaJudgmentInterface judgment) {
-    switch (judgment.judgmentName) {
-      case medicalMedycynaPracy:
-        return medycyna_pracy(judgment: judgment as Medicine, patient: patient!, firm: firm!);
-      case medicalMedycynaPracyInstruktor:
-        return medycyna_pracy_instruktor(judgment: judgment as Medicine, patient: patient!, firm: firm!);
-      case medicalStarajacySie:
-        return kierowca_starajacy_sie(judgment: judgment as MedicalJudgment, patient: patient!);
-      case medicalStarajacySiePrzedluzenie:
-        return kierowca_starajacy_sie_przedluzenie(judgment: judgment as MedicalJudgment, patient: patient!);
-      case medicalStarajacySieNieletni:
-        return kierowca_starajacy_sie_niepelnoletni_3_pieczatki(judgment: judgment as MedicalJudgment, patient: patient!);
-      case medicalUprzywilejowany:
-        return kierowcow_uprzewilejowanych(judgment: judgment as MedicalJudgment, patient: patient!);
-      default:
-        return medycyna_pracy(judgment: judgment as Medicine, patient: patient!, firm: firm!);
-    }
-  }
-
-  pw.Widget _getPsychoJudgment(Judgment judgment) {
-    switch (judgment.judgmentName) {
-      case judgmentOgolny:
-        return psychologist_ogolny(patient: patient!, judgment: judgment);
-      case judgmentPrzedluzenie:
-        return psychologist_przedluzenie(patient: patient!, judgment: judgment);
-      case judgment39:
-        return psychologist_39(patient: patient!, judgment: judgment);
-      case judgmentUprzywilej:
-        return psychologist_uprzywilej(patient: patient!, judgment: judgment);
-      case judgmentAlkohol:
-        return psychologist_alkohol(patient: patient!, judgment: judgment);
-      case judgmentPunktyKarne:
-        return psychologist_punkty_karne(patient: patient!, judgment: judgment);
-      case judgmentPrzywrocenie:
-        return psychologist_przywrocenie(patient: patient!, judgment: judgment);
-      case judgmentWypadek:
-        return psychologist_wypadek(patient: patient!, judgment: judgment);
-      case judgmentInstruktor:
-        return psychologist_egzaminator_instruktor(patient: patient!, judgment: judgment);
-      default:
-        return psychologist_ogolny(patient: patient!, judgment: judgment);
-    }
   }
 
   Future<void> _saveMedicalJudgments() async {
@@ -394,6 +349,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
         patientId: patient!.uid,
         number: nrMedical,
         judgments: judgmentMedicals,
+        firmId: firm != null ? firm!.id : null,
       );
 
       pdf.addPage(

@@ -6,8 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class PatientInfo extends StatelessWidget {
-  const PatientInfo(this.patient, {super.key});
+  const PatientInfo(this.patient, {this.hideRegisters = false, super.key});
   final Patient? patient;
+  final bool hideRegisters;
 
   @override
   Widget build(BuildContext context) {
@@ -22,36 +23,40 @@ class PatientInfo extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder<String>(
-                future: Provider.of<RegisterViewModel>(context, listen: false).getPsychoRegisterNumber(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    return Text(
-                      'Nr. rej. psycho : ${snapshot.data!}',
-                      style: const TextStyle(color: white, fontSize: 25),
-                    );
-                  }
-                  return const Text(
-                    'Nr. rej. psycho :',
-                    style: TextStyle(color: white, fontSize: 25),
-                  );
-                },
-              ),
-              FutureBuilder<String>(
-                future: Provider.of<RegisterViewModel>(context, listen: false).getRegisterMedicalNumber(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    return Text(
-                      'Nr. rej. lekarskiego : ${snapshot.data!}',
-                      style: const TextStyle(color: white, fontSize: 25),
-                    );
-                  }
-                  return const Text(
-                    'Nr. rej. lekarskiego :',
-                    style: TextStyle(color: white, fontSize: 25),
-                  );
-                },
-              ),
+              !hideRegisters
+                  ? FutureBuilder<String>(
+                      future: Provider.of<RegisterViewModel>(context, listen: false).getPsychoRegisterNumber(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data != null) {
+                          return Text(
+                            'Nr. rej. psycho : ${snapshot.data!}',
+                            style: const TextStyle(color: white, fontSize: 25),
+                          );
+                        }
+                        return const Text(
+                          'Nr. rej. psycho :',
+                          style: TextStyle(color: white, fontSize: 25),
+                        );
+                      },
+                    )
+                  : Container(),
+              !hideRegisters
+                  ? FutureBuilder<String>(
+                      future: Provider.of<RegisterViewModel>(context, listen: false).getRegisterMedicalNumber(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data != null) {
+                          return Text(
+                            'Nr. rej. lekarskiego : ${snapshot.data!}',
+                            style: const TextStyle(color: white, fontSize: 25),
+                          );
+                        }
+                        return const Text(
+                          'Nr. rej. lekarskiego :',
+                          style: TextStyle(color: white, fontSize: 25),
+                        );
+                      },
+                    )
+                  : Container(),
             ],
           ),
           Text(

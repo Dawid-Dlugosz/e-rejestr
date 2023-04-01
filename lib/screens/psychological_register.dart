@@ -71,7 +71,10 @@ class _PsychologicalRegisterState extends State<PsychologicalRegister> {
                           return const EmptyWidget();
                         }
 
-                        return RegisterList(registerItems: futureSnap.data!);
+                        return RegisterList(
+                          registerItems: futureSnap.data!,
+                          documentType: DocumentType.psycho,
+                        );
                         // TODO ZROBIĆ CRUDA REJESTRU
                       }
 

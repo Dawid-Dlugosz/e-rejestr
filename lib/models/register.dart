@@ -124,4 +124,8 @@ class Register {
 
     return jsonMap;
   }
+
+  String getNumberWithOutAlpha() {
+    return lp.replaceAll(RegExp('[a-zA-Z]'), '');
+  }
 }

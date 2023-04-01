@@ -29,7 +29,6 @@ class FilePath extends StatelessWidget {
               ),
             ],
           )
-          // TODO ZROBIĆ MOŻLIWOŚĆ ZMIANY NUMERY DLA KARTY KZ MEDYCZNEJ I PSYCHOLOGICZNEJ
         ],
       ),
     );
