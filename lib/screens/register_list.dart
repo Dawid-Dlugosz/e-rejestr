@@ -113,10 +113,9 @@ class RegisterList extends StatelessWidget {
           1: FractionColumnWidth(0.2),
           2: FractionColumnWidth(0.2),
           3: FractionColumnWidth(0.2),
-          4: FractionColumnWidth(0.05),
-          5: FractionColumnWidth(0.07),
-          6: FractionColumnWidth(0.08),
-          7: FractionColumnWidth(0.1),
+          4: FractionColumnWidth(0.1),
+          5: FractionColumnWidth(0.1),
+          6: FractionColumnWidth(0.1),
         },
         children: [
           ...registerItems.map(
