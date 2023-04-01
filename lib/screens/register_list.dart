@@ -164,7 +164,6 @@ class RegisterList extends StatelessWidget {
                               ),
                             );
                           }
-                          // TODO ZROBIĆ ODZIELNE ŻECZY DLA REJESTRU PSYCHOLOGICZNEGO
                         },
                         child: const Text('Podgląd'),
                       ),

@@ -38,6 +38,7 @@ import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
@@ -280,7 +281,6 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       judgments[0].residence = patient!.residentialAddress.toString();
     }
 
-    // TODO ZROBIĆ SAVE dodać do firebase I ODRAZU DO DRUKU
     notifyListeners();
   }
 
@@ -400,6 +400,133 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
         registerViewModel.updateMedicalRegisterNumber(newRegNumber);
       }
     }
+  }
+
+  Widget printFiles() {
+    return PdfPreview(
+      padding: const EdgeInsets.symmetric(horizontal: 200),
+      canDebug: false,
+      canChangePageFormat: false,
+      canChangeOrientation: false,
+      build: (format) => _generatePdf(format, 'Wszystkie pdf'),
+    );
+  }
+
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+    var font = await rootBundle.load("fonts/Lato-Regular.ttf");
+    var myTheme = pw.ThemeData.withFont(
+      base: pw.Font.ttf(await rootBundle.load("fonts/Lato-Regular.ttf")),
+      bold: pw.Font.ttf(await rootBundle.load("fonts/Lato-Bold.ttf")),
+    );
+    var pdf = pw.Document(theme: myTheme);
+    pw.Font.ttf(font);
+
+    if (judgments.isNotEmpty) {
+      late String nrPsycho;
+      if (!enableChangeKZPsychoNumber()) {
+        nrPsycho = psychoTextCotroller.text;
+      } else {
+        nrPsycho = await registerViewModel.getPsychoRegisterNumber();
+      }
+
+      kartaKzPsycho = KartaKz(
+        uid: const Uuid().v4(),
+        patientId: patient!.uid,
+        number: nrPsycho,
+        judgments: judgments,
+      );
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: nrPsycho);
+          },
+        ),
+      );
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return karta_kz_page_2();
+          },
+        ),
+      );
+
+      judgments.forEach((element) {
+        pdf.addPage(
+          pw.Page(
+            pageFormat: PdfPageFormat.a4,
+            build: (pw.Context context) {
+              return getPsychoJudgment(element, patient!);
+            },
+          ),
+        );
+      });
+    }
+
+    if (judgmentMedicals.isNotEmpty) {
+      late String nrMedical;
+      if (!enableChangeKZMedicalNumber()) {
+        nrMedical = medicalTextController.text;
+      } else {
+        nrMedical = await registerViewModel.getRegisterMedicalNumber();
+      }
+
+      kartaKzMedical = KartaKzMedical(
+        uid: const Uuid().v4(),
+        patientId: patient!.uid,
+        number: nrMedical,
+        judgments: judgmentMedicals,
+        firmId: firm != null ? firm!.id : null,
+      );
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgmentMedicals[0].dateOfIssue, nrRej: nrMedical);
+          },
+        ),
+      );
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return karta_kz_page_2();
+          },
+        ),
+      );
+
+      judgmentMedicals.forEach((element) {
+        pdf.addPage(
+          pw.Page(
+            pageFormat: PdfPageFormat.a4,
+            build: (pw.Context context) {
+              return getMedicialJudgment(element, patient!, firm);
+            },
+          ),
+        );
+        pdf.addPage(
+          pw.Page(
+            pageFormat: PdfPageFormat.a4,
+            build: (pw.Context context) {
+              return page2(element.judgmentName);
+            },
+          ),
+        );
+      });
+    }
+    return pdf.save();
   }
 
   Future<void> openFile(String path) async {

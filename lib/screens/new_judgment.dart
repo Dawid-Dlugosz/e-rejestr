@@ -63,10 +63,22 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
             model.showPreviewPopup = true;
           });
         } else {
-          await model.addToFirebase();
+          printAndSave();
         }
       }
     }
+  }
+
+  void printAndSave() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: model.printFiles(),
+          );
+        }).then(
+      (value) async => await model.addToFirebase(),
+    );
   }
 
   @override
@@ -93,7 +105,7 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                   viewModel.showPreviewPopup = false;
                 });
                 if (value != null && value == true) {
-                  viewModel.addToFirebase();
+                  printAndSave();
                 } else {
                   viewModel.removeFiles();
                 }
