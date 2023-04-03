@@ -4,11 +4,15 @@ import 'package:e_rejestr/enums/documents.dart';
 import 'package:e_rejestr/screens/medical_edit.dart';
 import 'package:e_rejestr/screens/medical_judgment_preview.dart';
 import 'package:e_rejestr/models/register.dart';
+import 'package:e_rejestr/screens/new_judgment.dart';
 import 'package:e_rejestr/screens/psycho_judgment_preview.dart';
 import 'package:e_rejestr/utils/colors.dart';
 import 'package:e_rejestr/widgets/register_header/header_item.dart';
 import 'package:firedart/firedart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../view_models/new_judgment_creator_view_model.dart';
 
 class RegisterList extends StatelessWidget {
   const RegisterList({required this.registerItems, required this.documentType, super.key});
@@ -113,9 +117,10 @@ class RegisterList extends StatelessWidget {
           1: FractionColumnWidth(0.2),
           2: FractionColumnWidth(0.2),
           3: FractionColumnWidth(0.2),
-          4: FractionColumnWidth(0.1),
-          5: FractionColumnWidth(0.1),
-          6: FractionColumnWidth(0.1),
+          4: FractionColumnWidth(0.05),
+          5: FractionColumnWidth(0.07),
+          6: FractionColumnWidth(0.08),
+          7: FractionColumnWidth(0.1),
         },
         children: [
           ...registerItems.map(
@@ -136,13 +141,17 @@ class RegisterList extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // TODO ZROBIĆ TO GDZIE JEST TWORZENIE TYCH ORZECZEŃ, BĘDZIE TAK NAPROŚCIEJ
+                          // TODO ZMIENIA NUMER ORZECZENIA KIEDY EDYTUJE
+                          // przyjżeć się też dacie która jest dodawana do nowego orzeczenia, powinna być taka sam jak starych
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MedicalEdit(
-                                        register: e,
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                create: (_) => NewJudgmentCreatorViewModel(context, register: e, documentType: documentType),
+                                child: const NewJudgmentCreator(),
+                              ),
+                            ),
+                          );
                         },
                         child: const Text('Edytuj'),
                       ),

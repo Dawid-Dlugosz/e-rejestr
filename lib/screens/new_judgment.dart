@@ -1,5 +1,6 @@
 import 'package:e_rejestr/dialogs/firm_container.dart';
 import 'package:e_rejestr/dialogs/preview_dialog/preview_dialog.dart';
+import 'package:e_rejestr/enums/documents.dart';
 import 'package:e_rejestr/models/firm.dart';
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/utils/colors.dart';
@@ -30,6 +31,7 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
   void setPatient(Patient patient) {
     setState(() {
       this.patient = patient;
+      model.patient = patient;
     });
   }
 
@@ -50,13 +52,12 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
 
   Future<void> saveJudgment({bool saveAndPrint = false}) async {
     {
-      if (patient == null) {
+      if (model.patient == null) {
         var snackBar = const SnackBar(
           content: Text('Wybierz pacjenta'),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
-        model.patient = patient;
         await model.saveFiles();
         if (!saveAndPrint) {
           setState(() {
@@ -97,6 +98,7 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                   openFile: viewModel.openFile,
                   kartaKzPsycho: viewModel.kartaKzPsycho,
                   kartaKzMedical: viewModel.kartaKzMedical,
+                  edit: viewModel.documentType != null,
                 );
               },
             ).then(
@@ -106,6 +108,8 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                 });
                 if (value != null && value == true) {
                   printAndSave();
+                } else if (value != null && value == 'edit') {
+                  viewModel.editJudgment();
                 } else {
                   viewModel.removeFiles();
                 }
@@ -115,6 +119,11 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
         });
         model = viewModel;
         return Scaffold(
+          appBar: viewModel.documentType != null
+              ? AppBar(
+                  title: const Text('Edytuj orzeczenie'),
+                )
+              : null,
           body: viewModel.loaded
               ? Padding(
                   padding: const EdgeInsets.all(20),
@@ -130,14 +139,14 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                           runAlignment: WrapAlignment.spaceBetween,
                           alignment: WrapAlignment.spaceBetween,
                           children: [
-                            PatientInfo(patient),
+                            PatientInfo(viewModel.patient, hideRegisters: viewModel.documentType != null),
                             Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                firm != null
-                                    ? FirmInfo(firm!, clearFirm)
+                                viewModel.firm != null
+                                    ? FirmInfo(viewModel.firm!, clearFirm)
                                     : ElevatedButton(
                                         onPressed: () {
                                           showDialog(
@@ -166,61 +175,65 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                       const SizedBox(
                         height: 5,
                       ),
-                      Wrap(
-                        children: [
-                          SizedBox(
-                            width: 250,
-                            child: CheckboxListTile(
-                              title: const Text('Nadaj własny numer'),
-                              value: viewModel.enableTextFieldPsycho,
-                              onChanged: (value) {
-                                setState(() {
-                                  viewModel.enableTextFieldPsycho = value!;
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 300,
-                            child: TextField(
-                              enabled: viewModel.enableTextFieldPsycho,
-                              controller: viewModel.psychoTextCotroller,
-                              decoration: const InputDecoration(
-                                hintText: '1/3/23',
-                                label: Text('numer badania psychologicznego'),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      viewModel.documentType == null
+                          ? Wrap(
+                              children: [
+                                SizedBox(
+                                  width: 250,
+                                  child: CheckboxListTile(
+                                    title: const Text('Nadaj własny numer'),
+                                    value: viewModel.enableTextFieldPsycho,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        viewModel.enableTextFieldPsycho = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 300,
+                                  child: TextField(
+                                    enabled: viewModel.enableTextFieldPsycho,
+                                    controller: viewModel.psychoTextCotroller,
+                                    decoration: const InputDecoration(
+                                      hintText: '1/3/23',
+                                      label: Text('numer badania psychologicznego'),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
                       const SizedBox(height: 5),
-                      Wrap(
-                        children: [
-                          SizedBox(
-                            width: 250,
-                            child: CheckboxListTile(
-                              title: const Text('Nadaj własny numer'),
-                              value: viewModel.enableTextFieldMedic,
-                              onChanged: (value) {
-                                setState(() {
-                                  viewModel.enableTextFieldMedic = value!;
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 300,
-                            child: TextField(
-                              enabled: viewModel.enableTextFieldMedic,
-                              controller: viewModel.medicalTextController,
-                              decoration: const InputDecoration(
-                                hintText: '1/3/23',
-                                label: Text('numer badania medycznego'),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      viewModel.documentType == null
+                          ? Wrap(
+                              children: [
+                                SizedBox(
+                                  width: 250,
+                                  child: CheckboxListTile(
+                                    title: const Text('Nadaj własny numer'),
+                                    value: viewModel.enableTextFieldMedic,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        viewModel.enableTextFieldMedic = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 300,
+                                  child: TextField(
+                                    enabled: viewModel.enableTextFieldMedic,
+                                    controller: viewModel.medicalTextController,
+                                    decoration: const InputDecoration(
+                                      hintText: '1/3/23',
+                                      label: Text('numer badania medycznego'),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
                       viewModel.enableTextFieldMedic == true || viewModel.enableTextFieldPsycho == true
                           ? const Text(
                               'Jeśli jest włączone wpysywanie własnego numeru, numer automatycznie nie zaktualizuje się w bazie!',
@@ -238,52 +251,59 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    ...viewModel.typeOfJudgments.map(
-                                      (e) => SelectPsychologistJudgment(
-                                        name: e,
-                                        addRemoveJudgment: viewModel.addRemoveJudgment,
-                                        updateJudgment: viewModel.updateJudgment,
-                                        select: viewModel.judgments.where((element) => element.judgmentName == e).isEmpty ? false : true,
+                            viewModel.documentType != null && viewModel.documentType == DocumentType.medical
+                                ? Container()
+                                : Expanded(
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          ...viewModel.typeOfJudgments.map(
+                                            (e) => SelectPsychologistJudgment(
+                                              name: e,
+                                              addRemoveJudgment: viewModel.addRemoveJudgment,
+                                              updateJudgment: viewModel.updateJudgment,
+                                              dateOfIssue: viewModel.documentType != null ? viewModel.kartaKzPsycho!.judgments[0].dateOfIssue : null,
+                                              select: viewModel.judgments.where((element) => element.judgmentName == e).isEmpty ? false : true,
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
+                                    ),
+                                  ),
                             const SizedBox(width: 20),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    ...viewModel.typeOfJudgmentsMedical.map((e) {
-                                      if (e == medicalMedycynaPracyInstruktor || e == medicalMedycynaPracy) {
-                                        return firm != null
-                                            ? SelectMedicineJudgment(
+                            viewModel.documentType != null && viewModel.documentType == DocumentType.psycho
+                                ? Container()
+                                : Expanded(
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          ...viewModel.typeOfJudgmentsMedical.map((e) {
+                                            if (e == medicalMedycynaPracyInstruktor || e == medicalMedycynaPracy) {
+                                              return viewModel.firm != null
+                                                  ? SelectMedicineJudgment(
+                                                      name: e,
+                                                      addRemoveJudgment: viewModel.addRemoveMedicalJudgment,
+                                                      updateJudgment: viewModel.updateMedicalJudgment,
+                                                      select: viewModel.judgmentMedicals.where((element) => element.judgmentName == e).isEmpty ? false : true,
+                                                      dateOfIssue: viewModel.documentType != null ? viewModel.kartaKzMedical!.judgments[0].dateOfIssue : null,
+                                                      firm: viewModel.firm,
+                                                      setFirm: setFirm,
+                                                    )
+                                                  : Container();
+                                            } else {
+                                              return SelectMedicalJudgment(
                                                 name: e,
                                                 addRemoveJudgment: viewModel.addRemoveMedicalJudgment,
                                                 updateJudgment: viewModel.updateMedicalJudgment,
+                                                dateOfIssue: viewModel.documentType != null ? viewModel.kartaKzMedical!.judgments[0].dateOfIssue : null,
                                                 select: viewModel.judgmentMedicals.where((element) => element.judgmentName == e).isEmpty ? false : true,
-                                                firm: firm,
-                                                setFirm: setFirm,
-                                              )
-                                            : Container();
-                                      } else {
-                                        return SelectMedicalJudgment(
-                                          name: e,
-                                          addRemoveJudgment: viewModel.addRemoveMedicalJudgment,
-                                          updateJudgment: viewModel.updateMedicalJudgment,
-                                          select: viewModel.judgmentMedicals.where((element) => element.judgmentName == e).isEmpty ? false : true,
-                                        );
-                                      }
-                                    })
-                                  ],
-                                ),
-                              ),
-                            ),
+                                              );
+                                            }
+                                          })
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
@@ -295,14 +315,23 @@ class _NewJudgmentCreatorState extends State<NewJudgmentCreator> {
                           child: const Text('Podgląd'),
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          onPressed: viewModel.judgments.isEmpty && viewModel.judgmentMedicals.isEmpty ? null : () async => saveJudgment(saveAndPrint: true),
-                          child: const Text('Zapisz i drukuj'),
-                        ),
-                      )
+                      viewModel.documentType == null
+                          ? Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.only(top: 10),
+                              child: ElevatedButton(
+                                onPressed: viewModel.judgments.isEmpty && viewModel.judgmentMedicals.isEmpty ? null : () async => saveJudgment(saveAndPrint: true),
+                                child: const Text('Zapisz i drukuj'),
+                              ),
+                            )
+                          : Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.only(top: 10),
+                              child: ElevatedButton(
+                                onPressed: viewModel.judgments.isEmpty && viewModel.judgmentMedicals.isEmpty ? null : () async => viewModel.editJudgment(),
+                                child: const Text('Edytuj i drukuj'),
+                              ),
+                            )
                     ],
                   ),
                 )

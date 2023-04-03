@@ -13,12 +13,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SelectMedicineJudgment extends StatefulWidget {
-  SelectMedicineJudgment({required this.name, required this.addRemoveJudgment, required this.updateJudgment, required this.select, required this.firm, required this.setFirm, super.key});
+  SelectMedicineJudgment({
+    required this.name,
+    required this.addRemoveJudgment,
+    required this.updateJudgment,
+    required this.select,
+    required this.firm,
+    required this.setFirm,
+    required this.dateOfIssue,
+    super.key,
+  });
   final String name;
   Firm? firm;
   final Function(MedicaJudgmentInterface judgment) addRemoveJudgment;
   final Function(MedicaJudgmentInterface judgment) updateJudgment;
   final Function(Firm firm) setFirm;
+  final String? dateOfIssue;
   bool select;
 
   @override
@@ -49,6 +59,11 @@ class _SelectMedicineJudgmentState extends State<SelectMedicineJudgment> with Ti
     super.initState();
     var currentDate = DateTime.now();
     dateOfIssue = DateFormat('dd-MM-yyyy').format(currentDate);
+
+    if (widget.select) {
+      _controller.forward();
+    }
+
     _createJudgment();
   }
 
@@ -63,7 +78,7 @@ class _SelectMedicineJudgmentState extends State<SelectMedicineJudgment> with Ti
       judgmentName: widget.name,
       article: getJudgmentArticle(widget.name),
       pdf: widget.name,
-      dateOfIssue: dateOfIssue,
+      dateOfIssue: widget.dateOfIssue ?? dateOfIssue,
       dateOfValidity: _radioDate,
       number: '',
       checkboxA: _checkboxA,

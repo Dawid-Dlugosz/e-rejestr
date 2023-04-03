@@ -4,13 +4,11 @@ import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/karta_kz.dart';
 import 'package:e_rejestr/models/karta_kz_medical.dart';
 import 'package:e_rejestr/utils/colors.dart';
-import 'package:e_rejestr/view_models/new_judgment_creator_view_model.dart';
 import 'package:e_rejestr/widgets/kz_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PreviewDialog extends StatelessWidget {
-  const PreviewDialog({required this.kartaKzMedical, required this.kartaKzPsycho, required this.path, required this.judgments, required this.medicalJudgments, required this.openFile, super.key});
+  const PreviewDialog({required this.kartaKzMedical, required this.kartaKzPsycho, required this.path, required this.judgments, required this.medicalJudgments, required this.openFile, this.edit = false, super.key});
 
   final String path;
   final List<Judgment> judgments;
@@ -18,6 +16,7 @@ class PreviewDialog extends StatelessWidget {
   final Function(String path) openFile;
   final KartaKz? kartaKzPsycho;
   final KartaKzMedical? kartaKzMedical;
+  final bool edit;
 
   @override
   Widget build(BuildContext context) {
@@ -114,13 +113,21 @@ class PreviewDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('Zapisz i drukuj'),
-              ),
-            )
+            !edit
+                ? SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Zapisz i drukuj'),
+                    ),
+                  )
+                : SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context, 'edit'),
+                      child: const Text('Edytuj i drukuj'),
+                    ),
+                  )
           ],
         ),
       ),

@@ -8,10 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SelectPsychologistJudgment extends StatefulWidget {
-  SelectPsychologistJudgment({required this.name, required this.addRemoveJudgment, required this.updateJudgment, required this.select, super.key});
+  SelectPsychologistJudgment({
+    required this.name,
+    required this.addRemoveJudgment,
+    required this.updateJudgment,
+    required this.select,
+    required this.dateOfIssue,
+    super.key,
+  });
   final String name;
   final Function(Judgment judgment) addRemoveJudgment;
   final Function(Judgment judgment) updateJudgment;
+  final String? dateOfIssue;
   bool select;
 
   @override
@@ -72,7 +80,9 @@ class _SelectPsychologistJudgmentState extends State<SelectPsychologistJudgment>
   void initState() {
     var currentDate = DateTime.now();
     var dateOfIssue = DateFormat('dd-MM-yyyy').format(currentDate);
-
+    if (widget.select) {
+      _controller.forward();
+    }
     judgment = Judgment(
       judgmentName: widget.name,
       number: '',
@@ -85,7 +95,7 @@ class _SelectPsychologistJudgmentState extends State<SelectPsychologistJudgment>
       carB: _carB,
       carC: _carC,
       termOfValidyty: _radioDate,
-      dateOfIssue: dateOfIssue,
+      dateOfIssue: widget.dateOfIssue ?? dateOfIssue,
       pdf: widget.name,
     );
 

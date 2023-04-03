@@ -1,4 +1,6 @@
+import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/models/judgment.dart';
+import 'package:firedart/firedart.dart';
 
 class KartaKz {
   KartaKz({
@@ -31,5 +33,12 @@ class KartaKz {
     json['judgments'] = judgments.map((e) => e.toJson()).toList();
 
     return json;
+  }
+
+  static Future<KartaKz> getByNumber(String number) async {
+    var documents = await Firestore.instance.collection(Collection.kartKzPsycho.name).where('number', isEqualTo: number).get();
+    var map = documents.first.map;
+
+    return KartaKz.fromJson(map);
   }
 }

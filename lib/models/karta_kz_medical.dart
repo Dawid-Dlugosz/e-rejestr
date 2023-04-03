@@ -1,7 +1,9 @@
+import 'package:e_rejestr/enums/collections.dart';
 import 'package:e_rejestr/interfaces/medical_judgment_interface.dart';
 import 'package:e_rejestr/models/medical_judgment.dart';
 import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/utils/judgments.dart';
+import 'package:firedart/firedart.dart';
 
 class KartaKzMedical {
   KartaKzMedical({
@@ -38,5 +40,12 @@ class KartaKzMedical {
     json['judgments'] = judgments.map((e) => e is Medicine ? e.toJson() : (e as MedicalJudgment).toJson()).toList();
 
     return json;
+  }
+
+  static Future<KartaKzMedical> getByNumber(String number) async {
+    var documents = await Firestore.instance.collection(Collection.kartKzMedical.name).where('number', isEqualTo: number).get();
+    var map = documents.first.map;
+
+    return KartaKzMedical.fromJson(map);
   }
 }

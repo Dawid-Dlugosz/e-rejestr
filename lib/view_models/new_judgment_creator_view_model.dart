@@ -9,27 +9,12 @@ import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/judgment_number.dart';
 import 'package:e_rejestr/models/karta_kz.dart';
 import 'package:e_rejestr/models/karta_kz_medical.dart';
-import 'package:e_rejestr/models/medical_judgment.dart';
 import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/patient.dart';
+import 'package:e_rejestr/models/register.dart';
 import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_1.dart';
 import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_2.dart';
-import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie.dart';
-import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie_niepelnoletni_3_pieczatki.dart';
-import 'package:e_rejestr/pdf/medical/kierowcow_starajacych_sie_przedluzenie.dart';
-import 'package:e_rejestr/pdf/medical/kierowcow_uprzywilejowany.dart';
-import 'package:e_rejestr/pdf/medical/medycyna_pracy.dart';
-import 'package:e_rejestr/pdf/medical/medycyna_pracy_instruktor.dart';
 import 'package:e_rejestr/pdf/medical/page2.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_39.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_alkohol.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_egzamin_instruktor.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_ogolny.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_przedluzenie.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_przywrocenie.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_punkty_karne.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_uprzywilej.dart';
-import 'package:e_rejestr/pdf/psychologist/psychologist_wypadek.dart';
 import 'package:e_rejestr/utils/files.dart';
 import 'package:e_rejestr/utils/judgments.dart';
 import 'package:e_rejestr/utils/shared_preferences.dart';
@@ -45,10 +30,12 @@ import 'package:uuid/uuid.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class NewJudgmentCreatorViewModel extends ChangeNotifier {
-  NewJudgmentCreatorViewModel(this.context) {
+  NewJudgmentCreatorViewModel(this.context, {this.register, this.documentType}) {
     _init();
   }
   final BuildContext context;
+  final Register? register;
+  final DocumentType? documentType;
 
   bool loaded = false;
   bool showPreviewPopup = false;
@@ -92,7 +79,31 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   Future<void> _init() async {
     registerViewModel = Provider.of<RegisterViewModel>(context, listen: false);
 
+    if (documentType == DocumentType.medical) {
+      await getMedicalKartKzByRegister(register!.getNumberWithOutAlpha());
+    }
+    if (documentType == DocumentType.psycho) {
+      await getPsychoKartKzByRegister(register!.getNumberWithOutAlpha());
+    }
+
     loaded = true;
+    notifyListeners();
+  }
+
+  Future<void> getPsychoKartKzByRegister(String number) async {
+    kartaKzPsycho = await KartaKz.getByNumber(number);
+    patient = await Patient.getPatientById(id: kartaKzPsycho!.patientId);
+    judgments.addAll(kartaKzPsycho!.judgments);
+    notifyListeners();
+  }
+
+  Future<void> getMedicalKartKzByRegister(String number) async {
+    kartaKzMedical = await KartaKzMedical.getByNumber(number);
+    patient = await Patient.getPatientById(id: kartaKzMedical!.patientId);
+    if (kartaKzMedical!.firmId != null) {
+      firm = await Firm.getFirmById(id: kartaKzMedical!.firmId!);
+    }
+    judgmentMedicals.addAll(kartaKzMedical!.judgments);
     notifyListeners();
   }
 
@@ -226,7 +237,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       registerNumber = await registerViewModel.getRegisterMedicalNumber();
     }
 
-    var judgmentNumber = JudgmentNumber.fromString(registerNumber);
+    var judgmentNumber = documentType != null ? JudgmentNumber.fromString(kartaKzMedical!.number) : JudgmentNumber.fromString(registerNumber);
     var asciiChar = 65; // A
     if (judgmentMedicals.length > 1) {
       for (var i = 0; i < judgmentMedicals.length; i++) {
@@ -260,7 +271,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       registerNumber = await registerViewModel.getPsychoRegisterNumber();
     }
 
-    var judgmentNumber = JudgmentNumber.fromString(registerNumber);
+    var judgmentNumber = documentType != null ? JudgmentNumber.fromString(kartaKzPsycho!.number) : JudgmentNumber.fromString(registerNumber);
     var asciiChar = 65; // A
 
     if (judgments.length > 1) {
@@ -303,9 +314,9 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       pw.Font.ttf(font);
 
       kartaKzPsycho = KartaKz(
-        uid: const Uuid().v4(),
+        uid: kartaKzPsycho != null ? kartaKzPsycho!.uid : const Uuid().v4(),
         patientId: patient!.uid,
-        number: nrPsycho,
+        number: kartaKzPsycho != null ? kartaKzPsycho!.number : nrPsycho,
         judgments: judgments,
       );
 
@@ -315,7 +326,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           margin: const pw.EdgeInsets.all(10),
           orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
-            return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: nrPsycho);
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: kartaKzPsycho!.number);
           },
         ),
       );
@@ -330,7 +341,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
         ),
       );
 
-      var file = getKzFileWithPath(path: filePath, number: nrPsycho, type: DocumentType.psycho);
+      var file = getKzFileWithPath(path: filePath, number: kartaKzPsycho!.number, type: DocumentType.psycho);
       await file.writeAsBytes(await pdf.save());
     }
 
@@ -345,9 +356,9 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       pw.Font.ttf(font);
 
       kartaKzMedical = KartaKzMedical(
-        uid: const Uuid().v4(),
+        uid: kartaKzMedical != null ? kartaKzMedical!.uid : const Uuid().v4(),
         patientId: patient!.uid,
-        number: nrMedical,
+        number: kartaKzMedical != null ? kartaKzMedical!.number : nrMedical,
         judgments: judgmentMedicals,
         firmId: firm != null ? firm!.id : null,
       );
@@ -358,7 +369,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           margin: const pw.EdgeInsets.all(10),
           orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
-            return karta_kz_page_1(patient: patient!, dateOfIssue: judgmentMedicals[0].dateOfIssue, nrRej: nrMedical);
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgmentMedicals[0].dateOfIssue, nrRej: kartaKzMedical!.number);
           },
         ),
       );
@@ -374,7 +385,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
         ),
       );
 
-      var file = getKzFileWithPath(path: filePath, number: nrMedical, type: DocumentType.medical);
+      var file = getKzFileWithPath(path: filePath, number: kartaKzMedical!.number, type: DocumentType.medical);
       await file.writeAsBytes(await pdf.save());
     }
     notifyListeners();
@@ -430,9 +441,9 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       }
 
       kartaKzPsycho = KartaKz(
-        uid: const Uuid().v4(),
+        uid: kartaKzPsycho != null ? kartaKzPsycho!.uid : const Uuid().v4(),
         patientId: patient!.uid,
-        number: nrPsycho,
+        number: kartaKzPsycho != null ? kartaKzPsycho!.number : nrPsycho,
         judgments: judgments,
       );
 
@@ -478,9 +489,9 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
       }
 
       kartaKzMedical = KartaKzMedical(
-        uid: const Uuid().v4(),
+        uid: kartaKzMedical != null ? kartaKzMedical!.uid : const Uuid().v4(),
         patientId: patient!.uid,
-        number: nrMedical,
+        number: kartaKzMedical != null ? kartaKzMedical!.number : nrMedical,
         judgments: judgmentMedicals,
         firmId: firm != null ? firm!.id : null,
       );
@@ -544,12 +555,16 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
   Future<void> removeFiles() async {
     if (kartaKzMedical != null) {
       await getKzFileWithPath(path: filePath, number: kartaKzMedical!.number, type: DocumentType.medical).delete();
-      kartaKzMedical = null;
+      if (documentType == null) {
+        kartaKzMedical = null;
+      }
     }
 
     if (kartaKzPsycho != null) {
       await getKzFileWithPath(path: filePath, number: kartaKzPsycho!.number, type: DocumentType.psycho).delete();
-      kartaKzPsycho = null;
+      if (documentType == null) {
+        kartaKzPsycho = null;
+      }
     }
 
     if (judgments.isNotEmpty) {
@@ -565,5 +580,23 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<void> editJudgment() async {
+    await saveFiles();
+    if (documentType == DocumentType.medical) {
+      Firestore.instance.collection(Collection.kartKzMedical.name).document(kartaKzMedical!.uid).update(kartaKzMedical!.toJson());
+    }
+    if (documentType == DocumentType.psycho) {
+      Firestore.instance.collection(Collection.kartKzPsycho.name).document(kartaKzPsycho!.uid).update(kartaKzPsycho!.toJson());
+    }
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: printFiles(),
+          );
+        });
   }
 }

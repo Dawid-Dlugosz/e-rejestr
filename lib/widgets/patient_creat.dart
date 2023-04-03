@@ -107,6 +107,7 @@ class _PatientCreateState extends State<PatientCreate> {
                           await viewModel.inserData(clear: true);
                         } else {
                           await viewModel.editData();
+                          Navigator.pop(context);
                         }
 
                         setState(() {
