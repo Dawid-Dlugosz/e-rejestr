@@ -19,6 +19,7 @@ pw.Widget instructions(String judgmentName) {
         pw.Column(
           children: [
             pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
                 pw.Text(
                   '1.',
@@ -29,7 +30,7 @@ pw.Widget instructions(String judgmentName) {
                 ),
                 pw.RichText(
                   text: const pw.TextSpan(
-                    text: 'Osoba badana lub podmiot kierujący na badanie lekarskie, którzy nie zgadzają się z treścią orzeczenia lekarskiego, \n mogą – w terminie 14 dni od dnia otrzymania orzeczenia lekarskiego – za pośrednictwem uprawnionego lekarza, który je wydał, wystąpić z \n wnioskiem o przeprowadzenie ponownego badania lekarskiego odpowiednio',
+                    text: 'Osoba badana lub podmiot kierujący na badanie lekarskie, którzy nie zgadzają się z treścią orzeczenia lekarskiego, \n mogą – w terminie 14 dni od dnia otrzymania orzeczenia lekarskiego – za pośrednictwem uprawnionego lekarza, \n który je wydał, wystąpić z \n wnioskiem o przeprowadzenie ponownego badania lekarskiego odpowiednio',
                     style: pw.TextStyle(fontSize: 10),
                     children: [
                       pw.TextSpan(
@@ -46,7 +47,7 @@ pw.Widget instructions(String judgmentName) {
             ),
             subList(
               number: '1)',
-              text: 'w przypadku orzeczenia wydanego przez uprawnionego lekarza - do wojewódzkiego ośrodka medycyny pracy,\n a w przypadku kandydatów, uczniów lub słuchaczy, o których mowa w art. 75 ust. 1 pkt 7 i 8 ustawy – do wojewódzkiego ośrodka medycyny pracy, właściwego ze względu na siedzibę szkoły;',
+              text: 'w przypadku orzeczenia wydanego przez uprawnionego lekarza - do wojewódzkiego ośrodka \n medycyny pracy, a w przypadku kandydatów, uczniów lub słuchaczy, o których mowa w   \n art. 75 ust. 1 pkt 7 i 8 ustawy – do wojewódzkiego ośrodka medycyny pracy, \n właściwego ze względu na siedzibę szkoły;',
             ),
             subList(
               number: '2)',

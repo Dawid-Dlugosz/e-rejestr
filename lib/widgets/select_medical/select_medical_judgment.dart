@@ -10,10 +10,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SelectMedicalJudgment extends StatefulWidget {
-  SelectMedicalJudgment({required this.name, required this.addRemoveJudgment, required this.updateJudgment, required this.select, super.key});
+  SelectMedicalJudgment({
+    required this.name,
+    required this.addRemoveJudgment,
+    required this.updateJudgment,
+    required this.select,
+    required this.dateOfIssue,
+    super.key,
+  });
   final String name;
   final Function(MedicaJudgmentInterface judgment) addRemoveJudgment;
   final Function(MedicaJudgmentInterface judgment) updateJudgment;
+  final String? dateOfIssue;
   bool select;
 
   @override
@@ -46,6 +54,9 @@ class _SelectMedicalJudgmentState extends State<SelectMedicalJudgment> with Tick
     super.initState();
     var currentDate = DateTime.now();
     var dateOfIssue = DateFormat('dd-MM-yyyy').format(currentDate);
+    if (widget.select) {
+      _controller.forward();
+    }
 
     medicalJudgment = MedicalJudgment(
       state: _radioButton,
@@ -58,7 +69,7 @@ class _SelectMedicalJudgmentState extends State<SelectMedicalJudgment> with Tick
       judgmentName: widget.name,
       article: getJudgmentArticle(widget.name),
       pdf: widget.name,
-      dateOfIssue: dateOfIssue,
+      dateOfIssue: widget.dateOfIssue ?? dateOfIssue,
       dateOfValidity: _radioDate,
       number: '',
     );
