@@ -1,3 +1,4 @@
+import 'package:e_rejestr/dialogs/print_register.dart';
 import 'package:e_rejestr/view_models/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,13 @@ class RegisterMenu extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // TODO ZROBIĆ DRUKOWANIE REJESTU Z WYBOREM DATY POCZĄTKOWEJ I KOŃCOWEJ
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          child: PrintRegister(),
+                        );
+                      });
                 },
                 child: const Text('Drukuj rejestr'),
               )
