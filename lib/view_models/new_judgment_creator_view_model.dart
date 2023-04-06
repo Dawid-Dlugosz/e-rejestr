@@ -9,7 +9,6 @@ import 'package:e_rejestr/models/judgment.dart';
 import 'package:e_rejestr/models/judgment_number.dart';
 import 'package:e_rejestr/models/karta_kz.dart';
 import 'package:e_rejestr/models/karta_kz_medical.dart';
-import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/patient.dart';
 import 'package:e_rejestr/models/register.dart';
 import 'package:e_rejestr/pdf/karta_kz/karta_kz_page_1.dart';
@@ -453,7 +452,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           margin: const pw.EdgeInsets.all(10),
           orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
-            return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: nrPsycho);
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgments[0].dateOfIssue, nrRej: kartaKzPsycho!.number);
           },
         ),
       );
@@ -502,7 +501,7 @@ class NewJudgmentCreatorViewModel extends ChangeNotifier {
           margin: const pw.EdgeInsets.all(10),
           orientation: pw.PageOrientation.landscape,
           build: (pw.Context context) {
-            return karta_kz_page_1(patient: patient!, dateOfIssue: judgmentMedicals[0].dateOfIssue, nrRej: nrMedical);
+            return karta_kz_page_1(patient: patient!, dateOfIssue: judgmentMedicals[0].dateOfIssue, nrRej: kartaKzMedical!.number);
           },
         ),
       );

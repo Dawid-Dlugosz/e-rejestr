@@ -6,6 +6,7 @@ pw.Widget subList({
   bool sub = false,
 }) {
   return pw.Row(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
       pw.SizedBox(
         width: sub ? 40 : 30,

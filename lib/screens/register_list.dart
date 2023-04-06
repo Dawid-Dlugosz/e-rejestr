@@ -141,8 +141,6 @@ class RegisterList extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // TODO ZMIENIA NUMER ORZECZENIA KIEDY EDYTUJE
-                          // przyjżeć się też dacie która jest dodawana do nowego orzeczenia, powinna być taka sam jak starych
                           Navigator.push(
                             context,
                             MaterialPageRoute(
