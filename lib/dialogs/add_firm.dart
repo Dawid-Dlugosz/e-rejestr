@@ -36,13 +36,13 @@ class AddFirm extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                controller: nipController,
+                controller: nameController,
                 decoration: const InputDecoration(
-                  label: Text('Nip'),
+                  label: Text('Nazwa'),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Podaj nip';
+                    return 'Podaj nazwę';
                   }
                   return null;
                 },
@@ -51,13 +51,13 @@ class AddFirm extends StatelessWidget {
                 height: 20,
               ),
               TextFormField(
-                controller: nameController,
+                controller: nipController,
                 decoration: const InputDecoration(
-                  label: Text('Nazwa'),
+                  label: Text('Nip'),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Podaj nazwę';
+                    return 'Podaj nip';
                   }
                   return null;
                 },

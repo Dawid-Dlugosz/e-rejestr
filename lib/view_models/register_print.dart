@@ -6,38 +6,44 @@ import 'package:e_rejestr/models/medical_judgment.dart';
 import 'package:e_rejestr/models/medicine.dart';
 import 'package:e_rejestr/models/register.dart';
 import 'package:e_rejestr/pdf/karta_kz/p1_right_size.dart';
+import 'package:e_rejestr/pdf/register.dart';
+import 'package:e_rejestr/utils/files.dart';
 import 'package:e_rejestr/utils/judgments.dart';
 import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class RegisterPrint extends ChangeNotifier {
   var startDate = DateTime(DateTime.now().year, 1, 1);
   var endDate = DateTime.now();
   var loaded = false;
+
   String getFormatedDate(DateTime date) {
     final format = new DateFormat('dd-MM-yyyy');
     return format.format(date);
   }
 
-  Future<List<Register>> generateRegister(DocumentType documentType) async {
+  Future<void> generateRegister(DocumentType documentType, BuildContext context) async {
     loaded = true;
     notifyListeners();
+    late List<Register> registerList;
 
     if (documentType == DocumentType.medical) {
-      var registerList = await _getMedicalJudgment();
-      loaded = false;
-      notifyListeners();
-
-      return registerList;
+      registerList = await _getMedicalJudgment();
     } else {
-      var registerList = await _getPsychoJudgment();
-      loaded = false;
-      notifyListeners();
-      return registerList;
+      registerList = await _getPsychoJudgment();
+      print("sadffsa ${registerList.length}");
     }
 
-    // TODO STOWRZYC SZABLON DLA REJESRU
+    var file = await generatePDF(registerList);
+    loaded = false;
+    notifyListeners();
+    // ignore: use_build_context_synchronously
+    printPDF(file, context);
     // TODO ZROBIĆ GENEROWANIE PDF DLA REJESTRU
   }
 
@@ -70,7 +76,8 @@ class RegisterPrint extends ChangeNotifier {
     List<Register> registers = [];
 
     var documents = await Firestore.instance.collection(Collection.kartKzPsycho.name).get();
-    documents.map((element) async {
+
+    for (var element in documents) {
       var listOfJudgment = (element.map['judgments'] as List<dynamic>).map((e) => Judgment.fromJson(e)).toList();
       var articles = listOfJudgment.map((e) => e.article).toList();
       for (var judgment in listOfJudgment) {
@@ -83,10 +90,62 @@ class RegisterPrint extends ChangeNotifier {
           registers.add(register);
         }
       }
-    });
+    }
 
     registers.sort((a, b) => sortRegister(a, b));
 
     return registers;
+  }
+
+  Future<Uint8List> generatePDF(List<Register> registers) async {
+    var font = await rootBundle.load("fonts/Lato-Regular.ttf");
+    var myTheme = pw.ThemeData.withFont(
+      base: pw.Font.ttf(await rootBundle.load("fonts/Lato-Regular.ttf")),
+      bold: pw.Font.ttf(await rootBundle.load("fonts/Lato-Bold.ttf")),
+    );
+    pw.Font.ttf(font);
+
+    var pdf = pw.Document(theme: myTheme);
+    var limit = 8;
+    var pages = (registers.length / limit);
+
+    for (int i = 0; i < pages; i++) {
+      var initialOffset = i * limit;
+
+      var tmpRegisters = pagination(registers, initialOffset, limit);
+
+      pdf.addPage(
+        pw.Page(
+          margin: const pw.EdgeInsets.all(15),
+          pageFormat: PdfPageFormat.a4,
+          orientation: pw.PageOrientation.landscape,
+          build: (pw.Context context) {
+            return register(registers: tmpRegisters.toList());
+          },
+        ),
+      );
+    }
+    return await pdf.save();
+  }
+
+  void printPDF(Uint8List file, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return Dialog(
+            child: PdfPreview(
+              build: (format) => file,
+            ),
+          );
+        });
+  }
+
+  Iterable<Register> pagination(List<Register> registers, int offset, int limit) {
+    try {
+      return registers.getRange(offset, 8);
+    } on RangeError catch (error) {
+      var end = error.end as int;
+      return registers.getRange(offset, end);
+    }
   }
 }

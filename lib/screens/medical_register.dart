@@ -76,7 +76,6 @@ class _MedicalRegisterState extends State<MedicalRegister> {
                           registerItems: futureSnap.data!,
                           documentType: DocumentType.medical,
                         );
-                        // TODO ZROBIĆ CRUDA REJESTRU
                       }
                       return Container();
                     });

@@ -40,7 +40,7 @@ class RegisterMenu extends StatelessWidget {
                       context: context,
                       builder: (context) {
                         return Dialog(
-                          child: PrintRegister(),
+                          child: PrintRegister(viewModel.initialRegisterPage),
                         );
                       });
                 },

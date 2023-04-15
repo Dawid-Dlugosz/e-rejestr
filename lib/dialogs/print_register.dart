@@ -1,16 +1,13 @@
 import 'package:e_rejestr/enums/documents.dart';
-import 'package:e_rejestr/models/register.dart';
 import 'package:e_rejestr/utils/colors.dart';
+import 'package:e_rejestr/utils/pages.dart';
 import 'package:e_rejestr/view_models/register_print.dart';
-import 'package:e_rejestr/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 class PrintRegister extends StatefulWidget {
-  const PrintRegister({super.key});
-
+  const PrintRegister(this.page, {super.key});
+  final int page;
   @override
   State<PrintRegister> createState() => _PrintRegisterState();
 }
@@ -47,22 +44,9 @@ class _PrintRegisterState extends State<PrintRegister> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () async {
-                            // var registerPrint = Provider.of<RegisterPrint>(context, listen: false);
-                            await value.generateRegister(DocumentType.medical);
-
-                            if (!value.loaded) {
-                              // ignore: use_build_context_synchronously
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                    child: Text("asdsdaasd"),
-                                  );
-                                },
-                              );
-                            }
+                            await value.generateRegister(widget.page == medicalRegister ? DocumentType.medical : DocumentType.psycho, context);
                           },
-                          child: Text('Drukuj rejestr'),
+                          child: const Text('Drukuj rejestr'),
                         ),
                       );
               },
