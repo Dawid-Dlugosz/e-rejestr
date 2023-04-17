@@ -119,14 +119,41 @@ class _PatientCreateState extends State<PatientCreate> {
                     const SizedBox(
                       width: 20,
                     ),
-                    viewModel.uid == null
-                        ? ElevatedButton(
-                            onPressed: () {
-                              // TODO MAKE SAVE AND SELECT PATIENT
-                            },
-                            child: const Text('Zapisz i wybierz'),
-                          )
-                        : Container(),
+                    // viewModel.uid == null
+                    //     ? ElevatedButton(
+                    //         onPressed: () async {
+                    //           if (!viewModel.checkBasicData()) {
+                    //             setState(() {
+                    //               errorText = 'Wypełnij pola oznaczone *';
+                    //             });
+                    //             return;
+                    //           }
+
+                    //           if (!viewModel.checkExtraDate()) {
+                    //             setState(() {
+                    //               errorText = 'Uzupełnij pesel lub numer dokumentu';
+                    //             });
+                    //             return;
+                    //           }
+
+                    //           if (!viewModel.peselValidator() && viewModel.peselController.text.isNotEmpty) {
+                    //             setState(() {
+                    //               errorText = 'Podaj poprawny numer pesel';
+                    //             });
+                    //             return;
+                    //           }
+
+                    //           var patient = await viewModel.insetAndSelect();
+
+                    //           setState(() {
+                    //             errorText = null;
+                    //           });
+
+                    //           Navigator.pop(context, patient);
+                    //         },
+                    //         child: const Text('Zapisz i wybierz'),
+                    //       )
+                    //     : Container(),
                   ],
                 )
               ],

@@ -75,7 +75,6 @@ class _PsychologicalRegisterState extends State<PsychologicalRegister> {
                           registerItems: futureSnap.data!,
                           documentType: DocumentType.psycho,
                         );
-                        // TODO ZROBIĆ CRUDA REJESTRU
                       }
 
                       return Container();

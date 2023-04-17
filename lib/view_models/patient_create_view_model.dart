@@ -122,6 +122,21 @@ class PatientCreateViewModel extends ChangeNotifier {
     }
   }
 
+  Future<Patient> insetAndSelect() async {
+    var patient = Patient(
+      firstName: nameController.text,
+      lastName: lastNameController.text,
+      residentialAddress: ResidentialAddress(postCodeCity: domicileController.text, street: streetController.text),
+      birthday: birthayController.text,
+      pesel: peselController.text,
+      documentNumer: documentNumberController.text,
+      uid: const Uuid().v4(),
+    );
+    await Firestore.instance.collection(Collection.patients.name).document(patient.uid).set(patient.toJson());
+
+    return patient;
+  }
+
   Future<void> editData() async {
     var patient = Patient(
       firstName: nameController.text,
