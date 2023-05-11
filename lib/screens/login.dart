@@ -27,8 +27,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    _loginController.text = 'cpAdmin';
-    _passwordController.text = 'cpDomino';
+    // _loginController.text = 'cpAdmin';
+    // _passwordController.text = 'cpDomino';
     return loginViewModel.loaded
         ? Scaffold(
             body: Center(
@@ -66,7 +66,9 @@ class _LoginState extends State<Login> {
                         onFieldSubmitted: (value) async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            await loginViewModel.login(login: _loginController.text, password: _passwordController.text);
+                            await loginViewModel.login(
+                                login: _loginController.text,
+                                password: _passwordController.text);
                           }
                         },
                         decoration: InputDecoration(
@@ -76,7 +78,9 @@ class _LoginState extends State<Login> {
                                 _obscureText = !_obscureText;
                               });
                             },
-                            icon: Icon(_obscureText == true ? Icons.visibility : Icons.visibility_off),
+                            icon: Icon(_obscureText == true
+                                ? Icons.visibility
+                                : Icons.visibility_off),
                           ),
                           label: const Text('Hasło'),
                         ),
@@ -87,7 +91,9 @@ class _LoginState extends State<Login> {
                       ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            await loginViewModel.login(login: _loginController.text, password: _passwordController.text);
+                            await loginViewModel.login(
+                                login: _loginController.text,
+                                password: _passwordController.text);
                           }
                         },
                         child: Text('Zaloguj'.toUpperCase()),

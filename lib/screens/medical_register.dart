@@ -26,12 +26,23 @@ class _MedicalRegisterState extends State<MedicalRegister> {
     var registers = <Register>[];
 
     for (var element in documents) {
-      List<MedicaJudgmentInterface> listOfJudgment = (element.map['judgments'] as List<dynamic>).map((e) => e['judgmentName'] == medicalMedycynaPracy || e['judgmentName'] == medicalMedycynaPracyInstruktor ? Medicine.fromJson(e) : MedicalJudgment.fromJson(e)).toList();
+      List<MedicaJudgmentInterface> listOfJudgment =
+          (element.map['judgments'] as List<dynamic>)
+              .map((e) => e['judgmentName'] == medicalMedycynaPracy ||
+                      e['judgmentName'] == medicalMedycynaPracyInstruktor
+                  ? Medicine.fromJson(e)
+                  : MedicalJudgment.fromJson(e))
+              .toList();
       var articles = listOfJudgment.map((e) => e.article).toList();
       for (var judgment in listOfJudgment) {
-        var json = await Register.convertMedicalJudgmentToRegister(patientId: element.map['patientId'], judgment: judgment, articles: articles);
+        var json = await Register.convertMedicalJudgmentToRegister(
+            patientId: element.map['patientId'],
+            judgment: judgment,
+            articles: articles);
         var register = Register.fromJson(json);
-        if (register.fullName.contains(searchController.text)) {
+        if (register.fullName
+            .toLowerCase()
+            .contains(searchController.text.toLowerCase())) {
           registers.add(register);
         }
       }
@@ -41,7 +52,8 @@ class _MedicalRegisterState extends State<MedicalRegister> {
   }
 
   TextEditingController searchController = TextEditingController();
-  var stream = Firestore.instance.collection(Collection.kartKzMedical.name).stream;
+  var stream =
+      Firestore.instance.collection(Collection.kartKzMedical.name).stream;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +80,8 @@ class _MedicalRegisterState extends State<MedicalRegister> {
                     future: convertToList(snapshot.data!),
                     builder: (context, futureSnap) {
                       if (futureSnap.hasData && snapshot.data != null) {
-                        if (snapshot.data!.isEmpty || futureSnap.data!.isEmpty) {
+                        if (snapshot.data!.isEmpty ||
+                            futureSnap.data!.isEmpty) {
                           return const EmptyWidget();
                         }
 
