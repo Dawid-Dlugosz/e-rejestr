@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> {
         theme: themeData,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: const [
@@ -52,7 +53,8 @@ class _MyAppState extends State<MyApp> {
           future: getSession(),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
-              var sessionDate = DateTime.fromMillisecondsSinceEpoch(snapshot.data!);
+              var sessionDate =
+                  DateTime.fromMillisecondsSinceEpoch(snapshot.data!);
               var currentDate = DateTime.now();
               // if current date is after session date, delete session and return to login page
               if (currentDate.compareTo(sessionDate) > 0) {

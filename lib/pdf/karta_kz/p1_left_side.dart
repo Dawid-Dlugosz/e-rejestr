@@ -6,7 +6,7 @@ import 'package:e_rejestr/pdf/psychologist/utils/line.dart';
 import 'package:e_rejestr/pdf/psychologist/utils/psychologist_instruction.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Widget p1_left_side() {
+pw.Widget p1_left_side(String dateOfIssue) {
   return pw.Padding(
     padding: const pw.EdgeInsets.only(right: 10.0),
     child: pw.Column(
@@ -14,7 +14,7 @@ pw.Widget p1_left_side() {
       children: [
         textField('5 WNIOSKI'),
         textField('6 ZALECENIA'),
-        dataOfIssue('22-05-2022', '***', padding: false, width: 400),
+        dataOfIssue(dateOfIssue, '***', padding: false, width: 400),
         pw.SizedBox(height: 15),
         line(width: 400, margin: false),
         infoInstruction('*', size: true),

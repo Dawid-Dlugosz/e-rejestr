@@ -62,7 +62,8 @@ class _SelectPatientListState extends State<SelectPatientList> {
         SizedBox(
           width: double.infinity,
           child: Table(
-            border: TableBorder.all(color: white, style: BorderStyle.solid, width: 2),
+            border: TableBorder.all(
+                color: white, style: BorderStyle.solid, width: 2),
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             columnWidths: const {
               0: FractionColumnWidth(0.02),
@@ -89,11 +90,23 @@ class _SelectPatientListState extends State<SelectPatientList> {
         ),
         Expanded(
           child: StreamBuilder<List<Document>>(
-            stream: Firestore.instance.collection(Collection.patients.name).where('lastName', isGreaterThanOrEqualTo: lastNameSearch).orderBy('lastName').get().asStream(),
+            stream: Firestore.instance
+                .collection(Collection.patients.name)
+                // .where('lastName', isGreaterThanOrEqualTo: lastNameSearch)
+                .orderBy('lastName')
+                .get()
+                .asStream(),
             builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data != null && snapshot.data!.isNotEmpty) {
+              if (snapshot.hasData &&
+                  snapshot.data != null &&
+                  snapshot.data!.isNotEmpty) {
                 return PatientList(
-                  snapshot.data!,
+                  snapshot.data!
+                      .where((element) => element['lastName']
+                          .toString()
+                          .toLowerCase()
+                          .contains(lastNameSearch.toLowerCase()))
+                      .toList(),
                   refresh: refresh,
                 );
               } else {
